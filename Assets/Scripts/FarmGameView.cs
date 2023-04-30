@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 public class FarmGameView : MonoBehaviour
@@ -17,5 +20,10 @@ public class FarmGameView : MonoBehaviour
     public virtual void UpdatedGold(int currentGold)
     {
 
+    }
+
+    public void UpdatedPlots(List<FarmPlot> farmPlots)
+    {
+        
     }
 }

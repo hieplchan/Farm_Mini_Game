@@ -1,26 +1,32 @@
 using System;
+using System.Collections.Specialized;
+using System.Linq;
 
 public class FarmGamePresenter
 {
     public int Gold { get; private set; }
+    public Farm Farm { get => _farm; }
+
     private FarmGameView _view;
     private Farm _farm;
 
     public FarmGamePresenter(FarmGameView view)
     {
         _view = view;
+        _farm = new Farm();
+        _farm.plotList.CollectionChanged += OnPlotListChanged;
 
         ConfigManager.Reload();
-
         Gold = 0;
-        _farm = new Farm();
 
-        FarmSetup();
+        FarmTestSetup();
     }
 
     public void BuyFarmPlot()
     {
         Gold -= 500;
+
+        _farm.AddPlot();
 
         _view.UpdatedGold(Gold);
     }
@@ -32,18 +38,18 @@ public class FarmGamePresenter
         _view.UpdatedGold(Gold);
     }
 
-    private void FarmSetup()
+    private void FarmTestSetup()
     {
         // Just for test
-        for (int i = 0; i < Enum.GetNames(typeof(CommodityType)).Length; i++)
+        for (int i = 0; i < 4; i++)
         {
-            _farm.plotList.Add(new FarmPlot());
-
             Commodity commodity = new Commodity(
-                ConfigManager.GetCommodityConfig((CommodityType)i), 
+                ConfigManager.GetCommodityConfig((CommodityType)i),
                 (CommodityType)i);
 
-            _farm.plotList[i].Plant(commodity);
+            FarmPlot plot = _farm.AddPlot();
+            plot.FarmPlotChanged += OnPlotChanged;
+            plot.Plant(commodity);
         }
     }
 
@@ -53,5 +59,17 @@ public class FarmGamePresenter
         {
             plot.GameUpdate(deltaTime);
         }
+    }
+
+    private void OnPlotChanged()
+    {
+        _view.UpdatedPlots(_farm.plotList.ToList());
+    }
+
+    private  void OnPlotListChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        _view.UpdatedPlots(_farm.plotList.ToList());
+        MLog.Log("FarmGamePresenter", 
+            "UpdatedPlots plot count: " + _farm.plotList.Count);
     }
 }

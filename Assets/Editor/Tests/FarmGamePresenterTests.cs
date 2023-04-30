@@ -1,5 +1,6 @@
 using NSubstitute;
 using NUnit.Framework;
+using System.Linq;
 
 [TestFixture]
 public class FarmGamePresenterTests
@@ -26,6 +27,28 @@ public class FarmGamePresenterTests
         WhenBuyFarmPlot();
 
         ThenShowsUpdatedGold();
+    }
+
+    [Test]
+    public void WhenBuyFarmPlotShowsUpdatedPlotList()
+    {
+        GivenAFarmGame();
+
+        WhenBuyFarmPlot();
+
+        ThenShowsUpdatedPlotList();
+    }
+
+
+    [Test]
+    public void WhenBuyFarmPlotPlotListCountIncrease()
+    {
+        GivenAFarmGame();
+        int plotCount = _presenter.Farm.plotList.Count;
+
+        WhenBuyFarmPlot();
+
+        Assert.Less(plotCount, _presenter.Farm.plotList.Count);
     }
 
     [Test]
@@ -73,5 +96,11 @@ public class FarmGamePresenterTests
     private void ThenShowsUpdatedGold()
     {
         _view.Received(1).UpdatedGold(_presenter.Gold);
+    }
+
+    private void ThenShowsUpdatedPlotList()
+    {
+        _view.Received(1).UpdatedPlots(
+            _presenter.Farm.plotList.ToList());
     }
 }
