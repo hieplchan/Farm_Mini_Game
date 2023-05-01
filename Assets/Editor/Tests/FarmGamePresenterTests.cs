@@ -1,6 +1,7 @@
 using NSubstitute;
 using NUnit.Framework;
 using System.Linq;
+using System.Collections.Generic;
 
 [TestFixture]
 public class FarmGamePresenterTests
@@ -100,7 +101,7 @@ public class FarmGamePresenterTests
 
     private void ThenShowsUpdatedPlotList()
     {
-        _view.Received(1).UpdatedPlots(
-            _presenter.Farm.plotList.ToList());
+        _view.Received(1).UpdatedPlots(Arg.Is<List<FarmPlot>>(
+            value => _presenter.Farm.plotList.ToList().SequenceEqual(value)));
     }
 }

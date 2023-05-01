@@ -19,6 +19,7 @@ public class Commodity
     public CommodityState State { get; private set; }
     public CommodityType Type { get; private set; }
     public float Age { get; private set; }
+    public float TimeLeftToHarvest { get => _totalLifeTime - Age; }
     public int AvailableProduct => _availableProduct;
 
     FarmPlot _plot;

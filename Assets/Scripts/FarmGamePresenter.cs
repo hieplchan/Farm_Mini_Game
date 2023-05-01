@@ -66,7 +66,7 @@ public class FarmGamePresenter
         _view.UpdatedPlots(_farm.plotList.ToList());
     }
 
-    private  void OnPlotListChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void OnPlotListChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
         _view.UpdatedPlots(_farm.plotList.ToList());
         MLog.Log("FarmGamePresenter", 
