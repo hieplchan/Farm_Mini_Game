@@ -27,6 +27,7 @@ public class Commodity
     int _availableProduct, _harvestedProduct, _totalProduct;
     int _productCycleTime, _matureTime, _totalLifeTime;
     float _productivity;
+    CommodityState previousState;
 
     public Commodity(CommodityConfig config, CommodityType type)
     {
@@ -66,6 +67,8 @@ public class Commodity
             Dead();
             State = CommodityState.Dead;
         }
+
+        previousState = State;
     }
 
     private void Produce()
@@ -74,7 +77,8 @@ public class Commodity
     }
     private void Dying()
     {
-        CheckNewProduct();
+        if (previousState == CommodityState.Mature)
+            CheckNewProduct();
     }
     private void Dead()
     {
