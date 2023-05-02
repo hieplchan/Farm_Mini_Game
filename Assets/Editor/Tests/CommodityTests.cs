@@ -71,6 +71,7 @@ public class CommodityTests
 
     private void CommodityStateEqual(CommodityState state)
     {
+        MLog.Log("CommodityTests", "CommodityStateEqual: " + _commodity.State.ToString());
         Assert.IsTrue(_commodity.State.Equals(state));
     }
 
@@ -87,7 +88,13 @@ public class CommodityTests
             productCycleTime: rand.Next(1, 100),
             productCycleNum: rand.Next(1, 100),
             dyingTime: rand.Next(1, 100),
-            productivity: rand.Next(100, 1000));
+            productivity: 100 + rand.Next(1, 100) * 10);
+
+        MLog.Log("CommodityTests _config",
+            "\n productCycleTime: " + _config.productCycleTime +
+            "\n productCycleNum: " + _config.productCycleNum +
+            "\n dyingTime: " + _config.dyingTime +
+            "\n productivity: " + _config.productivity);
 
         _commodity = new Commodity(_config,
             (CommodityType)rand.Next(0, Enum.GetNames(typeof(CommodityType)).Length));
@@ -104,10 +111,14 @@ public class CommodityTests
         Plant();
 
         float matureTime =
-            _config.productCycleTime.MinToSec() * _config.productCycleNum /
+            (_config.productCycleTime.MinToSec() * _config.productCycleNum)/
             (_config.productivity / 100f);
 
-        int loopSecCount = (int)(matureTime - 59);
+        int loopSecCount = (int)(matureTime) - 30;
+
+        MLog.Log("CommodityTests",
+            "\n matureTime: " + matureTime +
+            "\n loopSecCount: " + loopSecCount);
 
         for (int i = 0; i < loopSecCount; i++)
         {
@@ -120,10 +131,14 @@ public class CommodityTests
         Plant();
 
         float matureTime = 
-            _config.productCycleTime.MinToSec() * _config.productCycleNum /
+            (_config.productCycleTime.MinToSec() * _config.productCycleNum) /
             (_config.productivity / 100f);
 
-        int loopSecCount = (int)(matureTime + 59);
+        int loopSecCount = (int)(matureTime) + 30;
+
+        MLog.Log("CommodityTests",
+            "\n matureTime: " + matureTime +
+            "\n loopSecCount: " + loopSecCount);
 
         for (int i = 0; i < loopSecCount; i++)
         {
@@ -139,7 +154,11 @@ public class CommodityTests
             (_config.productCycleTime.MinToSec() * _config.productCycleNum +
             _config.dyingTime.MinToSec()) / (_config.productivity / 100f);
 
-        int loopSecCount = (int)(lifeTime + 59);
+        int loopSecCount = (int)(lifeTime) + 30;
+
+        MLog.Log("CommodityTests",
+            "\n lifeTime: " + lifeTime +
+            "\n loopSecCount: " + loopSecCount);
 
         for (int i = 0; i < loopSecCount; i++)
         {

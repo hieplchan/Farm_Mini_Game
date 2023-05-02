@@ -77,8 +77,7 @@ public class Commodity
     }
     private void Dying()
     {
-        if (previousState == CommodityState.Mature)
-            CheckNewProduct();
+        CheckNewProduct();           
     }
     private void Dead()
     {
