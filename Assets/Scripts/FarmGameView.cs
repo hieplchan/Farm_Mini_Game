@@ -3,17 +3,31 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class FarmGameView : MonoBehaviour
 {
     private FarmGamePresenter _presenter;
 
-    [SerializeField]
-    private TMP_Text farmPlotTxt;
+    [Header("Farm Panel")]
+    [SerializeField] private TMP_Text _farmPlotText;
+
+    [Header("Resource Panel")]
+    [SerializeField] private TMP_Text _plotText;
+
+    [Header("Action Panel")]
+    [SerializeField] private Button _farmBuyPlotButton;
 
     private void Start()
     {
         _presenter = new FarmGamePresenter(this);
+
+        SetupButton();
+    }
+
+    private void SetupButton()
+    {
+        _farmBuyPlotButton.onClick.AddListener(_presenter.BuyFarmPlot);
     }
 
     private void Update()
@@ -28,12 +42,17 @@ public class FarmGameView : MonoBehaviour
 
     public virtual void UpdatedPlots(List<FarmPlot> farmPlots)
     {
-        string finalString = "";
+        string farmPanelString = "";
+        string resourcePanelString = "";
+        int usedPlotCount = 0;
+
         for (int i = 0; i < farmPlots.Count; i++)
         {
             string tmp = string.Format("Plot {0}: ", i);
             if (farmPlots[i].HasCommodity)
             {
+                usedPlotCount++;
+
                 tmp += string.Format("{0} ", farmPlots[i].CommodityType.ToString());
                 if (farmPlots[i].AvailableProduct > 0)
                 {
@@ -47,11 +66,18 @@ public class FarmGameView : MonoBehaviour
             {
                 tmp += "Unused";
             }
-
-            finalString += tmp;
-            finalString += "\n";
+            farmPanelString += tmp;
+            farmPanelString += "\n";
         }
 
-        farmPlotTxt.text = finalString;
+        resourcePanelString = string.Format(
+            "\n\nPlot \n\n" +
+            "Used: {0} \n" +
+            "Free: {1}",
+            usedPlotCount, farmPlots.Count - usedPlotCount
+            );
+
+        _farmPlotText.text = farmPanelString;
+        _plotText.text = resourcePanelString;
     }
 }

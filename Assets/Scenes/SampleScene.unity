@@ -3158,7 +3158,7 @@ GameObject:
   - component: {fileID: 864219129}
   - component: {fileID: 864219128}
   m_Layer: 5
-  m_Name: Other
+  m_Name: Farm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4894,7 +4894,7 @@ MonoBehaviour:
 
     Used: 100
 
-    Unused: 100'
+    Free: 100'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6606,7 +6606,7 @@ MonoBehaviour:
   m_text: '
 
 
-    Product
+    Collected
 
 
     Strawberry: 1000
@@ -6616,7 +6616,7 @@ MonoBehaviour:
     Blueberry:
     1000
 
-    Cow: 1000'
+    Milk: 1000'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7282,7 +7282,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d043713bf0aa69c4d83ab33b30dfc6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  farmPlotTxt: {fileID: 1445953078}
+  _farmPlotText: {fileID: 1445953078}
+  _plotText: {fileID: 1292030883}
+  _farmBuyPlotButton: {fileID: 857224498}
 --- !u!1 &2002159820
 GameObject:
   m_ObjectHideFlags: 0
