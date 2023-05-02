@@ -41,6 +41,35 @@ public class CommodityTests
     }
 
     [Test]
+    public void WhenHarvestAvailableProductEqualZero()
+    {
+        GivenRandomCommodity();
+
+        int cycleCount = _rand.Next(1, _config.productCycleNum - 1);
+        WhenMature(cycleCount);
+        int harvestedProduct = _commodity.Harvest();
+
+        Assert.IsTrue(_commodity.AvailableProduct.Equals(0));
+    }
+
+    [Test]
+    public void WhenHarvestProductEqualCycleCount()
+    {
+        GivenRandomCommodity();
+
+        int cycleCount = _rand.Next(1, _config.productCycleNum - 1);
+        WhenMature(cycleCount);
+        _commodity.GameUpdate(59); //offset 59 sec
+        int harvestedProduct = _commodity.Harvest();
+
+        MLog.Log("CommodityTests",
+            "\n cycleCount: " + cycleCount +
+            "\n harvestedProduct: " + harvestedProduct);
+
+        Assert.IsTrue(harvestedProduct.Equals(cycleCount));
+    }
+
+    [Test]
     public void AfterMatureProductEqualCycleNum()
     {
         GivenRandomCommodity();
