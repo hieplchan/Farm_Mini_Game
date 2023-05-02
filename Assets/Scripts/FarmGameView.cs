@@ -15,19 +15,19 @@ public class FarmGameView : MonoBehaviour
     [Header("Resource Panel")]
     [SerializeField] private TMP_Text _plotText;
 
-    [Header("Action Panel")]
-    [SerializeField] private Button _farmBuyPlotButton;
-
     private void Start()
     {
         _presenter = new FarmGamePresenter(this);
-
-        SetupButton();
     }
 
-    private void SetupButton()
+    public void BuyFarmPlot()
     {
-        _farmBuyPlotButton.onClick.AddListener(_presenter.BuyFarmPlot);
+        _presenter.BuyFarmPlot();
+    }
+
+    public void PlantCommodity(int type)
+    {
+        _presenter.PlantCommodity((CommodityType)type);
     }
 
     private void Update()
