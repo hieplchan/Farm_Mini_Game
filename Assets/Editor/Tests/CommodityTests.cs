@@ -9,6 +9,7 @@ public class CommodityTests
 {
     private Commodity _commodity;
     private CommodityConfig _config;
+    private Random _rand;
 
     [Test]
     public void WhenNewCommodityStateEqualSeed()
@@ -33,7 +34,8 @@ public class CommodityTests
     {
         GivenRandomCommodity();
 
-        WhenMature();
+        int cycleCount = _rand.Next(1, _config.productCycleNum);
+        WhenMature(cycleCount);
 
         CommodityStateEqual(CommodityState.Mature);
     }
@@ -82,13 +84,13 @@ public class CommodityTests
 
     private void GivenRandomCommodity()
     {
-        var rand = new Random();
+        _rand = new Random();
 
         _config = new CommodityConfig(
-            productCycleTime: rand.Next(1, 100),
-            productCycleNum: rand.Next(1, 100),
-            dyingTime: rand.Next(1, 100),
-            productivity: 100 + rand.Next(1, 100) * 10);
+            productCycleTime: _rand.Next(1, 100),
+            productCycleNum: _rand.Next(1, 100),
+            dyingTime: _rand.Next(1, 100),
+            productivity: 100 + _rand.Next(1, 100) * 10);
 
         MLog.Log("CommodityTests _config",
             "\n productCycleTime: " + _config.productCycleTime +
@@ -97,7 +99,7 @@ public class CommodityTests
             "\n productivity: " + _config.productivity);
 
         _commodity = new Commodity(_config,
-            (CommodityType)rand.Next(0, Enum.GetNames(typeof(CommodityType)).Length));
+            (CommodityType)_rand.Next(0, Enum.GetNames(typeof(CommodityType)).Length));
     }
 
     private void Plant()
@@ -106,15 +108,15 @@ public class CommodityTests
         _commodity.Plant(plot);
     }
 
-    private void WhenMature()
+    private void WhenMature(int cycleCount)
     {
         Plant();
 
         float matureTime =
-            (_config.productCycleTime.MinToSec() * _config.productCycleNum)/
+            _config.productCycleTime.MinToSec() * cycleCount /
             (_config.productivity / 100f);
 
-        int loopSecCount = (int)(matureTime) - 30;
+        int loopSecCount = (int)(matureTime);
 
         MLog.Log("CommodityTests",
             "\n matureTime: " + matureTime +
@@ -129,40 +131,15 @@ public class CommodityTests
     private void AfterMature()
     {
         Plant();
-
-        float matureTime = 
-            (_config.productCycleTime.MinToSec() * _config.productCycleNum) /
-            (_config.productivity / 100f);
-
-        int loopSecCount = (int)(matureTime) + 30;
-
-        MLog.Log("CommodityTests",
-            "\n matureTime: " + matureTime +
-            "\n loopSecCount: " + loopSecCount);
-
-        for (int i = 0; i < loopSecCount; i++)
-        {
+        while (_commodity.State == CommodityState.Mature)
             _commodity.GameUpdate(1);
-        }
     }
 
     private void AfterDying()
     {
         Plant();
-
-        float lifeTime =
-            (_config.productCycleTime.MinToSec() * _config.productCycleNum +
-            _config.dyingTime.MinToSec()) / (_config.productivity / 100f);
-
-        int loopSecCount = (int)(lifeTime) + 30;
-
-        MLog.Log("CommodityTests",
-            "\n lifeTime: " + lifeTime +
-            "\n loopSecCount: " + loopSecCount);
-
-        for (int i = 0; i < loopSecCount; i++)
-        {
+        while (_commodity.State == CommodityState.Mature ||
+                _commodity.State == CommodityState.Dying)
             _commodity.GameUpdate(1);
-        }
     }
 }

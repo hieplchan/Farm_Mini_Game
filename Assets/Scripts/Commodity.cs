@@ -85,7 +85,7 @@ public class Commodity
     }
     private void CheckNewProduct()
     {
-        if (State != CommodityState.Mature)
+        if (_totalProduct > _config.productCycleNum)
             return;
 
         if (Age > (_totalProduct + 1) * _productCycleTime)
