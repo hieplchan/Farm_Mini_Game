@@ -6,6 +6,7 @@ public class FarmGamePresenter
 {
     public int Gold { get; private set; }
     public Farm Farm { get => _farm; }
+    public Inventory Inventory { get => _inventory; }
 
     private FarmGameView _view;
     private Farm _farm;
@@ -18,9 +19,18 @@ public class FarmGamePresenter
         _inventory = new Inventory();
 
         _farm.plotList.CollectionChanged += OnPlotListChanged;
+        _inventory.seedList.CollectionChanged += OnInventorySeedChanged;
+
+        ShowUpdatePlots();
+        ShowUpdatedInventorySeed();
 
         ConfigManager.Reload();
         Gold = 0;
+    }
+
+    public void BuyCommoditySeed(CommodityType type)
+    {
+        _inventory.AddSeed(type);
     }
 
     public void PlantCommodity(CommodityType type)
@@ -44,7 +54,6 @@ public class FarmGamePresenter
             MLog.Log("FarmGamePresenter",
                 "PlantCommodity: No free plot, please buy");
         }
-        _view.UpdatedPlots(_farm.plotList.ToList());
     }
 
     public void BuyFarmPlot()
@@ -75,13 +84,28 @@ public class FarmGamePresenter
 
     private void OnPlotChanged()
     {
-        _view.UpdatedPlots(_farm.plotList.ToList());
+        ShowUpdatePlots();
     }
 
     private void OnPlotListChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        _view.UpdatedPlots(_farm.plotList.ToList());
+        ShowUpdatePlots();
         MLog.Log("FarmGamePresenter", 
             "UpdatedPlots plot count: " + _farm.plotList.Count);
+    }
+
+    private void OnInventorySeedChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        ShowUpdatedInventorySeed();
+    }
+
+    private void ShowUpdatedInventorySeed()
+    {
+        _view.ShowUpdatedInventorySeed(_inventory.seedList.ToList());
+    }
+
+    private void ShowUpdatePlots()
+    {
+        _view.ShowUpdatedPlots(_farm.plotList.ToList());
     }
 }

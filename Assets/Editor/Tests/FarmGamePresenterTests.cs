@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System;
 
 [TestFixture]
-public class FarmGamePresenterTests
+public partial class FarmGamePresenterTests
 {
     private FarmGameView _view;
     private FarmGamePresenter _presenter;
     private Random _rand;
+    private int _commodityTypeCount;
 
     #region Buy Farm Plot
     [Test]
@@ -53,6 +54,18 @@ public class FarmGamePresenterTests
         WhenBuyFarmPlot();
 
         Assert.Less(plotCount, _presenter.Farm.plotList.Count);
+    }
+    #endregion
+
+    #region Buy Commodity Seed
+    [Test]
+    public void WhenBuyCommoditySeedSuccessShowUpdatedInventorySeed()
+    {
+        GivenAFarmGame();
+
+        WhenBuyRandomCommoditySeed();
+
+        ThenShowUpdatedInventorySeed();
     }
     #endregion
 
@@ -112,45 +125,4 @@ public class FarmGamePresenterTests
     }
     #endregion
 
-    #region Common
-    private void GivenAFarmGame()
-    {
-        _view = Substitute.For<FarmGameView>();
-        _presenter = new FarmGamePresenter(_view);
-        _rand = new Random();
-    }
-
-    private void WhenBuyFarmPlot()
-    {
-        _presenter.BuyFarmPlot();
-    }
-
-    private void WhenPlantRandomCommodity()
-    {
-        CommodityType type = (CommodityType)_rand.Next(0,
-            Enum.GetNames(typeof(CommodityType)).Length);
-        _presenter.PlantCommodity(type);
-    }
-
-    private void WhenHireWorker()
-    {
-        _presenter.HireWorker();
-    }
-
-    private void ThenGoldDecrease(int initGold)
-    {
-        Assert.Less(_presenter.Gold, initGold);
-    }
-
-    private void ThenShowsUpdatedGold()
-    {
-        _view.Received(1).UpdatedGold(_presenter.Gold);
-    }
-
-    private void ThenShowsUpdatedPlotList()
-    {
-        _view.Received().UpdatedPlots(Arg.Is<List<FarmPlot>>(
-            value => _presenter.Farm.plotList.ToList().SequenceEqual(value)));
-    }
-    #endregion
 }

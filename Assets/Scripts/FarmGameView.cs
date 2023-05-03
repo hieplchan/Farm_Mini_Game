@@ -14,6 +14,7 @@ public class FarmGameView : MonoBehaviour
 
     [Header("Resource Panel")]
     [SerializeField] private TMP_Text _plotText;
+    [SerializeField] private TMP_Text _inventorySeedText;
 
     private void Start()
     {
@@ -30,6 +31,11 @@ public class FarmGameView : MonoBehaviour
         _presenter.PlantCommodity((CommodityType)type);
     }
 
+    public void BuyCommoditySeed(int type)
+    {
+        _presenter.BuyCommoditySeed((CommodityType)type);
+    }
+
     private void Update()
     {
         _presenter.GameUpdate(Time.deltaTime);
@@ -40,7 +46,7 @@ public class FarmGameView : MonoBehaviour
 
     }
 
-    public virtual void UpdatedPlots(List<FarmPlot> farmPlots)
+    public virtual void ShowUpdatedPlots(List<FarmPlot> farmPlots)
     {
         string farmPanelString = "";
         string resourcePanelString = "";
@@ -79,5 +85,16 @@ public class FarmGameView : MonoBehaviour
 
         _farmPlotText.text = farmPanelString;
         _plotText.text = resourcePanelString;
+    }
+
+    public virtual void ShowUpdatedInventorySeed(List<int> seedList)
+    {
+        string tmp = "\n\nSeed\n";
+        for (int i = 0; i < seedList.Count; i++)
+        {
+            tmp += string.Format("{0}: {1}\n",
+                ((CommodityType)i).ToString(), seedList[i]);
+        }
+        _inventorySeedText.text = tmp;
     }
 }
