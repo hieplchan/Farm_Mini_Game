@@ -93,13 +93,13 @@ public class FarmGameView : MonoBehaviour
         _plotText.text = resourcePanelString;
     }
 
-    public virtual void ShowUpdatedInventorySeed(List<int> seedList)
+    public virtual void ShowUpdatedInventorySeed(int[] seeds)
     {
         string tmp = "\n\nSeed\n";
-        for (int i = 0; i < seedList.Count; i++)
+        for (int i = 0; i < seeds.Length; i++)
         {
             tmp += string.Format("{0}: {1}\n",
-                ((CommodityType)i).ToString(), seedList[i]);
+                ((CommodityType)i).ToString(), seeds[i]);
         }
         _inventorySeedText.text = tmp;
     }

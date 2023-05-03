@@ -19,7 +19,7 @@ public class FarmGamePresenter
 
         _farm.GoldChanged += OnGoldChanged;
         _farm.plotList.CollectionChanged += OnPlotListChanged;
-        _inventory.seedList.CollectionChanged += OnInventorySeedChanged;
+        _inventory.SeedsChanged += OnInventorySeedChanged;
 
         ShowUpdatedGoldAndEquipLevel();
         ShowUpdatePlots();
@@ -97,7 +97,7 @@ public class FarmGamePresenter
             "UpdatedPlots plot count: " + _farm.plotList.Count);
     }
 
-    private void OnInventorySeedChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void OnInventorySeedChanged()
     {
         ShowUpdatedInventorySeed();
     }
@@ -114,6 +114,6 @@ public class FarmGamePresenter
 
     private void ShowUpdatedInventorySeed()
     {
-        _view.ShowUpdatedInventorySeed(_inventory.seedList.ToList());
+        _view.ShowUpdatedInventorySeed(_inventory.Seeds);
     }
 }

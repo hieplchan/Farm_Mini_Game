@@ -3,29 +3,49 @@ using System;
 
 public class Inventory
 {
-    public ObservableCollection<int> seedList;
+    public event Action SeedsChanged;
+    public int[] Seeds { get => _seeds; }
+    private int[] _seeds;
 
     public Inventory()
     {
-        seedList = new ObservableCollection<int>();
-
         int commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
+
+        _seeds = new int[commodityTypeCount];
 
         for (int i = 0; i < commodityTypeCount; i++)
         {
-            seedList.Add(0);
+            _seeds[i] = 0;
         }
     }
 
     public void AddSeed(CommodityType type, int quantity = 1)
     {
-        seedList[(int)type] += quantity;
+        _seeds[(int)type] += quantity;
+        NotifySeedsChange();
     }
 
     public Commodity GetSeed(CommodityType type)
     {
-        Commodity seed = new Commodity(
-            ConfigManager.GetCommodityConfig(type), type);
-        return seed;
+        if (_seeds[(int)type] > 0)
+        {
+            Commodity seed = new Commodity(
+                ConfigManager.GetCommodityConfig(type), type);
+            _seeds[(int)type] -= 1;
+            NotifySeedsChange();
+            return seed;
+        }
+        else
+        {
+            MLog.Log("Inventory",
+                string.Format("GetSeed: no {0} seed, please buy",
+                type.ToString()));
+            return null;
+        }
+    }
+
+    private void NotifySeedsChange()
+    {
+        SeedsChanged?.Invoke();
     }
 }

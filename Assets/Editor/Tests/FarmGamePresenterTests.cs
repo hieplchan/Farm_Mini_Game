@@ -94,7 +94,7 @@ public partial class FarmGamePresenterTests
     [Test]
     public void WhenPlantSuccessFreePlotDecrease()
     {
-        GivenAFarmGame();
+        GivenAFarmGameInventoryHaveSeed();
 
         // Buy some plot
         for (int i = 0; i < _rand.Next(1, 10); i++)
