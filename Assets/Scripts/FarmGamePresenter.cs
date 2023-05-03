@@ -4,7 +4,6 @@ using System.Linq;
 
 public class FarmGamePresenter
 {
-    public int Gold { get; private set; }
     public Farm Farm { get => _farm; }
     public Inventory Inventory { get => _inventory; }
 
@@ -18,18 +17,21 @@ public class FarmGamePresenter
         _farm = new Farm();
         _inventory = new Inventory();
 
+        _farm.GoldChanged += OnGoldChanged;
         _farm.plotList.CollectionChanged += OnPlotListChanged;
         _inventory.seedList.CollectionChanged += OnInventorySeedChanged;
 
+        ShowUpdatedGoldAndEquipLevel();
         ShowUpdatePlots();
         ShowUpdatedInventorySeed();
 
         ConfigManager.Reload();
-        Gold = 0;
+        _farm.Gold = 0;
     }
 
     public void BuyCommoditySeed(CommodityType type)
     {
+        _farm.Gold -= 500;
         _inventory.AddSeed(type);
     }
 
@@ -58,20 +60,16 @@ public class FarmGamePresenter
 
     public void BuyFarmPlot()
     {
-        Gold -= 500;
+        _farm.Gold -= 500;
 
         FarmPlot newPlot = _farm.AddPlot();
 
         newPlot.FarmPlotChanged += OnPlotChanged;
-
-        _view.UpdatedGold(Gold);
     }
 
     public void HireWorker()
     {
-        Gold -= 500;
-
-        _view.UpdatedGold(Gold);
+        _farm.Gold -= 500;
     }
 
     public void GameUpdate(float deltaTime)
@@ -80,6 +78,11 @@ public class FarmGamePresenter
         {
             plot.GameUpdate(deltaTime);
         }
+    }
+
+    private void OnGoldChanged()
+    {
+        ShowUpdatedGoldAndEquipLevel();
     }
 
     private void OnPlotChanged()
@@ -99,13 +102,18 @@ public class FarmGamePresenter
         ShowUpdatedInventorySeed();
     }
 
-    private void ShowUpdatedInventorySeed()
+    private void ShowUpdatedGoldAndEquipLevel()
     {
-        _view.ShowUpdatedInventorySeed(_inventory.seedList.ToList());
+        _view.ShowUpdatedGoldAndEquipLevel(_farm.Gold, 1);
     }
 
     private void ShowUpdatePlots()
     {
         _view.ShowUpdatedPlots(_farm.plotList.ToList());
+    }
+
+    private void ShowUpdatedInventorySeed()
+    {
+        _view.ShowUpdatedInventorySeed(_inventory.seedList.ToList());
     }
 }

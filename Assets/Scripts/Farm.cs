@@ -1,9 +1,23 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System;
 
 public class Farm
 {
+    public event Action GoldChanged;
+
+    public int Gold
+    {
+        get => _gold;
+        set
+        {
+            _gold = value;
+            GoldChanged?.Invoke();
+        }
+    }
     public ObservableCollection<FarmPlot> plotList;
+
+    int _gold;
 
     public Farm()
     {

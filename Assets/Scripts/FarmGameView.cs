@@ -13,6 +13,7 @@ public class FarmGameView : MonoBehaviour
     [SerializeField] private TMP_Text _farmPlotText;
 
     [Header("Resource Panel")]
+    [SerializeField] private TMP_Text _farmInfoText;
     [SerializeField] private TMP_Text _plotText;
     [SerializeField] private TMP_Text _inventorySeedText;
 
@@ -41,9 +42,14 @@ public class FarmGameView : MonoBehaviour
         _presenter.GameUpdate(Time.deltaTime);
     }
 
-    public virtual void UpdatedGold(int currentGold)
+    public virtual void ShowUpdatedGoldAndEquipLevel(int gold, int equipLv)
     {
-
+        string tmp = string.Format(
+                "\n\nFarm\n\n" +
+                "Gold: {0} \n" +
+                "Equip Lv: {1}",
+                gold, equipLv);
+        _farmInfoText.text = tmp;
     }
 
     public virtual void ShowUpdatedPlots(List<FarmPlot> farmPlots)

@@ -17,7 +17,7 @@ public partial class FarmGamePresenterTests
     public void WhenBuyFarmPlotGoldDecrease()
     {
         GivenAFarmGame();
-        int initGold = _presenter.Gold;
+        int initGold = _presenter.Farm.Gold;
 
         WhenBuyFarmPlot();
 
@@ -107,7 +107,7 @@ public partial class FarmGamePresenterTests
     public void WhenHireWorkerGoldDecrease()
     {
         GivenAFarmGame();
-        int initGold = _presenter.Gold;
+        int initGold = _presenter.Farm.Gold;
 
         WhenHireWorker();
 

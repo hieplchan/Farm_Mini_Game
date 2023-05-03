@@ -42,14 +42,14 @@ public partial class FarmGamePresenterTests
 
     private void ThenGoldDecrease(int initGold)
     {
-        Assert.Less(_presenter.Gold, initGold);
+        Assert.Less(_presenter.Farm.Gold, initGold);
     }
     #endregion
 
     #region Then
     private void ThenShowsUpdatedGold()
     {
-        _view.Received(1).UpdatedGold(_presenter.Gold);
+        _view.Received(1).ShowUpdatedGoldAndEquipLevel(_presenter.Farm.Gold, 1);
     }
 
     private void ThenShowsUpdatedPlotList()

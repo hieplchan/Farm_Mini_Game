@@ -6819,7 +6819,7 @@ MonoBehaviour:
 
     Gold: 999999
 
-    Equip: 500'
+    Equip Lv: 500'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7343,6 +7343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _farmPlotText: {fileID: 1445953078}
+  _farmInfoText: {fileID: 1955740963}
   _plotText: {fileID: 1292030883}
   _inventorySeedText: {fileID: 398469525}
 --- !u!1 &2002159820
