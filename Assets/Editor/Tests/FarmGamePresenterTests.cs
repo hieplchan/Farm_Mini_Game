@@ -67,6 +67,27 @@ public partial class FarmGamePresenterTests
 
         ThenShowUpdatedInventorySeed();
     }
+
+    [Test]
+    public void WhenBuyCommoditySeedGoldDecrease()
+    {
+        GivenAFarmGame();
+        int initGold = _presenter.Farm.Gold;
+
+        WhenBuyRandomCommoditySeed();
+
+        ThenGoldDecrease(initGold);
+    }
+
+    [Test]
+    public void WhenBuyCommoditySeedSuccessShowsUpdatedGold()
+    {
+        GivenAFarmGame();
+
+        WhenBuyRandomCommoditySeed();
+
+        ThenShowsUpdatedGold();
+    }
     #endregion
 
     #region Plant Commodity
