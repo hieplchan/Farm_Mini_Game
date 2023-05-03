@@ -18,7 +18,7 @@ public class FarmGamePresenter
         _inventory = new Inventory();
 
         _farm.GoldChanged += OnGoldChanged;
-        _farm.plotList.CollectionChanged += OnPlotListChanged;
+        _farm.FarmPlotChanged += OnPlotListChanged;
         _inventory.SeedsChanged += OnInventorySeedChanged;
 
         ShowUpdatedGoldAndEquipLevel();
@@ -62,9 +62,7 @@ public class FarmGamePresenter
     {
         _farm.Gold -= 500;
 
-        FarmPlot newPlot = _farm.AddPlot();
-
-        newPlot.FarmPlotChanged += OnPlotChanged;
+        _farm.AddPlot();
     }
 
     public void HireWorker()
@@ -74,7 +72,7 @@ public class FarmGamePresenter
 
     public void GameUpdate(float deltaTime)
     {
-        foreach (FarmPlot plot in _farm.plotList)
+        foreach (FarmPlot plot in _farm.Plots)
         {
             plot.GameUpdate(deltaTime);
         }
@@ -90,11 +88,9 @@ public class FarmGamePresenter
         ShowUpdatePlots();
     }
 
-    private void OnPlotListChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void OnPlotListChanged()
     {
         ShowUpdatePlots();
-        MLog.Log("FarmGamePresenter", 
-            "UpdatedPlots plot count: " + _farm.plotList.Count);
     }
 
     private void OnInventorySeedChanged()
@@ -109,7 +105,7 @@ public class FarmGamePresenter
 
     private void ShowUpdatePlots()
     {
-        _view.ShowUpdatedPlots(_farm.plotList.ToList());
+        _view.ShowUpdatedPlots(_farm.Plots);
     }
 
     private void ShowUpdatedInventorySeed()

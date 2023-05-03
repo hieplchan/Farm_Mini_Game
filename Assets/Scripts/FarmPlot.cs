@@ -2,7 +2,7 @@ using System;
 
 public class FarmPlot
 {
-    public event Action FarmPlotChanged;
+    public event Action PlotChanged;
     public bool HasCommodity { get => _commodity != null; }
     public CommodityType CommodityType { get => _commodity.Type; }
     public int AvailableProduct { get => _availableProduct; }
@@ -45,6 +45,6 @@ public class FarmPlot
 
     private void NotifyChange()
     {
-        FarmPlotChanged?.Invoke();
+        PlotChanged?.Invoke();
     }
 }

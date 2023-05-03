@@ -49,11 +49,11 @@ public partial class FarmGamePresenterTests
     public void WhenBuyFarmPlotPlotListCountIncrease()
     {
         GivenAFarmGame();
-        int plotCount = _presenter.Farm.plotList.Count;
+        int plotCount = _presenter.Farm.Plots.Count;
 
         WhenBuyFarmPlot();
 
-        Assert.Less(plotCount, _presenter.Farm.plotList.Count);
+        Assert.Less(plotCount, _presenter.Farm.Plots.Count);
     }
     #endregion
 

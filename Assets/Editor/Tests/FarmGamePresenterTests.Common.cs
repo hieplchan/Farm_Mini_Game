@@ -67,8 +67,8 @@ public partial class FarmGamePresenterTests
 
     private void ThenShowsUpdatedPlotList()
     {
-        _view.Received(1).ShowUpdatedPlots(Arg.Is<List<FarmPlot>>(
-            value => _presenter.Farm.plotList.ToList().SequenceEqual(value)));
+        _view.Received().ShowUpdatedPlots(Arg.Is<List<FarmPlot>>(
+            value => _presenter.Farm.Plots.SequenceEqual(value)));
     }
 
     private void ThenShowUpdatedInventorySeed()
