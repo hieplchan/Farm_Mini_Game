@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using System;
 
 public class Inventory
@@ -53,7 +52,7 @@ public class Inventory
         NotifyProductsChanged();
     }
 
-    public int GetAllProduct(CommodityType type)
+    public int GetAllProduct(CommodityProductType type)
     {
         int productCount = _products[(int)type];
         _products[(int)type] = 0;

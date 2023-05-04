@@ -25,17 +25,21 @@ public class FarmGameView : MonoBehaviour
 
     public void BuyCommoditySeed(int type)
     {
-        _presenter.BuyCommoditySeed((CommodityType)type);
+        _presenter.BuyCommoditySeed(type);
     }
 
     public void PlantCommodity(int type)
     {
-        _presenter.PlantCommodity((CommodityType)type);
+        _presenter.PlantCommodity(type);
     }
 
     public void CollectCommodityProduct(int type)
     {
-        _presenter.CollectCommodityProduct((CommodityType)type);
+        _presenter.CollectCommodityProduct(type);
+    }
+    public void SellCommodityProduct(int type)
+    {
+        _presenter.SellCommodityProduct(type);
     }
 
     public void BuyFarmPlot()

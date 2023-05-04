@@ -34,23 +34,21 @@ public partial class FarmGamePresenterTests
 
     private void WhenBuyRandomCommoditySeed()
     {
-        _presenter.BuyCommoditySeed(
-            (CommodityType)_rand.Next(0, _commodityTypeCount - 1));
+        _presenter.BuyCommoditySeed(_rand.Next(0, _commodityTypeCount - 1));
     }
 
     private void WhenPlantRandomCommodity()
     {
-        CommodityType type = (CommodityType)_rand.Next(0, _commodityTypeCount);
-        _presenter.PlantCommodity(type);
+        _presenter.PlantCommodity(_rand.Next(0, _commodityTypeCount));
     }
 
     private void WhenPlantRandomCommodityWaitForProduct()
     {
-        FarmPlot plot = _presenter.BuyFarmPlot();
-        CommodityType type = (CommodityType)_rand.Next(0, _commodityTypeCount);
+        _presenter.BuyFarmPlot();
+        int type = _rand.Next(0, _commodityTypeCount);
         _presenter.PlantCommodity(type);
         // Wait commodity produce product
-        while (plot.Commodity.AvailableProduct == 0)
+        while (_presenter.Farm.Plots[0].Commodity.AvailableProduct == 0)
             _presenter.GameUpdate(1);
         _presenter.CollectCommodityProduct(type);
     }

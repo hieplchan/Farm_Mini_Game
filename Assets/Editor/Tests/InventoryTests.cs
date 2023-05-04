@@ -64,7 +64,7 @@ public class InventoryTests
     public void WhenGetAllProductQuantityEqualZero()
     {
         GivenHaveProductInventory();
-        CommodityType type = (CommodityType)_rand.Next(0, _commodityTypeCount - 1);
+        CommodityProductType type = (CommodityProductType)_rand.Next(0, _commodityTypeCount - 1);
 
         int collectedProduct = _inventory.GetAllProduct(type);
 
@@ -75,7 +75,7 @@ public class InventoryTests
     public void WhenGetAllProductReturnCorrectProductCount()
     {
         GivenHaveProductInventory();
-        CommodityType type = (CommodityType)_rand.Next(0, _commodityTypeCount - 1);
+        CommodityProductType type = (CommodityProductType)_rand.Next(0, _commodityTypeCount - 1);
         int initQuantity = _inventory.Products[(int)type];
 
         int collectedProduct = _inventory.GetAllProduct(type);

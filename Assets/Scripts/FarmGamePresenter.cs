@@ -10,12 +10,14 @@ public class FarmGamePresenter
     private FarmGameView _view;
     private Farm _farm;
     private Inventory _inventory;
+    private Store _store;
 
     public FarmGamePresenter(FarmGameView view)
     {
         _view = view;
         _farm = new Farm();
         _inventory = new Inventory();
+        _store = new Store();
 
         _farm.GoldChanged += OnGoldChanged;
         _farm.FarmPlotChanged += OnFarmPlotsChanged;
@@ -28,21 +30,30 @@ public class FarmGamePresenter
         ShowUpdatedInventoryProducts();
 
         ConfigManager.Reload();
-        _farm.Gold = 0;
+        _farm.Gold = 100000;
     }
 
-    public void BuyCommoditySeed(CommodityType type)
+    public void BuyCommoditySeed(int type)
     {
-        _farm.Gold -= 500;
-        _inventory.AddSeed(type);
+        CommodityType seedType = (CommodityType)type;
+        if (_store.BuyCommoditySeed(seedType, 1, _farm.Gold, out int neededGold))
+        {
+            _farm.Gold -= neededGold;
+            _inventory.AddSeed(seedType);
+        }
+        else
+        {
+            MLog.Log("FarmGamePresenter",
+                "BuyCommoditySeed: not have enough money");
+        }
     }
 
-    public void PlantCommodity(CommodityType type)
+    public void PlantCommodity(int type)
     {
         FarmPlot freePlot = _farm.GetFreePlot();
         if (freePlot != null)
         {
-            Commodity seed = _inventory.GetSeed(type);
+            Commodity seed = _inventory.GetSeed((CommodityType)type);
             if (seed != null)
             {
                 freePlot.Plant(seed);
@@ -50,7 +61,7 @@ public class FarmGamePresenter
             else
             {
                 MLog.Log("FarmGamePresenter",
-                    string.Format("PlantCommodity: No {0}, please buy", type.ToString()));
+                    string.Format("PlantCommodity: No {0}, please buy", ((CommodityType)type).ToString()));
             }
         }
         else
@@ -60,22 +71,37 @@ public class FarmGamePresenter
         }
     }
 
-    public void CollectCommodityProduct(CommodityType type)
+    public void CollectCommodityProduct(int type)
     {
         foreach (FarmPlot plot in _farm.Plots)
         {
             if (plot.HasCommodity)
-                if (plot.Commodity.Type == type &&
+                if (plot.Commodity.Type == (CommodityType)type &&
                     plot.Commodity.AvailableProduct > 0)
-                    _inventory.AddProduct(type, plot.Commodity.Harvest());
+                    _inventory.AddProduct((CommodityType)type, 
+                        plot.Commodity.Harvest());
         }
     }
 
-    public FarmPlot BuyFarmPlot()
+    public void SellCommodityProduct(int type)
     {
-        _farm.Gold -= 500;
+        CommodityProductType productType = (CommodityProductType)type;
+        _farm.Gold += _store.SellCommodityProduct(productType, 
+            _inventory.GetAllProduct(productType));
+    }
 
-        return _farm.AddPlot();
+    public void BuyFarmPlot()
+    {
+        if (_store.BuyFarmPlot(1, _farm.Gold, out int neededGold)) 
+        {
+            _farm.Gold -= neededGold;
+            _farm.AddPlot();
+        } 
+        else
+        {
+            MLog.Log("FarmGamePresenter",
+                    "BuyFarmPlot: not have enough money");
+        }
     }
 
     public void HireWorker()

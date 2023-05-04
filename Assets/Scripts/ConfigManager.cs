@@ -1,3 +1,5 @@
+using System;
+
 public class CommodityConfig
 {
     public int productCycleTime;
@@ -14,12 +16,29 @@ public class CommodityConfig
     }
 }
 
+public class StoreConfig
+{
+    public int farmPlotPrice;
+    public int[] seedPrices;
+    public int[] productPrices;
+
+    public StoreConfig(int commodityTypeCount)
+    {
+        seedPrices = new int[commodityTypeCount];
+        productPrices = new int[commodityTypeCount];
+    }
+}
+
 public static class ConfigManager
 {
+    public static int commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
+
     public static CommodityConfig strawberry = new CommodityConfig(1, 1, 1, 100);
     public static CommodityConfig tomato = new CommodityConfig(1, 1, 1, 100);
     public static CommodityConfig blueberry = new CommodityConfig(1, 1, 1, 100);
     public static CommodityConfig cow = new CommodityConfig(1, 1, 1, 100);
+
+    public static StoreConfig storeConfig = new StoreConfig(commodityTypeCount);
 
     public static void Reload()
     {
@@ -42,6 +61,19 @@ public static class ConfigManager
         cow.productCycleNum = 5;
         cow.dyingTime = 3;
         cow.productivity = 100;
+
+        // store config
+        storeConfig.farmPlotPrice = 500;
+
+        storeConfig.seedPrices[(int)CommodityType.Strawberry] = 200;
+        storeConfig.seedPrices[(int)CommodityType.Tomato] = 300;
+        storeConfig.seedPrices[(int)CommodityType.Blueberry] = 400;
+        storeConfig.seedPrices[(int)CommodityType.Cow] = 500;
+
+        storeConfig.productPrices[(int)CommodityProductType.Strawberry] = 600;
+        storeConfig.productPrices[(int)CommodityProductType.Tomato] = 700;
+        storeConfig.productPrices[(int)CommodityProductType.Blueberry] = 800;
+        storeConfig.productPrices[(int)CommodityProductType.Milk] = 900;
     }
 
     public static CommodityConfig GetCommodityConfig(CommodityType type)
@@ -59,5 +91,38 @@ public static class ConfigManager
         }
         MLog.LogError("Commodity", "Not support commodity type: " + type);
         return null;
+    }
+
+    public static int GetStoreFarmPlotPrice()
+    {
+        return storeConfig.farmPlotPrice;
+    }
+
+    public static int GetStoreSeedPrice(CommodityType type)
+    {
+        if ((int)type >= commodityTypeCount)
+        {
+            MLog.LogError("ConfigManager", 
+                "GetStoreSeedPrice wrong seed type: " + (int)type);
+            return 0;
+        }
+        else
+        {
+            return storeConfig.seedPrices[(int)type];
+        }
+    }
+
+    public static int GetStoreProductPrice(CommodityProductType type)
+    {
+        if ((int)type >= commodityTypeCount)
+        {
+            MLog.LogError("ConfigManager", 
+                "GetStoreProductPrice wrong product type: " + (int)type);
+            return 0;
+        }
+        else
+        {
+            return storeConfig.productPrices[(int)type];
+        }
     }
 }
