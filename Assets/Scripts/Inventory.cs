@@ -7,16 +7,19 @@ public class Inventory
     public int[] Seeds { get => _seeds; }
     private int[] _seeds;
 
+    public event Action ProductsChanged;
+    public int[] Products { get => _products; }
+    private int[] _products;
+
     public Inventory()
     {
         int commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
 
         _seeds = new int[commodityTypeCount];
+        Array.Fill(_seeds, 0);
 
-        for (int i = 0; i < commodityTypeCount; i++)
-        {
-            _seeds[i] = 0;
-        }
+        _products = new int[commodityTypeCount];
+        Array.Fill(_products, 0);
     }
 
     public void AddSeed(CommodityType type, int quantity = 1)
@@ -44,8 +47,27 @@ public class Inventory
         }
     }
 
+    public void AddProduct(CommodityType type, int quantity = 1)
+    {
+        _products[(int)type] += quantity;
+        NotifyProductsChanged();
+    }
+
+    public int GetAllProduct(CommodityType type)
+    {
+        int productCount = _products[(int)type];
+        _products[(int)type] = 0;
+        NotifyProductsChanged();
+        return productCount;
+    }
+
     private void NotifySeedsChange()
     {
         SeedsChanged?.Invoke();
+    }
+
+    private void NotifyProductsChanged()
+    {
+        ProductsChanged?.Invoke();
     }
 }

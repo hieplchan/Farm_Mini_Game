@@ -65,7 +65,7 @@ public partial class FarmGamePresenterTests
 
         WhenBuyRandomCommoditySeed();
 
-        ThenShowUpdatedInventorySeed();
+        ThenShowUpdatedInventorySeeds();
     }
 
     [Test]

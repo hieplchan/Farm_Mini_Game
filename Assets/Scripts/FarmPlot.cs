@@ -4,6 +4,7 @@ public class FarmPlot
 {
     public event Action PlotChanged;
     public bool HasCommodity { get => _commodity != null; }
+    public Commodity Commodity { get => _commodity; }
     public CommodityType CommodityType { get => _commodity.Type; }
     public int AvailableProduct { get => _availableProduct; }
     public float TimeLeftToHarvest { get => _commodity.TimeLeftToHarvest; }

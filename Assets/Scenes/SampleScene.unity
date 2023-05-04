@@ -1867,7 +1867,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 535477336}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1983731632}
+        m_TargetAssemblyTypeName: FarmGameView, Assembly-CSharp
+        m_MethodName: CollectCommodityProduct
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &535477336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2792,7 +2804,7 @@ GameObject:
   - component: {fileID: 843635851}
   - component: {fileID: 843635850}
   m_Layer: 5
-  m_Name: Sell (1)
+  m_Name: Sell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3742,7 +3754,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 951019441}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1983731632}
+        m_TargetAssemblyTypeName: FarmGameView, Assembly-CSharp
+        m_MethodName: CollectCommodityProduct
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &951019441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4228,7 +4252,7 @@ GameObject:
   - component: {fileID: 1105533625}
   - component: {fileID: 1105533624}
   m_Layer: 5
-  m_Name: Sell (1)
+  m_Name: Sell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4555,7 +4579,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1131438267}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1983731632}
+        m_TargetAssemblyTypeName: FarmGameView, Assembly-CSharp
+        m_MethodName: CollectCommodityProduct
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1131438267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5020,7 +5056,7 @@ GameObject:
   - component: {fileID: 1320950587}
   - component: {fileID: 1320950586}
   m_Layer: 5
-  m_Name: Sell (1)
+  m_Name: Sell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6979,7 +7015,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1958230484}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1983731632}
+        m_TargetAssemblyTypeName: FarmGameView, Assembly-CSharp
+        m_MethodName: CollectCommodityProduct
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1958230484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7346,6 +7394,7 @@ MonoBehaviour:
   _farmInfoText: {fileID: 1955740963}
   _plotText: {fileID: 1292030883}
   _inventorySeedText: {fileID: 398469525}
+  _inventoryProductText: {fileID: 1823716221}
 --- !u!1 &2002159820
 GameObject:
   m_ObjectHideFlags: 0
@@ -7493,7 +7542,7 @@ GameObject:
   - component: {fileID: 2018593279}
   - component: {fileID: 2018593278}
   m_Layer: 5
-  m_Name: Sell (1)
+  m_Name: Sell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

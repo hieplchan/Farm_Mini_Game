@@ -16,15 +16,16 @@ public class FarmGameView : MonoBehaviour
     [SerializeField] private TMP_Text _farmInfoText;
     [SerializeField] private TMP_Text _plotText;
     [SerializeField] private TMP_Text _inventorySeedText;
+    [SerializeField] private TMP_Text _inventoryProductText;
 
     private void Start()
     {
         _presenter = new FarmGamePresenter(this);
     }
 
-    public void BuyFarmPlot()
+    public void BuyCommoditySeed(int type)
     {
-        _presenter.BuyFarmPlot();
+        _presenter.BuyCommoditySeed((CommodityType)type);
     }
 
     public void PlantCommodity(int type)
@@ -32,9 +33,14 @@ public class FarmGameView : MonoBehaviour
         _presenter.PlantCommodity((CommodityType)type);
     }
 
-    public void BuyCommoditySeed(int type)
+    public void CollectCommodityProduct(int type)
     {
-        _presenter.BuyCommoditySeed((CommodityType)type);
+        _presenter.CollectCommodityProduct((CommodityType)type);
+    }
+
+    public void BuyFarmPlot()
+    {
+        _presenter.BuyFarmPlot();
     }
 
     private void Update()
@@ -93,7 +99,7 @@ public class FarmGameView : MonoBehaviour
         _plotText.text = resourcePanelString;
     }
 
-    public virtual void ShowUpdatedInventorySeed(int[] seeds)
+    public virtual void ShowUpdatedInventorySeeds(int[] seeds)
     {
         string tmp = "\n\nSeed\n";
         for (int i = 0; i < seeds.Length; i++)
@@ -102,5 +108,16 @@ public class FarmGameView : MonoBehaviour
                 ((CommodityType)i).ToString(), seeds[i]);
         }
         _inventorySeedText.text = tmp;
+    }
+
+    public virtual void ShowUpdatedInventoryProducts(int[] products)
+    {
+        string tmp = "\n\nCollected\n";
+        for (int i = 0; i < products.Length; i++)
+        {
+            tmp += string.Format("{0}: {1}\n",
+                ((CommodityType)i).ToString(), products[i]);
+        }
+        _inventoryProductText.text = tmp;
     }
 }

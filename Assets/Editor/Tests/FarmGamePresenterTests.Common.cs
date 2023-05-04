@@ -71,9 +71,9 @@ public partial class FarmGamePresenterTests
             value => _presenter.Farm.Plots.SequenceEqual(value)));
     }
 
-    private void ThenShowUpdatedInventorySeed()
+    private void ThenShowUpdatedInventorySeeds()
     {
-        _view.Received().ShowUpdatedInventorySeed(Arg.Is<int[]>(
+        _view.Received().ShowUpdatedInventorySeeds(Arg.Is<int[]>(
             value => _presenter.Inventory.Seeds.SequenceEqual(value)));
     }
 

@@ -20,10 +20,11 @@ public class FarmGamePresenter
         _farm.GoldChanged += OnGoldChanged;
         _farm.FarmPlotChanged += OnPlotListChanged;
         _inventory.SeedsChanged += OnInventorySeedChanged;
+        _inventory.ProductsChanged += OnProductsChanged;
 
         ShowUpdatedGoldAndEquipLevel();
         ShowUpdatePlots();
-        ShowUpdatedInventorySeed();
+        ShowUpdatedInventorySeeds();
 
         ConfigManager.Reload();
         _farm.Gold = 0;
@@ -55,6 +56,17 @@ public class FarmGamePresenter
         {
             MLog.Log("FarmGamePresenter",
                 "PlantCommodity: No free plot, please buy");
+        }
+    }
+
+    public void CollectCommodityProduct(CommodityType type)
+    {
+        foreach (FarmPlot plot in _farm.Plots)
+        {
+            if (plot.HasCommodity)
+                if (plot.Commodity.Type == type &&
+                    plot.Commodity.AvailableProduct > 0)
+                    _inventory.AddProduct(type, plot.Commodity.Harvest());
         }
     }
 
@@ -95,7 +107,12 @@ public class FarmGamePresenter
 
     private void OnInventorySeedChanged()
     {
-        ShowUpdatedInventorySeed();
+        ShowUpdatedInventorySeeds();
+    }
+
+    private void OnProductsChanged()
+    {
+        ShowUpdatedInventoryProducts();
     }
 
     private void ShowUpdatedGoldAndEquipLevel()
@@ -108,8 +125,13 @@ public class FarmGamePresenter
         _view.ShowUpdatedPlots(_farm.Plots);
     }
 
-    private void ShowUpdatedInventorySeed()
+    private void ShowUpdatedInventorySeeds()
     {
-        _view.ShowUpdatedInventorySeed(_inventory.Seeds);
+        _view.ShowUpdatedInventorySeeds(_inventory.Seeds);
+    }
+
+    private void ShowUpdatedInventoryProducts()
+    {
+        _view.ShowUpdatedInventoryProducts(_inventory.Products);
     }
 }
