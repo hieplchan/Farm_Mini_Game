@@ -30,7 +30,22 @@ public class FarmGamePresenter
         ShowUpdatedInventorySeeds();
         ShowUpdatedInventoryProducts();
 
-        _farm.Gold = 100000;
+        ApplyNewGameConfig();
+    }
+
+    private void ApplyNewGameConfig()
+    {
+        NewGameConfig config = ConfigManager.GetNewGameConfig();
+
+        _farm.Gold = config.initGold;
+        for (int i = 0; i < config.initFarmPlot; i++)
+        {
+            _farm.AddPlot();
+        }
+        for (int i = 0; i < config.initSeeds.Length; i++)
+        {
+            _inventory.AddSeed((CommodityType)i, config.initSeeds[i]);
+        }
     }
 
     public void BuyCommoditySeed(int type)

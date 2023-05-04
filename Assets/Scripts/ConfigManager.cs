@@ -1,5 +1,12 @@
 using System;
 
+public class NewGameConfig
+{
+    public int initGold;
+    public int initFarmPlot;
+    public int[] initSeeds;
+}
+
 public class CommodityConfig
 {
     public int productCycleTime;
@@ -33,12 +40,16 @@ public static class ConfigManager
 {
     public static int commodityTypeCount;
 
+    public static NewGameConfig newGameConfig;
     public static CommodityConfig[] commodityConfigs;
     public static StoreConfig storeConfig;
 
     static ConfigManager()
     {
         commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
+
+        newGameConfig = new NewGameConfig();
+        newGameConfig.initSeeds = new int[commodityTypeCount];
 
         commodityConfigs = new CommodityConfig[commodityTypeCount];
         for (int i = 0; i < commodityTypeCount; i++)
@@ -53,6 +64,14 @@ public static class ConfigManager
 
     public static void Reload()
     {
+        // New Game
+        newGameConfig.initGold = 9999;
+        newGameConfig.initFarmPlot = 6;
+        newGameConfig.initSeeds[(int)CommodityType.Strawberry] = 2;
+        newGameConfig.initSeeds[(int)CommodityType.Tomato] = 3;
+        newGameConfig.initSeeds[(int)CommodityType.Blueberry] = 4;
+        newGameConfig.initSeeds[(int)CommodityType.Cow] = 5;
+
         // Commodity
         commodityConfigs[(int)CommodityType.Strawberry].productCycleTime = 1;
         commodityConfigs[(int)CommodityType.Strawberry].productCycleNum = 2;
@@ -86,6 +105,11 @@ public static class ConfigManager
         storeConfig.productPrices[(int)CommodityProductType.Tomato] = 700;
         storeConfig.productPrices[(int)CommodityProductType.Blueberry] = 800;
         storeConfig.productPrices[(int)CommodityProductType.Milk] = 900;
+    }
+    
+    public static NewGameConfig GetNewGameConfig()
+    {
+        return newGameConfig;
     }
 
     public static CommodityConfig GetCommodityConfig(CommodityType type)
