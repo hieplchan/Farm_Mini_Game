@@ -70,7 +70,7 @@ public class FarmGameView : MonoBehaviour
 
         for (int i = 0; i < farmPlots.Count; i++)
         {
-            string tmp = string.Format("Plot {0}: ", i);
+            string tmp = string.Format("Plot {0}: ", i + 1);
             if (farmPlots[i].HasCommodity)
             {
                 usedPlotCount++;
