@@ -30,7 +30,6 @@ public class FarmGamePresenter
         ShowUpdatedInventorySeeds();
         ShowUpdatedInventoryProducts();
 
-        ConfigManager.Reload();
         _farm.Gold = 100000;
     }
 

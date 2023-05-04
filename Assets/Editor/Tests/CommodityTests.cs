@@ -10,6 +10,7 @@ public class CommodityTests
     private Commodity _commodity;
     private CommodityConfig _config;
     private Random _rand;
+    private int _commodityTypeCount;
 
     [Test]
     public void WhenNewCommodityStateEqualSeed()
@@ -114,21 +115,10 @@ public class CommodityTests
     private void GivenRandomCommodity()
     {
         _rand = new Random();
-
-        _config = new CommodityConfig(
-            productCycleTime: _rand.Next(1, 100),
-            productCycleNum: _rand.Next(1, 100),
-            dyingTime: _rand.Next(1, 100),
-            productivity: 100 + _rand.Next(1, 100) * 10);
-
-        MLog.Log("CommodityTests _config",
-            "\n productCycleTime: " + _config.productCycleTime +
-            "\n productCycleNum: " + _config.productCycleNum +
-            "\n dyingTime: " + _config.dyingTime +
-            "\n productivity: " + _config.productivity);
-
-        _commodity = new Commodity(_config,
-            (CommodityType)_rand.Next(0, Enum.GetNames(typeof(CommodityType)).Length));
+        _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
+        CommodityType type = (CommodityType)_rand.Next(0, _commodityTypeCount - 1);
+        _config = ConfigManager.GetCommodityConfig(type);
+        _commodity = new Commodity(type);
     }
 
     private void Plant()

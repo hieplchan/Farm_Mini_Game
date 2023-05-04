@@ -31,8 +31,7 @@ public class Inventory
     {
         if (_seeds[(int)type] > 0)
         {
-            Commodity seed = new Commodity(
-                ConfigManager.GetCommodityConfig(type), type);
+            Commodity seed = new Commodity(type);
             _seeds[(int)type] -= 1;
             NotifySeedsChange();
             return seed;

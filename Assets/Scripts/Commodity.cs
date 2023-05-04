@@ -31,23 +31,23 @@ public class Commodity
     public int AvailableProduct => _availableProduct;
 
     FarmPlot _plot;
-    CommodityConfig _config;
+    int _productCycleNum;
     int _availableProduct, _harvestedProduct, _totalProduct;
     int _productCycleTime, _matureTime, _totalLifeTime;
     float _productivity;
-    CommodityState previousState;
 
-    public Commodity(CommodityConfig config, CommodityType type)
+    public Commodity(CommodityType type)
     {
-        _config = config;
         Type = type;
 
-        _productCycleTime = _config.productCycleTime.MinToSec();
-        _matureTime = _productCycleTime * _config.productCycleNum;
-        _totalLifeTime = _matureTime + _config.dyingTime.MinToSec();
+        CommodityConfig config = ConfigManager.GetCommodityConfig(Type);
+        _productCycleNum = config.productCycleNum;
+        _productCycleTime = config.productCycleTime.MinToSec();
+        _matureTime = _productCycleTime * _productCycleNum;
+        _totalLifeTime = _matureTime + config.dyingTime.MinToSec();
+        _productivity = config.productivity / 100f;
 
         _availableProduct = _harvestedProduct = _totalProduct = 0;
-        _productivity = _config.productivity / 100f;
 
         Age = 0f;
         State = CommodityState.Seed;
@@ -75,8 +75,6 @@ public class Commodity
             Dead();
             State = CommodityState.Dead;
         }
-
-        previousState = State;
     }
 
     private void Produce()
@@ -93,7 +91,7 @@ public class Commodity
     }
     private void CheckNewProduct()
     {
-        if (_totalProduct > _config.productCycleNum)
+        if (_totalProduct > _productCycleNum)
             return;
 
         if (Age > (_totalProduct + 1) * _productCycleTime)

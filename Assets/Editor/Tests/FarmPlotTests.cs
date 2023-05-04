@@ -11,6 +11,7 @@ public class FarmPlotTests
     private Commodity _commodity;
     private CommodityConfig _config;
     private Random _rand;
+    private int _commodityTypeCount;
 
     [Test]
     public void WhenNewPlotNotHaveCommodity()
@@ -57,27 +58,17 @@ public class FarmPlotTests
     private void GivenFarmPlot()
     {
         _plot = new FarmPlot();
+        _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
     }
 
 
     private void PlantRandomCommodity()
     {
         _rand = new Random();
+        CommodityType type = (CommodityType)_rand.Next(1, _commodityTypeCount - 1);
 
-        _config = new CommodityConfig(
-            productCycleTime: _rand.Next(1, 100),
-            productCycleNum: _rand.Next(1, 100),
-            dyingTime: _rand.Next(1, 100),
-            productivity: 100 + _rand.Next(1, 100) * 10);
-
-        MLog.Log("CommodityTests _config",
-            "\n productCycleTime: " + _config.productCycleTime +
-            "\n productCycleNum: " + _config.productCycleNum +
-            "\n dyingTime: " + _config.dyingTime +
-            "\n productivity: " + _config.productivity);
-
-        _commodity = new Commodity(_config,
-            (CommodityType)_rand.Next(0, Enum.GetNames(typeof(CommodityType)).Length));
+        _commodity = new Commodity(type);
+        _config = ConfigManager.GetCommodityConfig(type);
 
         _plot.Plant(_commodity);
     }
