@@ -6,6 +6,7 @@ public class FarmGamePresenter
 {
     public Farm Farm { get => _farm; }
     public Inventory Inventory { get => _inventory; }
+    public Store Store { get => _store; }
 
     private FarmGameView _view;
     private Farm _farm;

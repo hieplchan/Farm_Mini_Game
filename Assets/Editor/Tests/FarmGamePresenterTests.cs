@@ -14,20 +14,22 @@ public partial class FarmGamePresenterTests
 
     #region Buy Farm Plot
     [Test]
-    public void WhenBuyFarmPlotGoldDecrease()
+    public void WhenBuyFarmPlotGoldDecreaseCorrectAmount()
     {
-        GivenAFarmGame();
+        GivenAFarmGameWithMaxGold();
         int initGold = _presenter.Farm.Gold;
 
-        WhenBuyFarmPlot();
+        int quantity = _rand.Next(0, 100);
+        WhenBuyFarmPlot(quantity);
 
-        ThenGoldDecrease(initGold);
+        Assert.IsTrue(_presenter.Farm.Gold.Equals(initGold -
+            quantity * ConfigManager.GetStoreFarmPlotPrice()));
     }
 
     [Test]
     public void WhenBuyFarmPlotShowsUpdatedGold()
     {
-        GivenAFarmGame();
+        GivenAFarmGameWithMaxGold();
 
         WhenBuyFarmPlot();
 
@@ -37,7 +39,7 @@ public partial class FarmGamePresenterTests
     [Test]
     public void WhenBuyFarmPlotShowsUpdatedPlotList()
     {
-        GivenAFarmGame();
+        GivenAFarmGameWithMaxGold();
 
         WhenBuyFarmPlot();
 
@@ -47,7 +49,7 @@ public partial class FarmGamePresenterTests
     [Test]
     public void WhenBuyFarmPlotPlotListCountIncrease()
     {
-        GivenAFarmGame();
+        GivenAFarmGameWithMaxGold();
         int plotCount = _presenter.Farm.Plots.Count;
 
         WhenBuyFarmPlot();
@@ -60,7 +62,7 @@ public partial class FarmGamePresenterTests
     [Test]
     public void WhenBuyCommoditySeedSuccessShowUpdatedInventorySeeds()
     {
-        GivenAFarmGame();
+        GivenAFarmGameWithMaxGold();
 
         WhenBuyRandomCommoditySeed();
 
@@ -68,20 +70,22 @@ public partial class FarmGamePresenterTests
     }
 
     [Test]
-    public void WhenBuyCommoditySeedGoldDecrease()
+    public void WhenBuyCommoditySeedGoldDecreaseCorrectAmount()
     {
-        GivenAFarmGame();
+        GivenAFarmGameWithMaxGold();
         int initGold = _presenter.Farm.Gold;
 
-        WhenBuyRandomCommoditySeed();
+        int quantity = _rand.Next(0, 100);
+        CommodityType type = WhenBuyRandomCommoditySeed(quantity);
 
-        ThenGoldDecrease(initGold);
+        Assert.IsTrue(_presenter.Farm.Gold.Equals(initGold -
+            quantity * ConfigManager.GetStoreSeedPrice(type)));
     }
 
     [Test]
     public void WhenBuyCommoditySeedSuccessShowsUpdatedGold()
     {
-        GivenAFarmGame();
+        GivenAFarmGameWithMaxGold();
 
         WhenBuyRandomCommoditySeed();
 
@@ -109,7 +113,7 @@ public partial class FarmGamePresenterTests
     [Test]
     public void WhenPlantSuccessShowsUpdatedPlotList()
     {
-        GivenAFarmGame();
+        GivenAFarmGameWithMaxGold();
 
         // Buy some plot
         for (int i = 0; i < _rand.Next(1, 10); i++)
@@ -135,11 +139,48 @@ public partial class FarmGamePresenterTests
 
     #endregion
 
+    #region Sell Commodity Product
+    [Test]
+    public void WhenSellProductShowUpdatedInvetoryProducts()
+    {
+        GivenAFarmGameInventoryHaveProduct();
+
+        WhenSellRandomProduct();
+
+        ThenShowUpdatedInventoryProducts();
+    }
+
+    [Test]
+    public void WhenSellProductShowUpdatedGold()
+    {
+        GivenAFarmGameInventoryHaveProduct();
+
+        WhenSellRandomProduct();
+
+        ThenShowsUpdatedGold();
+    }
+
+    [Test]
+    public void WhenSellProductGoldIncreaseCorrectAmount()
+    {
+        GivenAFarmGameInventoryHaveProduct();
+        int initGold = _presenter.Farm.Gold;
+
+        CommodityProductType type =
+            (CommodityProductType)_rand.Next(1, _commodityTypeCount - 1);
+        int quantity = _presenter.Inventory.Products[(int)type];
+        _presenter.SellCommodityProduct((int)type);
+
+        Assert.IsTrue(_presenter.Farm.Gold == 
+            initGold + quantity * ConfigManager.GetStoreProductPrice(type));
+    }
+    #endregion
+
     #region Hire Worker
     [Test]
     public void WhenHireWorkerGoldDecrease()
     {
-        GivenAFarmGame();
+        GivenAFarmGameWithMaxGold();
         int initGold = _presenter.Farm.Gold;
 
         WhenHireWorker();
@@ -150,7 +191,7 @@ public partial class FarmGamePresenterTests
     [Test]
     public void WhenHireWorkerShowsUpdatedGold()
     {
-        GivenAFarmGame();
+        GivenAFarmGameWithMaxGold();
 
         WhenHireWorker();
 

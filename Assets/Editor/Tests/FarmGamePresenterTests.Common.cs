@@ -8,12 +8,13 @@ using System;
 public partial class FarmGamePresenterTests
 {
     #region Given
-    private void GivenAFarmGame()
+    private void GivenAFarmGameWithMaxGold()
     {
         _view = Substitute.For<FarmGameView>();
         _presenter = new FarmGamePresenter(_view);
         _rand = new Random();
         _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
+        _presenter.Farm.Gold = int.MaxValue;
     }
 
     private void GivenAFarmGameInventoryHaveSeed()
@@ -24,17 +25,30 @@ public partial class FarmGamePresenterTests
         _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
         Array.Fill(_presenter.Inventory.Seeds, _rand.Next(10, 100));
     }
+
+    private void GivenAFarmGameInventoryHaveProduct()
+    {
+        _view = Substitute.For<FarmGameView>();
+        _presenter = new FarmGamePresenter(_view);
+        _rand = new Random();
+        _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
+        Array.Fill(_presenter.Inventory.Products, _rand.Next(10, 100));
+    }
     #endregion
 
     #region When
-    private void WhenBuyFarmPlot()
+    private void WhenBuyFarmPlot(int quantity = 1)
     {
-        _presenter.BuyFarmPlot();
+        for (int i = 0; i < quantity; i++) 
+            _presenter.BuyFarmPlot();
     }
 
-    private void WhenBuyRandomCommoditySeed()
+    private CommodityType WhenBuyRandomCommoditySeed(int quantity = 1)
     {
-        _presenter.BuyCommoditySeed(_rand.Next(0, _commodityTypeCount - 1));
+        int type = _rand.Next(0, _commodityTypeCount - 1);
+        for (int i = 0; i < quantity; i++)
+            _presenter.BuyCommoditySeed(type);
+        return (CommodityType)type;
     }
 
     private void WhenPlantRandomCommodity()
@@ -51,6 +65,14 @@ public partial class FarmGamePresenterTests
         while (_presenter.Farm.Plots[0].Commodity.AvailableProduct == 0)
             _presenter.GameUpdate(1);
         _presenter.CollectCommodityProduct(type);
+    }
+
+    private void WhenSellRandomProduct()
+    {
+        int quantity = _rand.Next(10, 100);
+        CommodityProductType type =
+            (CommodityProductType)_rand.Next(1, _commodityTypeCount - 1);
+        int gold = _presenter.Store.SellCommodityProduct(type, quantity);
     }
 
     private void WhenHireWorker()
