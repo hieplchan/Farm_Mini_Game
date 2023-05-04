@@ -6,6 +6,14 @@ public enum CommodityType
     Cow
 }
 
+public enum CommodityProductType
+{
+    Strawberry,
+    Tomato,
+    Blueberry,
+    Milk
+}
+
 public enum CommodityState
 {
     Seed,

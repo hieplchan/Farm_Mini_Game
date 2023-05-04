@@ -18,13 +18,14 @@ public class FarmGamePresenter
         _inventory = new Inventory();
 
         _farm.GoldChanged += OnGoldChanged;
-        _farm.FarmPlotChanged += OnPlotListChanged;
-        _inventory.SeedsChanged += OnInventorySeedChanged;
-        _inventory.ProductsChanged += OnProductsChanged;
+        _farm.FarmPlotChanged += OnFarmPlotsChanged;
+        _inventory.SeedsChanged += OnInventorySeedsChanged;
+        _inventory.ProductsChanged += OnInventoryProductsChanged;
 
         ShowUpdatedGoldAndEquipLevel();
         ShowUpdatePlots();
         ShowUpdatedInventorySeeds();
+        ShowUpdatedInventoryProducts();
 
         ConfigManager.Reload();
         _farm.Gold = 0;
@@ -70,11 +71,11 @@ public class FarmGamePresenter
         }
     }
 
-    public void BuyFarmPlot()
+    public FarmPlot BuyFarmPlot()
     {
         _farm.Gold -= 500;
 
-        _farm.AddPlot();
+        return _farm.AddPlot();
     }
 
     public void HireWorker()
@@ -95,22 +96,17 @@ public class FarmGamePresenter
         ShowUpdatedGoldAndEquipLevel();
     }
 
-    private void OnPlotChanged()
+    private void OnFarmPlotsChanged()
     {
         ShowUpdatePlots();
     }
 
-    private void OnPlotListChanged()
-    {
-        ShowUpdatePlots();
-    }
-
-    private void OnInventorySeedChanged()
+    private void OnInventorySeedsChanged()
     {
         ShowUpdatedInventorySeeds();
     }
 
-    private void OnProductsChanged()
+    private void OnInventoryProductsChanged()
     {
         ShowUpdatedInventoryProducts();
     }

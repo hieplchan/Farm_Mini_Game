@@ -22,11 +22,7 @@ public partial class FarmGamePresenterTests
         _presenter = new FarmGamePresenter(_view);
         _rand = new Random();
         _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
-
-        for (int i = 0; i < _commodityTypeCount; i++)
-        {
-            _presenter.Inventory.Seeds[i] = _rand.Next(10, 100);
-        }
+        Array.Fill(_presenter.Inventory.Seeds, _rand.Next(10, 100));
     }
     #endregion
 
@@ -46,6 +42,17 @@ public partial class FarmGamePresenterTests
     {
         CommodityType type = (CommodityType)_rand.Next(0, _commodityTypeCount);
         _presenter.PlantCommodity(type);
+    }
+
+    private void WhenPlantRandomCommodityWaitForProduct()
+    {
+        FarmPlot plot = _presenter.BuyFarmPlot();
+        CommodityType type = (CommodityType)_rand.Next(0, _commodityTypeCount);
+        _presenter.PlantCommodity(type);
+        // Wait commodity produce product
+        while (plot.Commodity.AvailableProduct == 0)
+            _presenter.GameUpdate(1);
+        _presenter.CollectCommodityProduct(type);
     }
 
     private void WhenHireWorker()
@@ -77,5 +84,10 @@ public partial class FarmGamePresenterTests
             value => _presenter.Inventory.Seeds.SequenceEqual(value)));
     }
 
+    private void ThenShowUpdatedInventoryProducts()
+    {
+        _view.Received().ShowUpdatedInventoryProducts(Arg.Is<int[]>(
+            value => _presenter.Inventory.Products.SequenceEqual(value)));
+    }
     #endregion
 }

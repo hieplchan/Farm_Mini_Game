@@ -101,7 +101,7 @@ public class FarmGameView : MonoBehaviour
 
     public virtual void ShowUpdatedInventorySeeds(int[] seeds)
     {
-        string tmp = "\n\nSeed\n";
+        string tmp = "\n\nSeed\n\n";
         for (int i = 0; i < seeds.Length; i++)
         {
             tmp += string.Format("{0}: {1}\n",
@@ -112,11 +112,11 @@ public class FarmGameView : MonoBehaviour
 
     public virtual void ShowUpdatedInventoryProducts(int[] products)
     {
-        string tmp = "\n\nCollected\n";
+        string tmp = "\n\nCollected\n\n";
         for (int i = 0; i < products.Length; i++)
         {
             tmp += string.Format("{0}: {1}\n",
-                ((CommodityType)i).ToString(), products[i]);
+                ((CommodityProductType)i).ToString(), products[i]);
         }
         _inventoryProductText.text = tmp;
     }

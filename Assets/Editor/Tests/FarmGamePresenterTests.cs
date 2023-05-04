@@ -44,7 +44,6 @@ public partial class FarmGamePresenterTests
         ThenShowsUpdatedPlotList();
     }
 
-
     [Test]
     public void WhenBuyFarmPlotPlotListCountIncrease()
     {
@@ -59,7 +58,7 @@ public partial class FarmGamePresenterTests
 
     #region Buy Commodity Seed
     [Test]
-    public void WhenBuyCommoditySeedSuccessShowUpdatedInventorySeed()
+    public void WhenBuyCommoditySeedSuccessShowUpdatedInventorySeeds()
     {
         GivenAFarmGame();
 
@@ -123,6 +122,19 @@ public partial class FarmGamePresenterTests
     }
     #endregion
 
+    #region Collect Commodity Product
+    [Test]
+    public void WhenCollectProductShowUpdatedInvetoryProducts()
+    {
+        GivenAFarmGameInventoryHaveSeed();
+
+        WhenPlantRandomCommodityWaitForProduct();
+
+        ThenShowUpdatedInventoryProducts();
+    }
+
+    #endregion
+
     #region Hire Worker
     [Test]
     public void WhenHireWorkerGoldDecrease()
@@ -145,5 +157,4 @@ public partial class FarmGamePresenterTests
         ThenShowsUpdatedGold();
     }
     #endregion
-
 }
