@@ -68,7 +68,7 @@ public class FarmPlotTests
     }
 
     [Test]
-    public void WhenUpgradeEquipmentPlantProductivityIncrease()
+    public void WhenUpgradeEquipmentCommodityProductivityIncrease()
     {
         GivenFarmPlot();
 
@@ -89,11 +89,16 @@ public class FarmPlotTests
         float correctMatureDuration =
             config.productCycleTime.MinToSec() * config.productCycleNum / correctProductivity;
         float diff = MathF.Abs(actualMatureDuration - correctMatureDuration);
+        float originMatureDuration = config.productCycleTime.MinToSec() * config.productCycleNum;
 
         MLog.Log("FarmPlotTests", string.Format(
-            "WhenUpgradeEquipmentPlantProductivityIncrease : " +
-            "correctMatureDuration: {0} - actualDuration: {1} - abs {2}",
-            correctMatureDuration, actualMatureDuration, diff));
+            "WhenUpgradeEquipmentPlantProductivityIncrease : \n" +
+            "correctMatureDuration: {0} \n" +
+            "actualDuration: {1}\n" +
+            "abs: {2}\n" +
+            "originMatureDuration: {3}\n" +
+            "equipmentLv: {4}",
+            correctMatureDuration, actualMatureDuration, diff, originMatureDuration, equipmentLv));
         
         // Offset 5 sec
         Assert.Less(diff, 5);

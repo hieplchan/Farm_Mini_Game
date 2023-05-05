@@ -37,12 +37,6 @@ public partial class FarmGamePresenterTests
     #endregion
 
     #region When
-    private void WhenBuyFarmPlot(int quantity = 1)
-    {
-        for (int i = 0; i < quantity; i++) 
-            _presenter.BuyFarmPlot();
-    }
-
     private CommodityType WhenBuyRandomCommoditySeed(int quantity = 1)
     {
         int type = _rand.Next(0, _commodityTypeCount - 1);
@@ -75,19 +69,36 @@ public partial class FarmGamePresenterTests
         int gold = _presenter.Store.SellCommodityProduct(type, quantity);
     }
 
+    private void WhenBuyFarmPlot(int quantity = 1)
+    {
+        for (int i = 0; i < quantity; i++)
+            _presenter.BuyFarmPlot();
+    }
+
     private void WhenHireWorker()
     {
         _presenter.HireWorker();
     }
 
-    private void ThenGoldDecrease(int initGold)
+    private void UpgradeEquipment(int quantity = 1)
     {
-        Assert.Less(_presenter.Farm.Gold, initGold);
+        _presenter.UpgradeEquipment();
     }
     #endregion
 
     #region Then
+    private void ThenGoldDecrease(int initGold)
+    {
+        Assert.Less(_presenter.Farm.Gold, initGold);
+    }
+
     private void ThenShowsUpdatedGold()
+    {
+        _view.Received(1).ShowUpdatedGoldAndEquipLevel(
+            _presenter.Farm.Gold, _presenter.Farm.EquipLv);
+    }
+
+    private void ThenShowsUpdatedEquipmentLevel()
     {
         _view.Received(1).ShowUpdatedGoldAndEquipLevel(
             _presenter.Farm.Gold, _presenter.Farm.EquipLv);

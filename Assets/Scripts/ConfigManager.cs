@@ -96,7 +96,7 @@ public static class ConfigManager
 
         // Store
         storeConfig.farmPlotPrice = 500;
-        storeConfig.equipUpgradePrice = 500;
+        storeConfig.equipUpgradePrice = 400;
 
         storeConfig.seedPrices[(int)CommodityType.Strawberry] = 200;
         storeConfig.seedPrices[(int)CommodityType.Tomato] = 300;

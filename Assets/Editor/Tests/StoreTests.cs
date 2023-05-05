@@ -33,6 +33,73 @@ public class StoreTests
     }
 
     [Test]
+    public void WhenFullGoldCanBuyFarmPlot()
+    {
+        GivenStore();
+
+        bool isSuccess = _store.BuyFarmPlot(
+            _rand.Next(10, 100), int.MaxValue, out int neededGold);
+
+        Assert.IsTrue(isSuccess);
+    }
+
+    [Test]
+    public void WhenFullGoldBuyFarmPlotCorrectNeededGold()
+    {
+        GivenStore();
+
+        int quantity = _rand.Next(10, 100);
+        _store.BuyFarmPlot(quantity, int.MaxValue, out int neededGold);
+
+        Assert.IsTrue(neededGold.Equals(
+            ConfigManager.GetStoreFarmPlotPrice() * quantity));
+    }
+
+    [Test]
+    public void WhenNoGoldCanNotUpgradeEquipment()
+    {
+        GivenStore();
+
+        bool isSuccess = _store.UpgradeEquipment(
+            _rand.Next(10, 100), 0, out int neededGold);
+
+        Assert.IsFalse(isSuccess);
+    }
+
+    [Test]
+    public void WhenNoGoldUpgradeEquipmentGoldIsZero()
+    {
+        GivenStore();
+
+        _store.UpgradeEquipment(_rand.Next(10, 100), 0, out int neededGold);
+
+        Assert.IsTrue(neededGold.Equals(0));
+    }
+
+    [Test]
+    public void WhenFullGoldCanUpgradeEquipment()
+    {
+        GivenStore();
+
+        bool isSuccess = _store.UpgradeEquipment(
+            _rand.Next(10, 100), int.MaxValue, out int neededGold);
+
+        Assert.IsTrue(isSuccess);
+    }
+
+    [Test]
+    public void WhenFullGoldUpgradeEquipmentCorrectNeededGold()
+    {
+        GivenStore();
+
+        int quantity = _rand.Next(10, 100);
+        _store.UpgradeEquipment(quantity, int.MaxValue, out int neededGold);
+
+        Assert.IsTrue(neededGold.Equals(
+            ConfigManager.GetStoreEquipUpgradePrice() * quantity));
+    }
+
+    [Test]
     public void WhenNoGoldCanNotBuyCommoditySeed()
     {
         GivenStore();
@@ -54,29 +121,6 @@ public class StoreTests
             _rand.Next(10, 100), 0, out int neededGold);
 
         Assert.IsTrue(neededGold.Equals(0));
-    }
-
-    [Test]
-    public void WhenFullGoldCanBuyFarmPlot()
-    {
-        GivenStore();
-
-        bool isSuccess = _store.BuyFarmPlot(
-            _rand.Next(10, 100), int.MaxValue, out int neededGold);
-
-        Assert.IsTrue(isSuccess);
-    }
-
-    [Test]
-    public void WhenFullGoldBuyFarmPlotCorrectNeededGold()
-    {
-        GivenStore();
-
-        int quantity = _rand.Next(10, 100);
-        _store.BuyFarmPlot(quantity, int.MaxValue, out int neededGold);
-
-        Assert.IsTrue(neededGold.Equals(
-            ConfigManager.GetStoreFarmPlotPrice() * quantity));
     }
 
     [Test]

@@ -16,7 +16,7 @@
 
     public bool UpgradeEquipment(int quantity, int currentGold, out int neededGold)
     {
-        neededGold = ConfigManager.GetStoreFarmPlotPrice() * quantity;
+        neededGold = ConfigManager.GetStoreEquipUpgradePrice() * quantity;
         if (currentGold > neededGold)
         {
             return true;

@@ -198,4 +198,58 @@ public partial class FarmGamePresenterTests
         ThenShowsUpdatedGold();
     }
     #endregion
+
+    #region Upgrade Equipment
+    [Test]
+    public void WhenUpgradeEquipmentGoldDecreaseCorrectAmount()
+    {
+        GivenAFarmGameWithMaxGold();
+        int initGold = _presenter.Farm.Gold;
+
+        int upgradeCount = _rand.Next(1, 100);
+        for (int i = 0; i < upgradeCount; i++)
+            UpgradeEquipment();
+
+        Assert.IsTrue(_presenter.Farm.Gold.Equals(initGold -
+            upgradeCount * ConfigManager.GetStoreEquipUpgradePrice()));
+    }
+
+    [Test]
+    public void WhenUpgradeEquipmentShowsUpdatedGold()
+    {
+        GivenAFarmGameWithMaxGold();
+
+        UpgradeEquipment();
+
+        ThenShowsUpdatedGold();
+    }
+
+    [Test]
+    public void WhenUpgradeEquipmentShowsUpdatedEquipmentLevel()
+    {
+        GivenAFarmGameWithMaxGold();
+
+        UpgradeEquipment();
+
+        ThenShowsUpdatedGold();
+    }
+
+    [Test]
+    public void WhenUpgradeEquipmentPlotProductivityIncreaseCorrectAmount()
+    {
+        GivenAFarmGameWithMaxGold();
+        int initGold = _presenter.Farm.Gold;
+
+        int upgradeCount = _rand.Next(1, 100);
+        for (int i = 0; i < upgradeCount; i++)
+            UpgradeEquipment();
+
+        float correctProductivity = 1.0f +
+            upgradeCount * ConfigManager.productivityIncreasePerEquipLv / 100f;
+        foreach (FarmPlot plot in _presenter.Farm.Plots)
+            if (plot.Productivity != correctProductivity)
+                Assert.IsTrue(false);
+        Assert.IsTrue(true);
+    }
+    #endregion
 }
