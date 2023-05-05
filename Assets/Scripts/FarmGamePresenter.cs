@@ -21,6 +21,7 @@ public class FarmGamePresenter
         _store = new Store();
 
         _farm.GoldChanged += OnGoldChanged;
+        _farm.EquipLvChanged += OnEquipLvChanged;
         _farm.FarmPlotChanged += OnFarmPlotsChanged;
         _inventory.SeedsChanged += OnInventorySeedsChanged;
         _inventory.ProductsChanged += OnInventoryProductsChanged;
@@ -124,6 +125,20 @@ public class FarmGamePresenter
         _farm.Gold -= 500;
     }
 
+    public void UpgradeEquipment()
+    {
+        if (_store.UpgradeEquipment(1, _farm.Gold, out int neededGold))
+        {
+            _farm.Gold -= neededGold;
+            _farm.UpgradEquipLv();
+        }
+        else
+        {
+            MLog.Log("FarmGamePresenter",
+                    "UpgradeEquipment: not have enough money");
+        }
+    }
+
     public void GameUpdate(float deltaTime)
     {
         foreach (FarmPlot plot in _farm.Plots)
@@ -132,7 +147,12 @@ public class FarmGamePresenter
         }
     }
 
-    private void OnGoldChanged()
+    private void OnGoldChanged(int gold)
+    {
+        ShowUpdatedGoldAndEquipLevel();
+    }
+
+    private void OnEquipLvChanged(int obj)
     {
         ShowUpdatedGoldAndEquipLevel();
     }
@@ -154,7 +174,7 @@ public class FarmGamePresenter
 
     private void ShowUpdatedGoldAndEquipLevel()
     {
-        _view.ShowUpdatedGoldAndEquipLevel(_farm.Gold, 1);
+        _view.ShowUpdatedGoldAndEquipLevel(_farm.Gold, _farm.EquipLv);
     }
 
     private void ShowUpdatePlots()

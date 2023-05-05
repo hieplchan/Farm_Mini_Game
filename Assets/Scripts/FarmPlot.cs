@@ -11,6 +11,7 @@ public class FarmPlot
 
     Commodity _commodity;
     int _availableProduct;
+    float _productivity = 1.0f;
 
     public void GameUpdate(float deltaTime)
     {
@@ -22,7 +23,7 @@ public class FarmPlot
                 _availableProduct = _commodity.AvailableProduct;
 
                 MLog.Log("Plot", "Notify AvailableProduct changed: " + _commodity.AvailableProduct);
-                NotifyChange();
+                NotifyPlotChange();
             }
 
         if (_commodity?.State == CommodityState.Dead)
@@ -30,7 +31,7 @@ public class FarmPlot
             MLog.Log("Plot", "Notify Commodity dead: " + _commodity.Type);
             _commodity = null;
             _availableProduct = 0;
-            NotifyChange();
+            NotifyPlotChange();
         }
     }
 
@@ -41,11 +42,19 @@ public class FarmPlot
         _availableProduct = _commodity.AvailableProduct;
 
         MLog.Log("Plot", "Notify Commodity planted: " + _commodity.Type);
-        NotifyChange();
+        NotifyPlotChange();
     }
 
-    private void NotifyChange()
+    private void NotifyPlotChange()
     {
         PlotChanged?.Invoke();
+    }
+
+    public void OnFarmEquipLvChanged(int equipLv)
+    {
+        _productivity = 1.0f + 
+            equipLv * ConfigManager.productivityIncreasePerEquipLv / 100f;
+        MLog.Log("Plot", "OnFarmEquipLvChanged _productivity: " +
+            _productivity);
     }
 }

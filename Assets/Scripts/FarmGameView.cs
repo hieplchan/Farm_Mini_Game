@@ -47,6 +47,11 @@ public class FarmGameView : MonoBehaviour
         _presenter.BuyFarmPlot();
     }
 
+    public void UpgradeEquipment()
+    {
+        _presenter.UpgradeEquipment();
+    }
+
     private void Update()
     {
         _presenter.GameUpdate(Time.deltaTime);

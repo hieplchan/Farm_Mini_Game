@@ -4,17 +4,29 @@ using System;
 
 public class Farm
 {
-    public event Action GoldChanged;
+    public event Action<int> GoldChanged;
     public int Gold
     {
         get => _gold;
         set
         {
             _gold = value;
-            GoldChanged?.Invoke();
+            GoldChanged?.Invoke(_gold);
         }
     }
     int _gold;
+
+    public event Action<int> EquipLvChanged;
+    public int EquipLv
+    {
+        get => _equipLv;
+        set
+        {
+            _equipLv = value;
+            EquipLvChanged?.Invoke(_equipLv);
+        }
+    }
+    int _equipLv;
 
     public event Action FarmPlotChanged;
     public List<FarmPlot> Plots { get => _plots; }
@@ -25,11 +37,17 @@ public class Farm
         _plots = new List<FarmPlot>();
     }
 
+    public void UpgradEquipLv()
+    {
+        EquipLv += 1;
+    }
+
     public FarmPlot AddPlot()
     {
         FarmPlot plot = new FarmPlot();
         _plots.Add(plot);
         plot.PlotChanged += OnPlotChanged;
+        EquipLvChanged += plot.OnFarmEquipLvChanged;
         OnPlotChanged();
         return plot;
     }

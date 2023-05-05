@@ -89,7 +89,8 @@ public partial class FarmGamePresenterTests
     #region Then
     private void ThenShowsUpdatedGold()
     {
-        _view.Received(1).ShowUpdatedGoldAndEquipLevel(_presenter.Farm.Gold, 1);
+        _view.Received(1).ShowUpdatedGoldAndEquipLevel(
+            _presenter.Farm.Gold, _presenter.Farm.EquipLv);
     }
 
     private void ThenShowsUpdatedPlotList()

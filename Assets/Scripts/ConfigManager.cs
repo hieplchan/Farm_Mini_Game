@@ -26,6 +26,8 @@ public class CommodityConfig
 public class StoreConfig
 {
     public int farmPlotPrice;
+    public int equipUpgradePrice;
+
     public int[] seedPrices;
     public int[] productPrices;
 
@@ -39,6 +41,8 @@ public class StoreConfig
 public static class ConfigManager
 {
     public static int commodityTypeCount;
+
+    public static int productivityIncreasePerEquipLv;
 
     public static NewGameConfig newGameConfig;
     public static CommodityConfig[] commodityConfigs;
@@ -64,6 +68,9 @@ public static class ConfigManager
 
     public static void Reload()
     {
+        // Game Config
+        productivityIncreasePerEquipLv = 10;
+
         // New Game
         newGameConfig.initGold = 9999;
         newGameConfig.initFarmPlot = 6;
@@ -95,6 +102,7 @@ public static class ConfigManager
 
         // Store
         storeConfig.farmPlotPrice = 500;
+        storeConfig.equipUpgradePrice = 500;
 
         storeConfig.seedPrices[(int)CommodityType.Strawberry] = 200;
         storeConfig.seedPrices[(int)CommodityType.Tomato] = 300;
@@ -129,6 +137,11 @@ public static class ConfigManager
     public static int GetStoreFarmPlotPrice()
     {
         return storeConfig.farmPlotPrice;
+    }
+
+    public static int GetStoreEquipUpgradePrice()
+    {
+        return storeConfig.equipUpgradePrice;
     }
 
     public static int GetStoreSeedPrice(CommodityType type)
