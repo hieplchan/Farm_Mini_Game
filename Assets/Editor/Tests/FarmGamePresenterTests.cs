@@ -252,4 +252,17 @@ public partial class FarmGamePresenterTests
         Assert.IsTrue(true);
     }
     #endregion
+
+    #region Others
+    [Test]
+    public void WhenLoggerLogShowUpdatedLog()
+    {
+        GivenAFarmGameWithMaxGold();
+
+        string randomString = _rand.Next(100000, 1000000).ToString();
+        Logger.Instance.Log(randomString);
+
+        ThenShowUpdatedLog(randomString);
+    }
+    #endregion
 }

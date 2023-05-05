@@ -3616,9 +3616,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Hello
-
-    Buy 3 plot'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7443,6 +7441,7 @@ MonoBehaviour:
   _plotText: {fileID: 1292030883}
   _inventorySeedText: {fileID: 398469525}
   _inventoryProductText: {fileID: 1823716221}
+  _logText: {fileID: 933396249}
 --- !u!1 &2002159820
 GameObject:
   m_ObjectHideFlags: 0

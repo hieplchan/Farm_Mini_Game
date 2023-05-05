@@ -18,6 +18,9 @@ public class FarmGameView : MonoBehaviour
     [SerializeField] private TMP_Text _inventorySeedText;
     [SerializeField] private TMP_Text _inventoryProductText;
 
+    [Header("Log Panel")]
+    [SerializeField] private TMP_Text _logText;
+
     private void Start()
     {
         _presenter = new FarmGamePresenter(this);
@@ -128,5 +131,10 @@ public class FarmGameView : MonoBehaviour
                 ((CommodityProductType)i).ToString(), products[i]);
         }
         _inventoryProductText.text = tmp;
+    }
+
+    public virtual void ShowUpdatedLog(string text)
+    {
+        _logText.text = text + "\n" + _logText.text;
     }
 }

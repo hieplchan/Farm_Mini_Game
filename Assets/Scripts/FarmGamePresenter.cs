@@ -25,6 +25,7 @@ public class FarmGamePresenter
         _farm.FarmPlotChanged += OnFarmPlotsChanged;
         _inventory.SeedsChanged += OnInventorySeedsChanged;
         _inventory.ProductsChanged += OnInventoryProductsChanged;
+        Logger.Instance.NewLog += OnNewLog;
 
         ShowUpdatedGoldAndEquipLevel();
         ShowUpdatePlots();
@@ -47,6 +48,8 @@ public class FarmGamePresenter
         {
             _inventory.AddSeed((CommodityType)i, config.initSeeds[i]);
         }
+
+        Logger.Instance.Log("Do you want to play, let's play!");
     }
 
     public void BuyCommoditySeed(int type)
@@ -59,8 +62,7 @@ public class FarmGamePresenter
         }
         else
         {
-            MLog.Log("FarmGamePresenter",
-                "BuyCommoditySeed: not have enough money");
+            Logger.Instance.Log("Not enough money bro, lol");
         }
     }
 
@@ -76,14 +78,14 @@ public class FarmGamePresenter
             }
             else
             {
-                MLog.Log("FarmGamePresenter",
-                    string.Format("PlantCommodity: No {0}, please buy", ((CommodityType)type).ToString()));
+                Logger.Instance.Log(
+                    string.Format("Buy some {0} bro", 
+                    ((CommodityType)type).ToString()));
             }
         }
         else
         {
-            MLog.Log("FarmGamePresenter",
-                "PlantCommodity: No free plot, please buy");
+            Logger.Instance.Log("Buy some plot bro");
         }
     }
 
@@ -115,8 +117,7 @@ public class FarmGamePresenter
         } 
         else
         {
-            MLog.Log("FarmGamePresenter",
-                    "BuyFarmPlot: not have enough money");
+            Logger.Instance.Log("Not enough money bro, lol");
         }
     }
 
@@ -134,8 +135,7 @@ public class FarmGamePresenter
         }
         else
         {
-            MLog.Log("FarmGamePresenter",
-                    "UpgradeEquipment: not have enough money");
+            Logger.Instance.Log("Not enough money bro, lol");
         }
     }
 
@@ -170,6 +170,11 @@ public class FarmGamePresenter
     private void OnInventoryProductsChanged()
     {
         ShowUpdatedInventoryProducts();
+    }
+
+    private void OnNewLog(string text)
+    {
+        _view.ShowUpdatedLog(text);
     }
 
     private void ShowUpdatedGoldAndEquipLevel()

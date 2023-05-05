@@ -121,5 +121,10 @@ public partial class FarmGamePresenterTests
         _view.Received().ShowUpdatedInventoryProducts(Arg.Is<int[]>(
             value => _presenter.Inventory.Products.SequenceEqual(value)));
     }
+
+    private void ThenShowUpdatedLog(string randomString)
+    {
+        _view.Received(1).ShowUpdatedLog(randomString);
+    }
     #endregion
 }
