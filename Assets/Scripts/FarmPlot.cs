@@ -10,6 +10,10 @@ public class FarmPlot
     public float Productivity { get => _productivity; }
     public float TimeLeftToHarvest { get => _commodity.TimeLeftToHarvest; }
 
+    public bool HasWorker { get => _currentWorker != null; }
+    public Worker Worker { get => _currentWorker; }
+    private Worker _currentWorker;
+
     Commodity _commodity;
     int _availableProduct;
     float _productivity = 1.0f;
@@ -57,5 +61,23 @@ public class FarmPlot
             equipLv * ConfigManager.productivityIncreasePerEquipLv / 100f;
         MLog.Log("Plot", "OnFarmEquipLvChanged _productivity: " +
             _productivity);
+    }
+
+    public bool AddWorker(Worker worker)
+    {
+        if (!HasWorker)
+        {
+            _currentWorker = worker;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void RemoveWorker()
+    {
+        _currentWorker = null;
     }
 }

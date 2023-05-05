@@ -27,15 +27,17 @@ public class FarmGamePresenter
         _farm.GoldChanged += _achievement.OnGoldChanged;
         _farm.EquipLvChanged += OnEquipLvChanged;
         _farm.FarmPlotChanged += OnFarmPlotsChanged;
+        _farm.WorkerChanged += OnFarmWorkerChanged;
         _inventory.SeedsChanged += OnInventorySeedsChanged;
         _inventory.ProductsChanged += OnInventoryProductsChanged;
         _achievement.NewAchievement += OnNewAchievement;
         Logger.Instance.NewLog += OnNewLog;
 
         ShowUpdatedGoldAndEquipLevel();
-        ShowUpdatePlots();
+        ShowUpdatedPlots();
         ShowUpdatedInventorySeeds();
         ShowUpdatedInventoryProducts();
+        ShowUpdatedWorkers();
 
         ApplyNewGameConfig();
     }
@@ -101,7 +103,7 @@ public class FarmGamePresenter
             if (plot.HasCommodity)
                 if (plot.Commodity.Type == (CommodityType)type &&
                     plot.Commodity.AvailableProduct > 0)
-                    _inventory.AddProduct((CommodityType)type, 
+                    _inventory.AddProduct((CommodityProductType)type, 
                         plot.Commodity.Harvest());
         }
     }
@@ -122,13 +124,21 @@ public class FarmGamePresenter
         } 
         else
         {
-            Logger.Instance.Log("Not enough money bro, lol");
+            Logger.Instance.Log("Not enough money to buy farm plot bro");
         }
     }
 
     public void HireWorker()
     {
-        _farm.Gold -= 500;
+        if (_store.HireWorker(1, _farm.Gold, out int neededGold))
+        {
+            _farm.Gold -= neededGold;
+            _farm.AddWorker();
+        }
+        else
+        {
+            Logger.Instance.Log("Not enough money to buy hire worker lol");
+        }
     }
 
     public void UpgradeEquipment()
@@ -136,11 +146,11 @@ public class FarmGamePresenter
         if (_store.UpgradeEquipment(1, _farm.Gold, out int neededGold))
         {
             _farm.Gold -= neededGold;
-            _farm.UpgradEquipLv();
+            _farm.UpgradeEquipLv();
         }
         else
         {
-            Logger.Instance.Log("Not enough money bro, lol");
+            Logger.Instance.Log("Not enough money to buy upgrade equipment");
         }
     }
 
@@ -149,6 +159,18 @@ public class FarmGamePresenter
         foreach (FarmPlot plot in _farm.Plots)
         {
             plot.GameUpdate(deltaTime);
+        }
+
+        foreach (Worker worker in _farm.Workers)
+        {
+            worker.GameUpdate(deltaTime);
+        }
+
+        // Ask Idle workers to find a job, don't stay unemployed
+        foreach (Worker worker in _farm.Workers)
+        {
+            if (worker.State == WorkerState.Idle)
+                worker.SearchForJob(_farm, _inventory);
         }
     }
 
@@ -164,7 +186,12 @@ public class FarmGamePresenter
 
     private void OnFarmPlotsChanged()
     {
-        ShowUpdatePlots();
+        ShowUpdatedPlots();
+    }
+
+    private void OnFarmWorkerChanged()
+    {
+        ShowUpdatedWorkers();
     }
 
     private void OnInventorySeedsChanged()
@@ -192,9 +219,14 @@ public class FarmGamePresenter
         _view.ShowUpdatedGoldAndEquipLevel(_farm.Gold, _farm.EquipLv);
     }
 
-    private void ShowUpdatePlots()
+    private void ShowUpdatedPlots()
     {
         _view.ShowUpdatedPlots(_farm.Plots);
+    }
+
+    private void ShowUpdatedWorkers()
+    {
+        _view.ShowUpdatedWorkers(_farm.Workers);
     }
 
     private void ShowUpdatedInventorySeeds()

@@ -24,6 +24,7 @@ public class CommodityConfig
 public class StoreConfig
 {
     public int farmPlotPrice;
+    public int hireWorkerPrice;
     public int equipUpgradePrice;
 
     public int[] seedPrices;
@@ -36,6 +37,16 @@ public class StoreConfig
     }
 }
 
+public class WorkerConfig
+{
+    public int timeNeededPerTask;
+
+    public WorkerConfig(int timeNeededPerTask)
+    {
+        this.timeNeededPerTask = timeNeededPerTask;
+    }
+}
+
 public static class ConfigManager
 {
     public static int commodityTypeCount;
@@ -45,6 +56,7 @@ public static class ConfigManager
     public static NewGameConfig newGameConfig;
     public static CommodityConfig[] commodityConfigs;
     public static StoreConfig storeConfig;
+    public static WorkerConfig workerConfig;
 
     static ConfigManager()
     {
@@ -61,6 +73,8 @@ public static class ConfigManager
 
         storeConfig = new StoreConfig(commodityTypeCount);
 
+        workerConfig = new WorkerConfig(1);
+
         Reload();
     }
 
@@ -73,10 +87,10 @@ public static class ConfigManager
         // New Game
         newGameConfig.initGold = 9999;
         newGameConfig.initFarmPlot = 6;
-        newGameConfig.initSeeds[(int)CommodityType.Strawberry] = 2;
-        newGameConfig.initSeeds[(int)CommodityType.Tomato] = 3;
-        newGameConfig.initSeeds[(int)CommodityType.Blueberry] = 4;
-        newGameConfig.initSeeds[(int)CommodityType.Cow] = 5;
+        newGameConfig.initSeeds[(int)CommodityType.Strawberry] = 1;
+        newGameConfig.initSeeds[(int)CommodityType.Tomato] = 0;
+        newGameConfig.initSeeds[(int)CommodityType.Blueberry] = 0;
+        newGameConfig.initSeeds[(int)CommodityType.Cow] = 0;
 
         // Commodity
         commodityConfigs[(int)CommodityType.Strawberry].productCycleTime = 1;
@@ -97,6 +111,7 @@ public static class ConfigManager
 
         // Store
         storeConfig.farmPlotPrice = 500;
+        storeConfig.hireWorkerPrice = 200;
         storeConfig.equipUpgradePrice = 400;
 
         storeConfig.seedPrices[(int)CommodityType.Strawberry] = 200;
@@ -108,6 +123,9 @@ public static class ConfigManager
         storeConfig.productPrices[(int)CommodityProductType.Tomato] = 700;
         storeConfig.productPrices[(int)CommodityProductType.Blueberry] = 800;
         storeConfig.productPrices[(int)CommodityProductType.Milk] = 900;
+
+        // Worker
+        workerConfig.timeNeededPerTask = 2;
     }
     
     public static NewGameConfig GetNewGameConfig()
@@ -132,6 +150,11 @@ public static class ConfigManager
     public static int GetStoreFarmPlotPrice()
     {
         return storeConfig.farmPlotPrice;
+    }
+
+    public static int GetStoreHireWorkerPrice()
+    {
+        return storeConfig.hireWorkerPrice;
     }
 
     public static int GetStoreEquipUpgradePrice()
@@ -165,5 +188,9 @@ public static class ConfigManager
                 "GetStoreProductPrice wrong product type: " + (int)type);
             return 0;
         }
+    }
+    public static WorkerConfig GetWorkerConfig()
+    {
+        return workerConfig;
     }
 }

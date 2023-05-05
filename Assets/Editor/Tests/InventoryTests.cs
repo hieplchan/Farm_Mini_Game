@@ -51,7 +51,8 @@ public class InventoryTests
     public void WhenAddProductQuantityIncrease()
     {
         GivenHaveProductInventory();
-        CommodityType type = (CommodityType)_rand.Next(0, _commodityTypeCount - 1);
+        CommodityProductType type = 
+            (CommodityProductType)_rand.Next(0, _commodityTypeCount - 1);
         int initQuantity = _inventory.Products[(int)type];
 
         int addedQuantity = _rand.Next(1, 1000);

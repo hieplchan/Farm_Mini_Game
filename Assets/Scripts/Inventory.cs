@@ -1,10 +1,12 @@
 using System;
+using System.Linq;
 
 public class Inventory
 {
     public event Action SeedsChanged;
     public int[] Seeds { get => _seeds; }
     private int[] _seeds;
+    public bool HasSeed { get => _seeds.Sum() > 0; }
 
     public event Action ProductsChanged;
     public int[] Products { get => _products; }
@@ -45,7 +47,24 @@ public class Inventory
         }
     }
 
-    public void AddProduct(CommodityType type, int quantity = 1)
+    // Get available seeds in order instead of random
+    // Can improve if have more time
+    public Commodity GetAvailableSeed()
+    {
+        if (!HasSeed)
+        {
+            return null;
+        }
+        else
+        {
+            for (int i = 0; i < _seeds.Length; i++)
+                if (_seeds[i] > 0)
+                    return GetSeed((CommodityType)i);
+            return null;
+        }
+    }
+
+    public void AddProduct(CommodityProductType type, int quantity = 1)
     {
         _products[(int)type] += quantity;
         NotifyProductsChanged();

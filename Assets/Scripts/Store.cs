@@ -14,6 +14,20 @@
         }
     }
 
+    public bool HireWorker(int quantity, int currentGold, out int neededGold)
+    {
+        neededGold = ConfigManager.GetStoreHireWorkerPrice() * quantity;
+        if (currentGold > neededGold)
+        {
+            return true;
+        }
+        else
+        {
+            neededGold = 0;
+            return false;
+        }
+    }
+
     public bool UpgradeEquipment(int quantity, int currentGold, out int neededGold)
     {
         neededGold = ConfigManager.GetStoreEquipUpgradePrice() * quantity;

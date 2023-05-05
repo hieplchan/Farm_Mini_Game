@@ -17,6 +17,7 @@ public class FarmGameView : MonoBehaviour
     [SerializeField] private TMP_Text _plotText;
     [SerializeField] private TMP_Text _inventorySeedText;
     [SerializeField] private TMP_Text _inventoryProductText;
+    [SerializeField] private TMP_Text _workerText;
 
     [Header("Log Panel")]
     [SerializeField] private TMP_Text _logText;
@@ -48,6 +49,11 @@ public class FarmGameView : MonoBehaviour
     public void BuyFarmPlot()
     {
         _presenter.BuyFarmPlot();
+    }
+
+    public void HireWorker()
+    {
+        _presenter.HireWorker();
     }
 
     public void UpgradeEquipment()
@@ -91,6 +97,8 @@ public class FarmGameView : MonoBehaviour
                         farmPlots[i].AvailableProduct,
                         farmPlots[i].TimeLeftToHarvest.SecToMin());
                 }
+                if (farmPlots[i].HasWorker)
+                    tmp += " - Has Worker";
             }
             else
             {
@@ -131,6 +139,22 @@ public class FarmGameView : MonoBehaviour
                 ((CommodityProductType)i).ToString(), products[i]);
         }
         _inventoryProductText.text = tmp;
+    }
+
+    public virtual void ShowUpdatedWorkers(List<Worker> workers)
+    {
+        int idleWorker = 0;
+        foreach (Worker worker in workers)
+        {
+            if (worker.State == WorkerState.Idle)
+                idleWorker += 1;
+        }
+        string workersString = string.Format(
+            "\n\nWorker \n\n" +
+            "Idle: {0} \n" +
+            "Working: {1}",
+            idleWorker, workers.Count - idleWorker);
+        _workerText.text = workersString;
     }
 
     public virtual void ShowUpdatedLog(string text)
