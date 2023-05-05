@@ -132,8 +132,7 @@ public class CommodityTests
         Plant();
 
         float matureTime =
-            _config.productCycleTime.MinToSec() * cycleCount /
-            (_config.productivity / 100f);
+            _config.productCycleTime.MinToSec() * cycleCount;
 
         int loopSecCount = (int)(matureTime);
 

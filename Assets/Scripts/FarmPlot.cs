@@ -7,6 +7,7 @@ public class FarmPlot
     public Commodity Commodity { get => _commodity; }
     public CommodityType CommodityType { get => _commodity.Type; }
     public int AvailableProduct { get => _availableProduct; }
+    public float Productivity { get => _productivity; }
     public float TimeLeftToHarvest { get => _commodity.TimeLeftToHarvest; }
 
     Commodity _commodity;

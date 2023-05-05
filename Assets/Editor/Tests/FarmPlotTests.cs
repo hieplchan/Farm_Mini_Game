@@ -26,7 +26,7 @@ public class FarmPlotTests
     {
         GivenFarmPlot();
 
-        PlantRandomCommodity();
+        WhenPlantRandomCommodity();
 
         Assert.IsTrue(_plot.HasCommodity);
     }
@@ -36,13 +36,12 @@ public class FarmPlotTests
     {
         GivenFarmPlot();
 
-        PlantRandomCommodity();
+        WhenPlantRandomCommodity();
 
         float matureTime =
-            _config.productCycleTime.MinToSec() * _config.productCycleNum /
-            (_config.productivity / 100f);
-        float lifeTime = matureTime + 
-            _config.dyingTime.MinToSec() / (_config.productivity / 100f);
+            _config.productCycleTime.MinToSec() * _config.productCycleNum;
+        float lifeTime = matureTime +
+            _config.dyingTime.MinToSec();
 
         lifeTime += 1.MinToSec(); // offset 1 min
 
@@ -55,14 +54,59 @@ public class FarmPlotTests
         Assert.IsFalse(_plot.HasCommodity);
     }
 
+    [Test]
+    public void WhenUpgradeEquipmentPlotProductivityIncrease()
+    {
+        GivenFarmPlot();
+
+        int equipmentLv = _rand.Next(10, 50);
+        _plot.OnFarmEquipLvChanged(equipmentLv);
+
+        float correctProductivity = 1.0f +
+            equipmentLv * ConfigManager.productivityIncreasePerEquipLv / 100f;
+        Assert.IsTrue(_plot.Productivity.Equals(correctProductivity));
+    }
+
+    [Test]
+    public void WhenUpgradeEquipmentPlantProductivityIncrease()
+    {
+        GivenFarmPlot();
+
+        int equipmentLv = _rand.Next(10, 50);
+        float actualMatureDuration = 0;
+        _plot.OnFarmEquipLvChanged(equipmentLv);
+        CommodityType type = WhenPlantRandomCommodity();
+        while (_plot.Commodity.State == CommodityState.Mature)
+        {
+            _plot.GameUpdate(1);
+            actualMatureDuration += 1.0f;
+        }
+
+
+        float correctProductivity = 1.0f +
+            equipmentLv * ConfigManager.productivityIncreasePerEquipLv / 100f;
+        CommodityConfig config = ConfigManager.GetCommodityConfig(type);
+        float correctMatureDuration =
+            config.productCycleTime.MinToSec() * config.productCycleNum / correctProductivity;
+        float diff = MathF.Abs(actualMatureDuration - correctMatureDuration);
+
+        MLog.Log("FarmPlotTests", string.Format(
+            "WhenUpgradeEquipmentPlantProductivityIncrease : " +
+            "correctMatureDuration: {0} - actualDuration: {1} - abs {2}",
+            correctMatureDuration, actualMatureDuration, diff));
+        
+        // Offset 5 sec
+        Assert.Less(diff, 5);
+    }
+
     private void GivenFarmPlot()
     {
         _plot = new FarmPlot();
         _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
+        _rand = new Random();
     }
 
-
-    private void PlantRandomCommodity()
+    private CommodityType WhenPlantRandomCommodity()
     {
         _rand = new Random();
         CommodityType type = (CommodityType)_rand.Next(1, _commodityTypeCount - 1);
@@ -71,5 +115,6 @@ public class FarmPlotTests
         _config = ConfigManager.GetCommodityConfig(type);
 
         _plot.Plant(_commodity);
+        return type;
     }
 }

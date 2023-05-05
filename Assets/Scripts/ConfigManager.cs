@@ -12,14 +12,12 @@ public class CommodityConfig
     public int productCycleTime;
     public int productCycleNum;
     public int dyingTime;
-    public int productivity;
 
-    public CommodityConfig(int productCycleTime, int productCycleNum, int dyingTime, int productivity)
+    public CommodityConfig(int productCycleTime, int productCycleNum, int dyingTime)
     {
         this.productCycleTime = productCycleTime;
         this.productCycleNum = productCycleNum;
         this.dyingTime = dyingTime;
-        this.productivity = productivity;
     }
 }
 
@@ -58,7 +56,7 @@ public static class ConfigManager
         commodityConfigs = new CommodityConfig[commodityTypeCount];
         for (int i = 0; i < commodityTypeCount; i++)
         {
-            commodityConfigs[i] = new CommodityConfig(1, 1, 1, 100);
+            commodityConfigs[i] = new CommodityConfig(1, 1, 1);
         }
 
         storeConfig = new StoreConfig(commodityTypeCount);
@@ -83,22 +81,18 @@ public static class ConfigManager
         commodityConfigs[(int)CommodityType.Strawberry].productCycleTime = 1;
         commodityConfigs[(int)CommodityType.Strawberry].productCycleNum = 2;
         commodityConfigs[(int)CommodityType.Strawberry].dyingTime = 3;
-        commodityConfigs[(int)CommodityType.Strawberry].productivity = 100;
 
         commodityConfigs[(int)CommodityType.Tomato].productCycleTime = 1;
         commodityConfigs[(int)CommodityType.Tomato].productCycleNum = 3;
         commodityConfigs[(int)CommodityType.Tomato].dyingTime = 3;
-        commodityConfigs[(int)CommodityType.Tomato].productivity = 100;
 
         commodityConfigs[(int)CommodityType.Blueberry].productCycleTime = 1;
         commodityConfigs[(int)CommodityType.Blueberry].productCycleNum = 4;
         commodityConfigs[(int)CommodityType.Blueberry].dyingTime = 3;
-        commodityConfigs[(int)CommodityType.Blueberry].productivity = 100;
 
         commodityConfigs[(int)CommodityType.Cow].productCycleTime = 1;
         commodityConfigs[(int)CommodityType.Cow].productCycleNum = 5;
         commodityConfigs[(int)CommodityType.Cow].dyingTime = 3;
-        commodityConfigs[(int)CommodityType.Cow].productivity = 100;
 
         // Store
         storeConfig.farmPlotPrice = 500;

@@ -34,7 +34,6 @@ public class Commodity
     int _productCycleNum;
     int _availableProduct, _harvestedProduct, _totalProduct;
     int _productCycleTime, _matureTime, _totalLifeTime;
-    float _productivity;
 
     public Commodity(CommodityType type)
     {
@@ -45,7 +44,6 @@ public class Commodity
         _productCycleTime = config.productCycleTime.MinToSec();
         _matureTime = _productCycleTime * _productCycleNum;
         _totalLifeTime = _matureTime + config.dyingTime.MinToSec();
-        _productivity = config.productivity / 100f;
 
         _availableProduct = _harvestedProduct = _totalProduct = 0;
 
@@ -58,7 +56,7 @@ public class Commodity
         if (State == CommodityState.Seed || State == CommodityState.Dead)
             return;
 
-        Age += deltaTime * _productivity;
+        Age += deltaTime * _plot.Productivity;
 
         if (Age <= _matureTime)
         {
@@ -124,10 +122,5 @@ public class Commodity
         {
             return 0;
         }
-    }
-
-    public void IncreaseProductivity(int percent)
-    {
-        _productivity += percent / 100f;
     }
 }
