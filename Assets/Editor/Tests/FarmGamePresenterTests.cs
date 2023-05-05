@@ -231,7 +231,7 @@ public partial class FarmGamePresenterTests
 
         UpgradeEquipment();
 
-        ThenShowsUpdatedGold();
+        ThenShowsUpdatedEquipmentLevel();
     }
 
     [Test]
@@ -250,6 +250,29 @@ public partial class FarmGamePresenterTests
             if (plot.Productivity != correctProductivity)
                 Assert.IsTrue(false);
         Assert.IsTrue(true);
+    }
+    #endregion
+
+    #region Achievement
+
+    [Test]
+    public void WhenHaveHalfTargetGoldShowAchievement()
+    {
+        GivenAFarmGameZeroGold();
+
+        _presenter.Farm.Gold += ConfigManager.targetGold / 2 + 1;
+
+        ThenShowUpdatedLog(_presenter.Achievement.halfTargetMessage);
+    }
+
+    [Test]
+    public void WhenHaveEnoughTargetGoldShowFinishAchievement()
+    {
+        GivenAFarmGameZeroGold();
+
+        _presenter.Farm.Gold += ConfigManager.targetGold;
+
+        ThenShowUpdatedLog(_presenter.Achievement.targetDoneMessage);
     }
     #endregion
 

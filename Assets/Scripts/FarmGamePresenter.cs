@@ -7,11 +7,13 @@ public class FarmGamePresenter
     public Farm Farm { get => _farm; }
     public Inventory Inventory { get => _inventory; }
     public Store Store { get => _store; }
+    public Achievement Achievement { get => _achievement; }
 
     private FarmGameView _view;
     private Farm _farm;
     private Inventory _inventory;
     private Store _store;
+    private Achievement _achievement;
 
     public FarmGamePresenter(FarmGameView view)
     {
@@ -19,12 +21,15 @@ public class FarmGamePresenter
         _farm = new Farm();
         _inventory = new Inventory();
         _store = new Store();
+        _achievement = new Achievement();
 
         _farm.GoldChanged += OnGoldChanged;
+        _farm.GoldChanged += _achievement.OnGoldChanged;
         _farm.EquipLvChanged += OnEquipLvChanged;
         _farm.FarmPlotChanged += OnFarmPlotsChanged;
         _inventory.SeedsChanged += OnInventorySeedsChanged;
         _inventory.ProductsChanged += OnInventoryProductsChanged;
+        _achievement.NewAchievement += OnNewAchievement;
         Logger.Instance.NewLog += OnNewLog;
 
         ShowUpdatedGoldAndEquipLevel();
@@ -175,6 +180,11 @@ public class FarmGamePresenter
     private void OnNewLog(string text)
     {
         _view.ShowUpdatedLog(text);
+    }
+
+    private void OnNewAchievement(string achievementMessage)
+    {
+        Logger.Instance.Log(achievementMessage);
     }
 
     private void ShowUpdatedGoldAndEquipLevel()

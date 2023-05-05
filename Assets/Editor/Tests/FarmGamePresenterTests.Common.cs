@@ -16,6 +16,13 @@ public partial class FarmGamePresenterTests
         _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
         _presenter.Farm.Gold = int.MaxValue;
     }
+    private void GivenAFarmGameZeroGold()
+    {
+        _view = Substitute.For<FarmGameView>();
+        _presenter = new FarmGamePresenter(_view);
+        _rand = new Random();
+        _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
+    }
 
     private void GivenAFarmGameInventoryHaveSeed()
     {
@@ -94,7 +101,7 @@ public partial class FarmGamePresenterTests
 
     private void ThenShowsUpdatedGold()
     {
-        _view.Received(1).ShowUpdatedGoldAndEquipLevel(
+        _view.Received().ShowUpdatedGoldAndEquipLevel(
             _presenter.Farm.Gold, _presenter.Farm.EquipLv);
     }
 

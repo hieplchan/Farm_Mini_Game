@@ -40,8 +40,8 @@ public static class ConfigManager
 {
     public static int commodityTypeCount;
 
+    public static int targetGold;
     public static int productivityIncreasePerEquipLv;
-
     public static NewGameConfig newGameConfig;
     public static CommodityConfig[] commodityConfigs;
     public static StoreConfig storeConfig;
@@ -67,6 +67,7 @@ public static class ConfigManager
     public static void Reload()
     {
         // Game Config
+        targetGold = 1000000;
         productivityIncreasePerEquipLv = 10;
 
         // New Game
