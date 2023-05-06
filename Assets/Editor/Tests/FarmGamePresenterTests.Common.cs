@@ -11,7 +11,7 @@ public partial class FarmGamePresenterTests
     private void GivenAFarmGameWithMaxGold()
     {
         _view = Substitute.For<FarmGameView>();
-        _presenter = new FarmGamePresenter(_view);
+        _presenter = new FarmGamePresenter(_view, ConfigManager.GetDefaultConfig());
         _rand = new Random();
         _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
         _presenter.Farm.Gold = int.MaxValue;
@@ -19,7 +19,7 @@ public partial class FarmGamePresenterTests
     private void GivenAFarmGameZeroGold()
     {
         _view = Substitute.For<FarmGameView>();
-        _presenter = new FarmGamePresenter(_view);
+        _presenter = new FarmGamePresenter(_view, ConfigManager.GetDefaultConfig());
         _rand = new Random();
         _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
     }
@@ -27,7 +27,7 @@ public partial class FarmGamePresenterTests
     private void GivenAFarmGameInventoryHaveSeed()
     {
         _view = Substitute.For<FarmGameView>();
-        _presenter = new FarmGamePresenter(_view);
+        _presenter = new FarmGamePresenter(_view, ConfigManager.GetDefaultConfig());
         _rand = new Random();
         _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
         Array.Fill(_presenter.Farm.Inventory.Seeds, _rand.Next(10, 100));
@@ -36,7 +36,7 @@ public partial class FarmGamePresenterTests
     private void GivenAFarmGameInventoryHaveProduct()
     {
         _view = Substitute.For<FarmGameView>();
-        _presenter = new FarmGamePresenter(_view);
+        _presenter = new FarmGamePresenter(_view, ConfigManager.GetDefaultConfig());
         _rand = new Random();
         _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
         Array.Fill(_presenter.Farm.Inventory.Products, _rand.Next(10, 100));

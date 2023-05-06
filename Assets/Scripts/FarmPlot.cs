@@ -64,7 +64,7 @@ public class FarmPlot : IPersistableObject
     public void OnFarmEquipLvChanged(int equipLv)
     {
         _productivity = 1.0f + 
-            equipLv * ConfigManager.productivityIncreasePerEquipLv / 100f;
+            equipLv * ConfigManager.GetProductivityEquipment() / 100f;
         MLog.Log("Plot", "OnFarmEquipLvChanged _productivity: " +
             _productivity);
     }

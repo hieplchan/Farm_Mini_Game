@@ -63,7 +63,7 @@ public class FarmPlotTests
         _plot.OnFarmEquipLvChanged(equipmentLv);
 
         float correctProductivity = 1.0f +
-            equipmentLv * ConfigManager.productivityIncreasePerEquipLv / 100f;
+            equipmentLv * ConfigManager.GetProductivityEquipment() / 100f;
         Assert.IsTrue(_plot.Productivity.Equals(correctProductivity));
     }
 
@@ -84,7 +84,7 @@ public class FarmPlotTests
 
 
         float correctProductivity = 1.0f +
-            equipmentLv * ConfigManager.productivityIncreasePerEquipLv / 100f;
+            equipmentLv * ConfigManager.GetProductivityEquipment() / 100f;
         CommodityConfig config = ConfigManager.GetCommodityConfig(type);
         float correctMatureDuration =
             config.productCycleTime.MinToSec() * config.productCycleNum / correctProductivity;

@@ -16,14 +16,14 @@ public class Achievement : IPersistableObject
     public void OnGoldChanged(int gold)
     {
         if (!_isHalfGoldTargetDone && 
-            gold >= ConfigManager.targetGold / 2)
+            gold >= ConfigManager.GetTargetGold() / 2)
         {
             _isHalfGoldTargetDone = true;
             NewAchievement?.Invoke(halfTargetMessage);
         }
 
         if (!_isGoldTargetDone &&
-            gold >= ConfigManager.targetGold)
+            gold >= ConfigManager.GetTargetGold())
         {
             _isGoldTargetDone = true;
             NewAchievement?.Invoke(targetDoneMessage);

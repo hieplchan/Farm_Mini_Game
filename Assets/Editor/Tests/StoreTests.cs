@@ -210,7 +210,6 @@ public class StoreTests
 
     private void GivenStore()
     {
-        ConfigManager.Reload();
         _store = new Store();
         _rand = new Random();
         _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;

@@ -58,6 +58,16 @@ public class FarmGame : IPersistableObject
         _inventory = new Inventory();
         _store = new Store();
         _achievement = new Achievement();
+
+        for (int i = 0; i < ConfigManager.GetNewGameConfig().initWorker; i++)
+        {
+            AddWorker();
+        }
+
+        for (int i = 0; i < ConfigManager.GetNewGameConfig().initEquipLv; i++)
+        {
+            UpgradeEquipLv();
+        }
     }
 
     public void UpgradeEquipLv()

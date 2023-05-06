@@ -9,6 +9,9 @@ public class FarmGameView : MonoBehaviour
 {
     private FarmGamePresenter _presenter;
 
+    [Header("Game Setting")]
+    [SerializeField] private GameSetting _gameSetting;
+
     [Header("Farm Panel")]
     [SerializeField] private TMP_Text _farmPlotText;
 
@@ -24,7 +27,10 @@ public class FarmGameView : MonoBehaviour
 
     private void Start()
     {
-        _presenter = new FarmGamePresenter(this, Application.persistentDataPath);
+        FarmGameConfig config = GetConfigFromAsset();
+
+        _presenter = new FarmGamePresenter(this, config,
+            Application.persistentDataPath);
     }
 
     public void BuyCommoditySeed(int type)
@@ -170,5 +176,86 @@ public class FarmGameView : MonoBehaviour
     public virtual void ShowUpdatedLog(string text)
     {
         _logText.text = text + "\n" + _logText.text;
+    }
+
+    private FarmGameConfig GetConfigFromAsset()
+    {
+        FarmGameConfig config = ConfigManager.GetDefaultConfig();
+
+        //Game Config
+        config.targetGold = _gameSetting.targetGold;
+        config.productivityIncreasePerEquipLv = _gameSetting.productivityIncreasePerEquipLv;
+
+        //New Game
+        config.newGameConfig.initGold = _gameSetting.newGameResource.gold;
+        config.newGameConfig.initFarmPlot = _gameSetting.newGameResource.farmPlot;
+        config.newGameConfig.initWorker = _gameSetting.newGameResource.worker;
+        config.newGameConfig.initEquipLv = _gameSetting.newGameResource.equipLv;
+
+        config.newGameConfig.initSeeds[(int)CommodityType.Strawberry] =
+            _gameSetting.newGameResource.strawBerry;
+        config.newGameConfig.initSeeds[(int)CommodityType.Tomato] =
+            _gameSetting.newGameResource.tomato;
+        config.newGameConfig.initSeeds[(int)CommodityType.Blueberry] =
+            _gameSetting.newGameResource.blueBerry;
+        config.newGameConfig.initSeeds[(int)CommodityType.Cow] =
+            _gameSetting.newGameResource.cow;
+
+        //Commodity
+        config.commodityConfigs[(int)CommodityType.Strawberry].productCycleTime = 
+            _gameSetting.strawberryConfig.cycleTime;
+        config.commodityConfigs[(int)CommodityType.Strawberry].productCycleNum =
+            _gameSetting.strawberryConfig.cycleNum;
+        config.commodityConfigs[(int)CommodityType.Strawberry].dyingTime =
+            _gameSetting.strawberryConfig.dyingTime;
+
+        config.commodityConfigs[(int)CommodityType.Tomato].productCycleTime =
+            _gameSetting.tomatoConfig.cycleTime;
+        config.commodityConfigs[(int)CommodityType.Tomato].productCycleNum =
+            _gameSetting.tomatoConfig.cycleNum;
+        config.commodityConfigs[(int)CommodityType.Tomato].dyingTime =
+            _gameSetting.tomatoConfig.dyingTime;
+
+        config.commodityConfigs[(int)CommodityType.Blueberry].productCycleTime =
+            _gameSetting.blueberryConfig.cycleTime;
+        config.commodityConfigs[(int)CommodityType.Blueberry].productCycleNum =
+            _gameSetting.blueberryConfig.cycleNum;
+        config.commodityConfigs[(int)CommodityType.Blueberry].dyingTime =
+            _gameSetting.blueberryConfig.dyingTime;
+
+        config.commodityConfigs[(int)CommodityType.Cow].productCycleTime =
+            _gameSetting.cowConfig.cycleTime;
+        config.commodityConfigs[(int)CommodityType.Cow].productCycleNum =
+            _gameSetting.cowConfig.cycleNum;
+        config.commodityConfigs[(int)CommodityType.Cow].dyingTime =
+            _gameSetting.cowConfig.dyingTime;
+
+        //Store
+        config.storeConfig.farmPlotPrice = _gameSetting.storeConfig.farmPlotPrice;
+        config.storeConfig.hireWorkerPrice = _gameSetting.storeConfig.hireWorkerPrice;
+        config.storeConfig.equipUpgradePrice = _gameSetting.storeConfig.equipUpgradePrice;
+
+        config.storeConfig.seedPrices[(int)CommodityType.Strawberry] =
+            _gameSetting.storeConfig.strawBerryBuyPrice;
+        config.storeConfig.seedPrices[(int)CommodityType.Tomato] =
+            _gameSetting.storeConfig.tomatoBuyPrice;
+        config.storeConfig.seedPrices[(int)CommodityType.Blueberry] =
+            _gameSetting.storeConfig.blueBerryBuyPrice;
+        config.storeConfig.seedPrices[(int)CommodityType.Cow] =
+            _gameSetting.storeConfig.cowBuyPrice;
+
+        config.storeConfig.productPrices[(int)CommodityProductType.Strawberry] =
+            _gameSetting.storeConfig.strawBerrySellPrice;
+        config.storeConfig.productPrices[(int)CommodityProductType.Tomato] =
+            _gameSetting.storeConfig.tomatoSellPrice;
+        config.storeConfig.productPrices[(int)CommodityProductType.Blueberry] =
+            _gameSetting.storeConfig.blueBerrySellPrice;
+        config.storeConfig.productPrices[(int)CommodityProductType.Milk] =
+            _gameSetting.storeConfig.milkSellPrice;
+
+        //Worker
+        config.workerConfig.timeNeededPerTask = _gameSetting.workerConfig.timeNeededPerTask;
+
+        return config;
     }
 }

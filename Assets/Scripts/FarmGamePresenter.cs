@@ -13,9 +13,13 @@ public class FarmGamePresenter
     private PersistentStorage _persistentStorage;
     private bool _isGamePause = false;
 
-    public FarmGamePresenter(FarmGameView view, string persistentPath = "")
+    public FarmGamePresenter(FarmGameView view, 
+        FarmGameConfig config, string persistentPath = "")
     {
         _view = view;
+
+        ConfigManager.Reload(config);
+
         _farm = new FarmGame();
         _persistentStorage = new PersistentStorage(persistentPath);
 
