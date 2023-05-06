@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System;
 
-public class Farm
+public class FarmGame : IPersistableObject
 {
+    const int saveFormatVersion = 1;
+
     public event Action<int> GoldChanged;
     public int Gold
     {
@@ -36,10 +38,22 @@ public class Farm
     public List<Worker> Workers { get => _workers; }
     private List<Worker> _workers;
 
-    public Farm()
+    public Inventory Inventory => _inventory;
+    private Inventory _inventory;
+
+    public Store Store => _store;
+    private Store _store;
+
+    public Achievement Achievement => _achievement;
+    private Achievement _achievement;
+
+    public FarmGame()
     {
         _plots = new List<FarmPlot>();
         _workers = new List<Worker>();
+        _inventory = new Inventory();
+        _store = new Store();
+        _achievement = new Achievement();
     }
 
     public void UpgradeEquipLv()
@@ -106,5 +120,23 @@ public class Farm
     private void OnWorkerChanged()
     {
         WorkerChanged?.Invoke();
+    }
+
+    public void Save(GameDataWriter writer)
+    {
+        writer.Write(saveFormatVersion);
+        _inventory.Save(writer);
+        _achievement.Save(writer);
+    }
+
+    public void Load(GameDataReader reader)
+    {
+        int formatVersion = reader.ReadInt();
+        _inventory.Load(reader);
+        _achievement.Load(reader);
+
+        MLog.Log("FarmGame", 
+            "Load saved game, format version: " +
+            formatVersion);
     }
 }

@@ -168,7 +168,7 @@ public partial class FarmGamePresenterTests
 
         CommodityProductType type =
             (CommodityProductType)_rand.Next(1, _commodityTypeCount - 1);
-        int quantity = _presenter.Inventory.Products[(int)type];
+        int quantity = _presenter.Farm.Inventory.Products[(int)type];
         _presenter.SellCommodityProduct((int)type);
 
         Assert.IsTrue(_presenter.Farm.Gold == 
@@ -282,7 +282,7 @@ public partial class FarmGamePresenterTests
 
         _presenter.Farm.Gold += ConfigManager.targetGold / 2 + 1;
 
-        ThenShowUpdatedLog(_presenter.Achievement.halfTargetMessage);
+        ThenShowUpdatedLog(_presenter.Farm.Achievement.halfTargetMessage);
     }
 
     [Test]
@@ -292,7 +292,7 @@ public partial class FarmGamePresenterTests
 
         _presenter.Farm.Gold += ConfigManager.targetGold;
 
-        ThenShowUpdatedLog(_presenter.Achievement.targetDoneMessage);
+        ThenShowUpdatedLog(_presenter.Farm.Achievement.targetDoneMessage);
     }
     #endregion
 

@@ -1,6 +1,6 @@
 using System;
 
-public class Achievement
+public class Achievement : IPersistableObject
 {
     public event Action<string> NewAchievement;
 
@@ -27,5 +27,16 @@ public class Achievement
             NewAchievement?.Invoke(targetDoneMessage);
             isGoldTargetDone = true;
         }
+    }
+
+    public void Save(GameDataWriter writer)
+    {
+        writer.Write(90000);
+    }
+
+    public void Load(GameDataReader reader)
+    {
+        int tmp = reader.ReadInt();
+        MLog.Log("Achievement", "Loaded: " + tmp);
     }
 }
