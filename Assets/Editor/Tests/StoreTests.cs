@@ -56,6 +56,50 @@ public class StoreTests
     }
 
     [Test]
+    public void WhenNoGoldCanNotHireWorker()
+    {
+        GivenStore();
+
+        bool isSuccess = _store.HireWorker(
+            _rand.Next(10, 100), 0, out int neededGold);
+
+        Assert.IsFalse(isSuccess);
+    }
+
+    [Test]
+    public void WhenNoGoldHireWorkerNeededGoldIsZero()
+    {
+        GivenStore();
+
+        _store.HireWorker(_rand.Next(10, 100), 0, out int neededGold);
+
+        Assert.IsTrue(neededGold.Equals(0));
+    }
+
+    [Test]
+    public void WhenFullGoldCanHireWorker()
+    {
+        GivenStore();
+
+        bool isSuccess = _store.HireWorker(
+            _rand.Next(10, 100), int.MaxValue, out int neededGold);
+
+        Assert.IsTrue(isSuccess);
+    }
+
+    [Test]
+    public void WhenFullGoldHireWorkerCorrectNeededGold()
+    {
+        GivenStore();
+
+        int quantity = _rand.Next(10, 100);
+        _store.HireWorker(quantity, int.MaxValue, out int neededGold);
+
+        Assert.IsTrue(neededGold.Equals(
+            ConfigManager.GetStoreHireWorkerPrice() * quantity));
+    }
+
+    [Test]
     public void WhenNoGoldCanNotUpgradeEquipment()
     {
         GivenStore();

@@ -178,14 +178,19 @@ public partial class FarmGamePresenterTests
 
     #region Hire Worker
     [Test]
-    public void WhenHireWorkerGoldDecrease()
+    public void WhenHireWorkerGoldDecreaseCorrectAmount()
     {
         GivenAFarmGameWithMaxGold();
         int initGold = _presenter.Farm.Gold;
 
-        WhenHireWorker();
+        int quantity = _rand.Next(0, 100);
+        for (int i = 0; i < quantity; i++)
+        {
+            WhenHireWorker();
+        }
 
-        ThenGoldDecrease(initGold);
+        Assert.IsTrue(_presenter.Farm.Gold.Equals(initGold -
+            quantity * ConfigManager.GetStoreHireWorkerPrice()));
     }
 
     [Test]
@@ -196,6 +201,21 @@ public partial class FarmGamePresenterTests
         WhenHireWorker();
 
         ThenShowsUpdatedGold();
+    }
+
+    [Test]
+    public void WhenHireWorkerWorkerListCountIncrease()
+    {
+        GivenAFarmGameWithMaxGold();
+        int count = _presenter.Farm.Workers.Count;
+
+        int quantity = _rand.Next(0, 100);
+        for (int i = 0; i < quantity; i++)
+        {
+            WhenHireWorker();
+        }
+
+        Assert.IsTrue(_presenter.Farm.Workers.Count.Equals(count + quantity));
     }
     #endregion
 

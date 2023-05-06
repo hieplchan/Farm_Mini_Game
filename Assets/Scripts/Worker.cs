@@ -47,6 +47,9 @@ public class Worker
 
     public bool SearchForJob(Farm farm, Inventory inventory)
     {
+        if (State != WorkerState.Idle)
+            return false;
+
         if (SearchForHarvestJob(farm, inventory))
             return true;
 
@@ -87,7 +90,7 @@ public class Worker
         return false;
     }
 
-    private void Harvest(FarmPlot plot, Inventory inventory)
+    public void Harvest(FarmPlot plot, Inventory inventory)
     {
         int productCount = plot.Commodity.Harvest();
         CommodityProductType productType =
@@ -97,7 +100,7 @@ public class Worker
             "I collect {0} {1}", productCount, productType.ToString()));
     }
 
-    private void Plant(FarmPlot plot, Inventory inventory)
+    public void Plant(FarmPlot plot, Inventory inventory)
     {
         Commodity seed = inventory.GetAvailableSeed();
         plot.Plant(seed);
