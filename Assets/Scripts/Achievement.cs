@@ -4,8 +4,10 @@ public class Achievement : IPersistableObject
 {
     public event Action<string> NewAchievement;
 
-    bool isHalfGoldTargetDone = false;
-    bool isGoldTargetDone = false;
+    public bool IsHalfTargetDone { get => _isHalfGoldTargetDone; }
+    bool _isHalfGoldTargetDone = false;
+    public bool IsGoldTargetDone { get => _isGoldTargetDone; }
+    bool _isGoldTargetDone = false;
 
     public string halfTargetMessage = "Halfway to heaven bro, keep going <3";
     public string targetDoneMessage =
@@ -14,29 +16,33 @@ public class Achievement : IPersistableObject
 
     public void OnGoldChanged(int gold)
     {
-        if (!isHalfGoldTargetDone && 
+        if (!_isHalfGoldTargetDone && 
             gold >= ConfigManager.targetGold / 2)
         {
             NewAchievement?.Invoke(halfTargetMessage);
-            isHalfGoldTargetDone = true;
+            _isHalfGoldTargetDone = true;
         }
 
-        if (!isGoldTargetDone &&
+        if (!_isGoldTargetDone &&
             gold >= ConfigManager.targetGold)
         {
             NewAchievement?.Invoke(targetDoneMessage);
-            isGoldTargetDone = true;
+            _isGoldTargetDone = true;
         }
     }
 
     public void Save(GameDataWriter writer)
     {
-        writer.Write(90000);
+        writer.Write(_isHalfGoldTargetDone);
+        writer.Write(_isGoldTargetDone);
     }
 
     public void Load(GameDataReader reader)
     {
-        int tmp = reader.ReadInt();
-        MLog.Log("Achievement", "Loaded: " + tmp);
+        _isHalfGoldTargetDone = reader.ReadBool();
+        _isGoldTargetDone = reader.ReadBool();
+        MLog.Log("Achievement", string.Format(
+            "Load half done {0}, done {1}",
+            _isHalfGoldTargetDone, _isGoldTargetDone));
     }
 }
