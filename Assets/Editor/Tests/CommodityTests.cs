@@ -71,11 +71,11 @@ public class CommodityTests
     }
 
     [Test]
-    public void AfterMatureProductEqualCycleNum()
+    public void WhenLiveProductEqualCycleNum()
     {
         GivenRandomCommodity();
 
-        AfterMature();
+        WhenAlive();
 
         AvailableProductEqual(_config.productCycleNum);
     }
@@ -150,6 +150,13 @@ public class CommodityTests
     {
         Plant();
         while (_commodity.State == CommodityState.Mature)
+            _commodity.GameUpdate(1);
+    }
+
+    private void WhenAlive()
+    {
+        Plant();
+        while (_commodity.State != CommodityState.Dead)
             _commodity.GameUpdate(1);
     }
 

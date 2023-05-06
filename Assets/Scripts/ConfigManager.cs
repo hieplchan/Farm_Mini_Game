@@ -80,6 +80,8 @@ public static class ConfigManager
 
     public static void Reload()
     {
+        MLog.Log("ConfigManager", "Reload");
+
         // Game Config
         targetGold = 1000000;
         productivityIncreasePerEquipLv = 10;
@@ -87,10 +89,10 @@ public static class ConfigManager
         // New Game
         newGameConfig.initGold = 9999;
         newGameConfig.initFarmPlot = 6;
-        newGameConfig.initSeeds[(int)CommodityType.Strawberry] = 1;
-        newGameConfig.initSeeds[(int)CommodityType.Tomato] = 0;
-        newGameConfig.initSeeds[(int)CommodityType.Blueberry] = 0;
-        newGameConfig.initSeeds[(int)CommodityType.Cow] = 0;
+        newGameConfig.initSeeds[(int)CommodityType.Strawberry] = 3;
+        newGameConfig.initSeeds[(int)CommodityType.Tomato] = 4;
+        newGameConfig.initSeeds[(int)CommodityType.Blueberry] = 5;
+        newGameConfig.initSeeds[(int)CommodityType.Cow] = 6;
 
         // Commodity
         commodityConfigs[(int)CommodityType.Strawberry].productCycleTime = 1;
@@ -98,7 +100,6 @@ public static class ConfigManager
         commodityConfigs[(int)CommodityType.Strawberry].dyingTime = 3;
 
         commodityConfigs[(int)CommodityType.Tomato].productCycleTime = 1;
-        commodityConfigs[(int)CommodityType.Tomato].productCycleNum = 3;
         commodityConfigs[(int)CommodityType.Tomato].dyingTime = 3;
 
         commodityConfigs[(int)CommodityType.Blueberry].productCycleTime = 1;

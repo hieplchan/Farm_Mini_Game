@@ -89,7 +89,7 @@ public class Commodity
     }
     private void CheckNewProduct()
     {
-        if (_totalProduct > _productCycleNum)
+        if (_totalProduct >= _productCycleNum)
             return;
 
         if (Age > (_totalProduct + 1) * _productCycleTime)
