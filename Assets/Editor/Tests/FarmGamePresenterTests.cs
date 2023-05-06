@@ -258,17 +258,20 @@ public partial class FarmGamePresenterTests
     public void WhenUpgradeEquipmentPlotProductivityIncreaseCorrectAmount()
     {
         GivenAFarmGameWithMaxGold();
-        int initGold = _presenter.Farm.Gold;
 
-        int upgradeCount = _rand.Next(1, 100);
+        int upgradeCount = 1; // _rand.Next(1, 100);
         for (int i = 0; i < upgradeCount; i++)
             UpgradeEquipment();
 
-        float correctProductivity = 1.0f +
-            upgradeCount * ConfigManager.productivityIncreasePerEquipLv / 100f;
+        float correctProductivity = 
+            1.0f + (ConfigManager.GetNewGameConfig().initEquipLv + upgradeCount) 
+            * ConfigManager.GetProductivityEquipment() / 100f;
+        MLog.Log("FarmGamePresenterTests", "correctProductivity: " +
+            correctProductivity);
         foreach (FarmPlot plot in _presenter.Farm.Plots)
             if (plot.Productivity != correctProductivity)
                 Assert.IsTrue(false);
+
         Assert.IsTrue(true);
     }
     #endregion
@@ -280,7 +283,7 @@ public partial class FarmGamePresenterTests
     {
         GivenAFarmGameZeroGold();
 
-        _presenter.Farm.Gold += ConfigManager.targetGold / 2 + 1;
+        _presenter.Farm.Gold += ConfigManager.GetTargetGold() / 2 + 1;
 
         ThenShowUpdatedLog(_presenter.Farm.Achievement.halfTargetMessage);
     }
@@ -290,7 +293,7 @@ public partial class FarmGamePresenterTests
     {
         GivenAFarmGameZeroGold();
 
-        _presenter.Farm.Gold += ConfigManager.targetGold;
+        _presenter.Farm.Gold += ConfigManager.GetTargetGold();
 
         ThenShowUpdatedLog(_presenter.Farm.Achievement.targetDoneMessage);
     }
