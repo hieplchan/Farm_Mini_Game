@@ -90,12 +90,39 @@ public class Inventory : IPersistableObject
 
     public void Save(GameDataWriter writer)
     {
-        writer.Write(10000);
+        // save seed list
+        int seedsLength = _seeds.Length;
+        writer.Write(seedsLength);
+        for (int i = 0; i < seedsLength; i++)
+        {
+            writer.Write(_seeds[i]);
+        }
+
+        // save products list
+        int productsLength = _products.Length;
+        for (int i = 0; i < productsLength; i++)
+        {
+            writer.Write(_products[i]);
+        }
     }
 
     public void Load(GameDataReader reader)
     {
-        int tmp = reader.ReadInt();
-        MLog.Log("Inventory", "Loaded: " + tmp);
+        // load seed list
+        int seedsLength = reader.ReadInt();
+        for (int i = 0; i < seedsLength; i++)
+        {
+            _seeds[i] = reader.ReadInt();
+        }
+
+        // load products list
+        int productsLength = reader.ReadInt();
+        for (int i = 0; i < productsLength; i++)
+        {
+            _products[i] = reader.ReadInt();
+        }
+
+        NotifySeedsChange();
+        NotifyProductsChanged();
     }
 }

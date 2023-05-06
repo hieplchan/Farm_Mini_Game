@@ -23,4 +23,9 @@ public class GameDataReader
     {
         return reader.ReadSingle();
     }
+
+    public long ReadLong()
+    {
+        return reader.ReadInt64();
+    }
 }

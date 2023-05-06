@@ -124,19 +124,34 @@ public class FarmGame : IPersistableObject
 
     public void Save(GameDataWriter writer)
     {
+        long currentTimeStamp = TimeUtils.CurrentTimeStamp();
+
         writer.Write(saveFormatVersion);
+        writer.Write(currentTimeStamp);
+
         _inventory.Save(writer);
         _achievement.Save(writer);
+
+        MLog.Log("FarmGame",
+            "Save game at " + currentTimeStamp);
     }
 
     public void Load(GameDataReader reader)
     {
+        long currentTimeStamp = TimeUtils.CurrentTimeStamp();
+
         int formatVersion = reader.ReadInt();
+        long savedTimeStamp = reader.ReadLong();
+
         _inventory.Load(reader);
         _achievement.Load(reader);
 
-        MLog.Log("FarmGame", 
-            "Load saved game, format version: " +
-            formatVersion);
+        long timeDiffSec = currentTimeStamp - savedTimeStamp;
+        MLog.Log("FarmGame", string.Format( 
+            "Load saved game at {0} \n" +
+            "Format version: {1}\n" +
+            "savedTimeStamp: {2}\n" +
+            "timeDiffSec: {3}\n",
+            currentTimeStamp, formatVersion, savedTimeStamp, timeDiffSec));
     }
 }

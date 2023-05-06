@@ -23,4 +23,9 @@ public class GameDataWriter
     {
         writer.Write(value);
     }
+
+    public void Write(long value)
+    {
+        writer.Write(value);
+    }
 }
