@@ -50,6 +50,12 @@ public class FarmPlot : IPersistableObject
         NotifyPlotChange();
     }
 
+    private void AddCommodity(Commodity commodity)
+    {
+        _commodity = commodity;
+        _commodity.SetPlot(this);
+    }
+
     private void NotifyPlotChange()
     {
         PlotChanged?.Invoke();
@@ -115,7 +121,7 @@ public class FarmPlot : IPersistableObject
             type = reader.ReadInt();
             Commodity commodity = new Commodity((CommodityType)type);
             commodity.Load(reader);
-            _commodity = commodity;
+            AddCommodity(commodity);
         }
 
         NotifyPlotChange();

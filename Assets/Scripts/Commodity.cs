@@ -104,9 +104,14 @@ public class Commodity : IPersistableObject
 
     public void Plant(FarmPlot plot)
     {
-        _plot = plot;
+        SetPlot(plot);
         State = CommodityState.Mature;
         MLog.Log(Type.ToString(), "Plant");
+    }
+
+    public void SetPlot(FarmPlot plot)
+    {
+        _plot = plot;
     }
 
     public int Harvest()
@@ -126,11 +131,39 @@ public class Commodity : IPersistableObject
 
     public void Save(GameDataWriter writer)
     {
-        //throw new System.NotImplementedException();
+        writer.Write(Age);
+        writer.Write((int)State);
+        writer.Write(_availableProduct);
+        writer.Write(_harvestedProduct);
+        writer.Write(_totalProduct);
+
+        MLog.Log("Commodity", string.Format(
+            "Save: \n" +
+            "Age: {0}\n" +
+            "State: {1}\n" +
+            "_availableProduct: {2}\n" +
+            "_harvestedProduct: {3}\n" +
+            "_totalProduct: {4}",
+            Age, State.ToString(), _availableProduct, 
+            _harvestedProduct, _totalProduct));
     }
 
     public void Load(GameDataReader reader)
     {
-        //throw new System.NotImplementedException();
+        Age = reader.ReadFloat();
+        State = (CommodityState)reader.ReadInt();
+        _availableProduct = reader.ReadInt();
+        _harvestedProduct = reader.ReadInt();
+        _totalProduct = reader.ReadInt();
+
+        MLog.Log("Commodity", string.Format(
+            "Load: \n" +
+            "Age: {0}\n" +
+            "State: {1}\n" +
+            "_availableProduct: {2}\n" +
+            "_harvestedProduct: {3}\n" +
+            "_totalProduct: {4}",
+            Age, State.ToString(), _availableProduct,
+            _harvestedProduct, _totalProduct));
     }
 }
