@@ -11,7 +11,7 @@ public class WorkerTest
     private Random _rand;
     private int _commodityTypeCount;
     private Worker _worker;
-    private Farm _farm;
+    private FarmGame _farm;
     private Inventory _inventory;
     CommodityType _commodityType;
 
@@ -131,7 +131,7 @@ public class WorkerTest
         CommodityType type = (CommodityType)_rand.Next(0, _commodityTypeCount - 1);
 
         _worker = new Worker();
-        _farm = new Farm();
+        _farm = new FarmGame();
         _inventory = new Inventory();
     }
 
@@ -142,7 +142,7 @@ public class WorkerTest
         CommodityType type = (CommodityType)_rand.Next(0, _commodityTypeCount - 1);
 
         _worker = new Worker();
-        _farm = new Farm();
+        _farm = new FarmGame();
         _inventory = new Inventory();
 
         _farm.AddPlot();

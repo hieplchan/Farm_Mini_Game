@@ -30,7 +30,7 @@ public partial class FarmGamePresenterTests
         _presenter = new FarmGamePresenter(_view);
         _rand = new Random();
         _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
-        Array.Fill(_presenter.Inventory.Seeds, _rand.Next(10, 100));
+        Array.Fill(_presenter.Farm.Inventory.Seeds, _rand.Next(10, 100));
     }
 
     private void GivenAFarmGameInventoryHaveProduct()
@@ -39,7 +39,7 @@ public partial class FarmGamePresenterTests
         _presenter = new FarmGamePresenter(_view);
         _rand = new Random();
         _commodityTypeCount = Enum.GetNames(typeof(CommodityType)).Length;
-        Array.Fill(_presenter.Inventory.Products, _rand.Next(10, 100));
+        Array.Fill(_presenter.Farm.Inventory.Products, _rand.Next(10, 100));
     }
     #endregion
 
@@ -73,7 +73,7 @@ public partial class FarmGamePresenterTests
         int quantity = _rand.Next(10, 100);
         CommodityProductType type =
             (CommodityProductType)_rand.Next(1, _commodityTypeCount - 1);
-        int gold = _presenter.Store.SellCommodityProduct(type, quantity);
+        int gold = _presenter.Farm.Store.SellCommodityProduct(type, quantity);
     }
 
     private void WhenBuyFarmPlot(int quantity = 1)
@@ -120,13 +120,13 @@ public partial class FarmGamePresenterTests
     private void ThenShowUpdatedInventorySeeds()
     {
         _view.Received().ShowUpdatedInventorySeeds(Arg.Is<int[]>(
-            value => _presenter.Inventory.Seeds.SequenceEqual(value)));
+            value => _presenter.Farm.Inventory.Seeds.SequenceEqual(value)));
     }
 
     private void ThenShowUpdatedInventoryProducts()
     {
         _view.Received().ShowUpdatedInventoryProducts(Arg.Is<int[]>(
-            value => _presenter.Inventory.Products.SequenceEqual(value)));
+            value => _presenter.Farm.Inventory.Products.SequenceEqual(value)));
     }
 
     private void ThenShowUpdatedLog(string randomString)

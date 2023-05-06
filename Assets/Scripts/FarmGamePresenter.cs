@@ -4,33 +4,29 @@ using System.Linq;
 
 public class FarmGamePresenter
 {
-    public Farm Farm { get => _farm; }
-    public Inventory Inventory { get => _inventory; }
-    public Store Store { get => _store; }
-    public Achievement Achievement { get => _achievement; }
+    const long REFRESH_LOADING_DURATION_SEC = 30;
+
+    public FarmGame Farm { get => _farm; }
 
     private FarmGameView _view;
-    private Farm _farm;
-    private Inventory _inventory;
-    private Store _store;
-    private Achievement _achievement;
+    private FarmGame _farm;
+    private PersistentStorage _persistentStorage;
+    private bool _isGamePause = false;
 
-    public FarmGamePresenter(FarmGameView view)
+    public FarmGamePresenter(FarmGameView view, string persistentPath = "")
     {
         _view = view;
-        _farm = new Farm();
-        _inventory = new Inventory();
-        _store = new Store();
-        _achievement = new Achievement();
+        _farm = new FarmGame();
+        _persistentStorage = new PersistentStorage(persistentPath);
 
         _farm.GoldChanged += OnGoldChanged;
-        _farm.GoldChanged += _achievement.OnGoldChanged;
+        _farm.GoldChanged += _farm.Achievement.OnGoldChanged;
         _farm.EquipLvChanged += OnEquipLvChanged;
         _farm.FarmPlotChanged += OnFarmPlotsChanged;
         _farm.WorkerChanged += OnFarmWorkerChanged;
-        _inventory.SeedsChanged += OnInventorySeedsChanged;
-        _inventory.ProductsChanged += OnInventoryProductsChanged;
-        _achievement.NewAchievement += OnNewAchievement;
+        _farm.Inventory.SeedsChanged += OnInventorySeedsChanged;
+        _farm.Inventory.ProductsChanged += OnInventoryProductsChanged;
+        _farm.Achievement.NewAchievement += OnNewAchievement;
         Logger.Instance.NewLog += OnNewLog;
 
         ShowUpdatedGoldAndEquipLevel();
@@ -53,7 +49,7 @@ public class FarmGamePresenter
         }
         for (int i = 0; i < config.initSeeds.Length; i++)
         {
-            _inventory.AddSeed((CommodityType)i, config.initSeeds[i]);
+            _farm.Inventory.AddSeed((CommodityType)i, config.initSeeds[i]);
         }
 
         Logger.Instance.Log("Do you want to play, let's play!");
@@ -62,10 +58,10 @@ public class FarmGamePresenter
     public void BuyCommoditySeed(int type)
     {
         CommodityType seedType = (CommodityType)type;
-        if (_store.BuyCommoditySeed(seedType, 1, _farm.Gold, out int neededGold))
+        if (_farm.Store.BuyCommoditySeed(seedType, 1, _farm.Gold, out int neededGold))
         {
             _farm.Gold -= neededGold;
-            _inventory.AddSeed(seedType);
+            _farm.Inventory.AddSeed(seedType);
         }
         else
         {
@@ -78,7 +74,7 @@ public class FarmGamePresenter
         FarmPlot freePlot = _farm.GetFreePlot();
         if (freePlot != null)
         {
-            Commodity seed = _inventory.GetSeed((CommodityType)type);
+            Commodity seed = _farm.Inventory.GetSeed((CommodityType)type);
             if (seed != null)
             {
                 freePlot.Plant(seed);
@@ -103,7 +99,7 @@ public class FarmGamePresenter
             if (plot.HasCommodity)
                 if (plot.Commodity.Type == (CommodityType)type &&
                     plot.Commodity.AvailableProduct > 0)
-                    _inventory.AddProduct((CommodityProductType)type, 
+                    _farm.Inventory.AddProduct((CommodityProductType)type, 
                         plot.Commodity.Harvest());
         }
     }
@@ -111,13 +107,13 @@ public class FarmGamePresenter
     public void SellCommodityProduct(int type)
     {
         CommodityProductType productType = (CommodityProductType)type;
-        _farm.Gold += _store.SellCommodityProduct(productType, 
-            _inventory.GetAllProduct(productType));
+        _farm.Gold += _farm.Store.SellCommodityProduct(productType,
+            _farm.Inventory.GetAllProduct(productType));
     }
 
     public void BuyFarmPlot()
     {
-        if (_store.BuyFarmPlot(1, _farm.Gold, out int neededGold)) 
+        if (_farm.Store.BuyFarmPlot(1, _farm.Gold, out int neededGold)) 
         {
             _farm.Gold -= neededGold;
             _farm.AddPlot();
@@ -130,7 +126,7 @@ public class FarmGamePresenter
 
     public void HireWorker()
     {
-        if (_store.HireWorker(1, _farm.Gold, out int neededGold))
+        if (_farm.Store.HireWorker(1, _farm.Gold, out int neededGold))
         {
             _farm.Gold -= neededGold;
             _farm.AddWorker();
@@ -143,7 +139,7 @@ public class FarmGamePresenter
 
     public void UpgradeEquipment()
     {
-        if (_store.UpgradeEquipment(1, _farm.Gold, out int neededGold))
+        if (_farm.Store.UpgradeEquipment(1, _farm.Gold, out int neededGold))
         {
             _farm.Gold -= neededGold;
             _farm.UpgradeEquipLv();
@@ -154,23 +150,65 @@ public class FarmGamePresenter
         }
     }
 
+    public void SaveGame()
+    {
+        _isGamePause = true;
+        _persistentStorage.Save(_farm);
+        Logger.Instance.Log("Game Saved");
+        _isGamePause = false;
+    }
+
+    // This is very simple load method
+    // I can improve if I have more time
+    // 1: Move to another thread to not block UI
+    // 2: Escape while loop when no job to do...
+    public void LoadGame()
+    {
+        _isGamePause = true;
+        _persistentStorage.Load(_farm);
+
+        MLog.Log("FarmGamePresenter", 
+            "LoadGame timeDiff: " +
+            _farm.differentTimeFromLastSave);
+
+        while (_farm.differentTimeFromLastSave > REFRESH_LOADING_DURATION_SEC)
+        {
+            _farm.differentTimeFromLastSave -= REFRESH_LOADING_DURATION_SEC;
+            FarmGameUpdate(REFRESH_LOADING_DURATION_SEC);
+        }
+
+        _isGamePause = false;
+        Logger.Instance.Log("Game Loaded");
+    }
+
     public void GameUpdate(float deltaTime)
     {
-        foreach (FarmPlot plot in _farm.Plots)
+        if (!_isGamePause)
         {
-            plot.GameUpdate(deltaTime);
+            FarmGameUpdate(deltaTime);
         }
+    }
 
-        foreach (Worker worker in _farm.Workers)
+    private void FarmGameUpdate(float deltaTime)
+    {
+        if (!_farm.isGameFinish)
         {
-            worker.GameUpdate(deltaTime);
-        }
+            foreach (FarmPlot plot in _farm.Plots)
+            {
+                plot.GameUpdate(deltaTime);
+            }
 
-        // Ask Idle workers to find a job, don't stay unemployed
-        foreach (Worker worker in _farm.Workers)
-        {
-            if (worker.State == WorkerState.Idle)
-                worker.SearchForJob(_farm, _inventory);
+            foreach (Worker worker in _farm.Workers)
+            {
+                worker.GameUpdate(deltaTime);
+            }
+
+            // Ask Idle workers to find a job, don't stay unemployed
+            foreach (Worker worker in _farm.Workers)
+            {
+                if (worker.State == WorkerState.Idle)
+                    worker.SearchForJob(_farm, _farm.Inventory);
+            }
         }
     }
 
@@ -211,6 +249,10 @@ public class FarmGamePresenter
 
     private void OnNewAchievement(string achievementMessage)
     {
+        if (_farm.Achievement.IsGoldTargetDone)
+        {
+            _farm.isGameFinish = true;
+        }
         Logger.Instance.Log(achievementMessage);
     }
 
@@ -231,11 +273,11 @@ public class FarmGamePresenter
 
     private void ShowUpdatedInventorySeeds()
     {
-        _view.ShowUpdatedInventorySeeds(_inventory.Seeds);
+        _view.ShowUpdatedInventorySeeds(_farm.Inventory.Seeds);
     }
 
     private void ShowUpdatedInventoryProducts()
     {
-        _view.ShowUpdatedInventoryProducts(_inventory.Products);
+        _view.ShowUpdatedInventoryProducts(_farm.Inventory.Products);
     }
 }

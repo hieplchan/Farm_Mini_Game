@@ -27,7 +27,7 @@ public class Worker
 
     public Worker()
     {
-        Logger.Instance.Log("Thanks for having me <3");
+        Logger.Instance.Log("_worker: Thanks for having me <3");
         State = WorkerState.Idle;
         _timeNeededPerTask = 
             ConfigManager.GetWorkerConfig().timeNeededPerTask.MinToSec();
@@ -45,7 +45,7 @@ public class Worker
         }
     }
 
-    public bool SearchForJob(Farm farm, Inventory inventory)
+    public bool SearchForJob(FarmGame farm, Inventory inventory)
     {
         if (State != WorkerState.Idle)
             return false;
@@ -59,7 +59,7 @@ public class Worker
         return false; // no job founded
     }
 
-    private bool SearchForHarvestJob(Farm farm, Inventory inventory)
+    private bool SearchForHarvestJob(FarmGame farm, Inventory inventory)
     {
         foreach (FarmPlot plot in farm.Plots)
         {
@@ -75,7 +75,7 @@ public class Worker
         return false;
     }
 
-    private bool SearchForPlantJob(Farm farm, Inventory inventory)
+    private bool SearchForPlantJob(FarmGame farm, Inventory inventory)
     {
         foreach (FarmPlot plot in farm.Plots)
         {
@@ -97,7 +97,7 @@ public class Worker
             (CommodityProductType)plot.Commodity.Type;
         inventory.AddProduct(productType, productCount);
         Logger.Instance.Log(string.Format(
-            "I collect {0} {1}", productCount, productType.ToString()));
+            "_worker: I collect {0} {1}", productCount, productType.ToString()));
     }
 
     public void Plant(FarmPlot plot, Inventory inventory)
@@ -105,7 +105,7 @@ public class Worker
         Commodity seed = inventory.GetAvailableSeed();
         plot.Plant(seed);
         Logger.Instance.Log(string.Format(
-            "I plant {0}", seed.Type.ToString()));
+            "_worker: I plant {0}", seed.Type.ToString()));
     }
 
     private void StartWorking(FarmPlot plot)

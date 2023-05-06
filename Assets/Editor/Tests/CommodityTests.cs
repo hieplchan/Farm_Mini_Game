@@ -46,7 +46,7 @@ public class CommodityTests
     {
         GivenRandomCommodity();
 
-        int cycleCount = _rand.Next(1, _config.productCycleNum - 1);
+        int cycleCount = _rand.Next(0, _config.productCycleNum - 1);
         WhenMature(cycleCount);
         int harvestedProduct = _commodity.Harvest();
 
@@ -58,7 +58,7 @@ public class CommodityTests
     {
         GivenRandomCommodity();
 
-        int cycleCount = _rand.Next(1, _config.productCycleNum - 1);
+        int cycleCount = _rand.Next(0, _config.productCycleNum - 1);
         WhenMature(cycleCount);
         _commodity.GameUpdate(59); //offset 59 sec
         int harvestedProduct = _commodity.Harvest();

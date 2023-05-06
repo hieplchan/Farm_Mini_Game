@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-public class Inventory
+public class Inventory : IPersistableObject
 {
     public event Action SeedsChanged;
     public int[] Seeds { get => _seeds; }
@@ -86,5 +86,44 @@ public class Inventory
     private void NotifyProductsChanged()
     {
         ProductsChanged?.Invoke();
+    }
+
+    public void Save(GameDataWriter writer)
+    {
+        // save seed list
+        int seedsLength = _seeds.Length;
+        writer.Write(seedsLength);
+        for (int i = 0; i < seedsLength; i++)
+        {
+            writer.Write(_seeds[i]);
+        }
+
+        // save products list
+        int productsLength = _products.Length;
+        writer.Write(productsLength);
+        for (int i = 0; i < productsLength; i++)
+        {
+            writer.Write(_products[i]);
+        }
+    }
+
+    public void Load(GameDataReader reader)
+    {
+        // load seed list
+        int seedsLength = reader.ReadInt();
+        for (int i = 0; i < seedsLength; i++)
+        {
+            _seeds[i] = reader.ReadInt();
+        }
+
+        // load products list
+        int productsLength = reader.ReadInt();
+        for (int i = 0; i < productsLength; i++)
+        {
+            _products[i] = reader.ReadInt();
+        }
+
+        NotifySeedsChange();
+        NotifyProductsChanged();
     }
 }

@@ -24,7 +24,7 @@ public class FarmGameView : MonoBehaviour
 
     private void Start()
     {
-        _presenter = new FarmGamePresenter(this);
+        _presenter = new FarmGamePresenter(this, Application.persistentDataPath);
     }
 
     public void BuyCommoditySeed(int type)
@@ -59,6 +59,16 @@ public class FarmGameView : MonoBehaviour
     public void UpgradeEquipment()
     {
         _presenter.UpgradeEquipment();
+    }
+
+    public void SaveGame()
+    {
+        _presenter.SaveGame();
+    }
+
+    public void LoadGame()
+    {
+        _presenter.LoadGame();
     }
 
     private void Update()

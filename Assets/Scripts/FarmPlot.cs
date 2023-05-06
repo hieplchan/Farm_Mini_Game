@@ -1,6 +1,6 @@
 using System;
 
-public class FarmPlot
+public class FarmPlot : IPersistableObject
 {
     public event Action PlotChanged;
     public bool HasCommodity { get => _commodity != null; }
@@ -50,6 +50,12 @@ public class FarmPlot
         NotifyPlotChange();
     }
 
+    private void AddCommodity(Commodity commodity)
+    {
+        _commodity = commodity;
+        _commodity.SetPlot(this);
+    }
+
     private void NotifyPlotChange()
     {
         PlotChanged?.Invoke();
@@ -79,5 +85,54 @@ public class FarmPlot
     public void RemoveWorker()
     {
         _currentWorker = null;
+    }
+
+    public void Save(GameDataWriter writer)
+    {
+        writer.Write(_productivity);
+        writer.Write(_availableProduct);
+        writer.Write(HasCommodity);
+        int type = -1;
+        if (HasCommodity)
+        {
+            type = (int)_commodity.Type;
+            writer.Write(type);
+            _commodity.Save(writer);
+        }
+
+        MLog.Log("FarmPlot", string.Format(
+            "Save: \n" +
+            "_productivity: {0}\n" +
+            "_availableProduct: {1}\n" +
+            "HasCommodity: {2}\n" +
+            "type: {3}",
+            _productivity, _availableProduct, HasCommodity,
+            type >=0 ? ((CommodityType)type).ToString() : type));
+    }
+
+    public void Load(GameDataReader reader)
+    {
+        _productivity = reader.ReadFloat();
+        _availableProduct = reader.ReadInt();
+        bool hasCommodity = reader.ReadBool();
+        int type = -1;
+        if (hasCommodity)
+        {
+            type = reader.ReadInt();
+            Commodity commodity = new Commodity((CommodityType)type);
+            commodity.Load(reader);
+            AddCommodity(commodity);
+        }
+
+        NotifyPlotChange();
+
+        MLog.Log("FarmPlot", string.Format(
+            "Load: \n" +
+            "_productivity: {0}\n" +
+            "_availableProduct: {1}\n" +
+            "HasCommodity: {2}\n" +
+            "type: {3}",
+            _productivity, _availableProduct, hasCommodity,
+            type >= 0 ? ((CommodityType)type).ToString() : type));
     }
 }
