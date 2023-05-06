@@ -146,6 +146,11 @@ public class FarmGame : IPersistableObject
         writer.Write(_gold);
         writer.Write(_equipLv);
 
+        // worker - just simple save worker quantity for now
+        // can implement worker's current work (harvest/plant)
+        // if I have more time
+        writer.Write(_workers.Count);
+
         MLog.Log("FarmGame",
             "Save game at " + currentTimeStamp);
     }
@@ -165,6 +170,15 @@ public class FarmGame : IPersistableObject
         _equipLv = reader.ReadInt();
         NotifyGoldChanged();
         NotifyEquipLvChanged();
+
+        // worker - just simple save worker quantity for now
+        // can implement worker's current work (harvest/plant)
+        // if I have more time
+        int workersCount = reader.ReadInt();
+        for (int i = 0; i < workersCount; i++)
+        {
+            AddWorker();
+        }
 
         long timeDiffSec = currentTimeStamp - savedTimeStamp;
         MLog.Log("FarmGame", string.Format( 
