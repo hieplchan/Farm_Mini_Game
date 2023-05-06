@@ -100,6 +100,7 @@ public class Inventory : IPersistableObject
 
         // save products list
         int productsLength = _products.Length;
+        writer.Write(productsLength);
         for (int i = 0; i < productsLength; i++)
         {
             writer.Write(_products[i]);
