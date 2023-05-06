@@ -158,6 +158,10 @@ public class FarmGamePresenter
         _isGamePause = false;
     }
 
+    // This is very simple load method
+    // I can improve if I have more time
+    // 1: Move to another thread to not block UI
+    // 2: Escape while loop when no job to do...
     public void LoadGame()
     {
         _isGamePause = true;
