@@ -4,7 +4,11 @@ using System;
 
 public class FarmGame : IPersistableObject
 {
-    const int saveFormatVersion = 1;
+    const int SAVE_FORMAT_VERSION = 1;
+
+    public bool isGameFinish = false;
+
+    public long differentTimeFromLastSave = 0;
 
     public event Action<int> GoldChanged;
     public int Gold
@@ -145,8 +149,10 @@ public class FarmGame : IPersistableObject
     public void Save(GameDataWriter writer)
     {
         long currentTimeStamp = TimeUtils.CurrentTimeStamp();
+            //- 12*30*1440.MinToSec();
 
-        writer.Write(saveFormatVersion);
+        writer.Write(SAVE_FORMAT_VERSION);
+        writer.Write(isGameFinish);
         writer.Write(currentTimeStamp);
 
         _inventory.Save(writer);
@@ -181,6 +187,13 @@ public class FarmGame : IPersistableObject
         long currentTimeStamp = TimeUtils.CurrentTimeStamp();
 
         int formatVersion = reader.ReadInt();
+        isGameFinish = reader.ReadBool();
+        if (isGameFinish)
+        {
+            Logger.Instance.Log("You already finish this game!");
+            return;
+        }
+
         long savedTimeStamp = reader.ReadLong();
 
         _inventory.Load(reader);
@@ -220,12 +233,12 @@ public class FarmGame : IPersistableObject
         NotifyWorkerChanged();
         NotifyPlotChanged();
 
-        long timeDiffSec = currentTimeStamp - savedTimeStamp;
+        differentTimeFromLastSave = currentTimeStamp - savedTimeStamp;
         MLog.Log("FarmGame", string.Format( 
             "Load saved game at {0} \n" +
             "Format version: {1}\n" +
             "savedTimeStamp: {2}\n" +
             "timeDiffSec: {3}\n",
-            currentTimeStamp, formatVersion, savedTimeStamp, timeDiffSec));
+            currentTimeStamp, formatVersion, savedTimeStamp, differentTimeFromLastSave));
     }
 }

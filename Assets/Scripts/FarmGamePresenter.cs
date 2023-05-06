@@ -4,13 +4,14 @@ using System.Linq;
 
 public class FarmGamePresenter
 {
-    const int SAVE_VERSION = 1;
+    const long REFRESH_LOADING_DURATION_SEC = 30;
 
     public FarmGame Farm { get => _farm; }
 
     private FarmGameView _view;
     private FarmGame _farm;
     private PersistentStorage _persistentStorage;
+    private bool _isGamePause = false;
 
     public FarmGamePresenter(FarmGameView view, string persistentPath = "")
     {
@@ -151,33 +152,59 @@ public class FarmGamePresenter
 
     public void SaveGame()
     {
+        _isGamePause = true;
         _persistentStorage.Save(_farm);
         Logger.Instance.Log("Game Saved");
+        _isGamePause = false;
     }
 
     public void LoadGame()
     {
+        _isGamePause = true;
         _persistentStorage.Load(_farm);
+
+        MLog.Log("FarmGamePresenter", 
+            "LoadGame timeDiff: " +
+            _farm.differentTimeFromLastSave);
+
+        while (_farm.differentTimeFromLastSave > REFRESH_LOADING_DURATION_SEC)
+        {
+            _farm.differentTimeFromLastSave -= REFRESH_LOADING_DURATION_SEC;
+            FarmGameUpdate(REFRESH_LOADING_DURATION_SEC);
+        }
+
+        _isGamePause = false;
         Logger.Instance.Log("Game Loaded");
     }
 
     public void GameUpdate(float deltaTime)
     {
-        foreach (FarmPlot plot in _farm.Plots)
+        if (!_isGamePause)
         {
-            plot.GameUpdate(deltaTime);
+            FarmGameUpdate(deltaTime);
         }
+    }
 
-        foreach (Worker worker in _farm.Workers)
+    private void FarmGameUpdate(float deltaTime)
+    {
+        if (!_farm.isGameFinish)
         {
-            worker.GameUpdate(deltaTime);
-        }
+            foreach (FarmPlot plot in _farm.Plots)
+            {
+                plot.GameUpdate(deltaTime);
+            }
 
-        // Ask Idle workers to find a job, don't stay unemployed
-        foreach (Worker worker in _farm.Workers)
-        {
-            if (worker.State == WorkerState.Idle)
-                worker.SearchForJob(_farm, _farm.Inventory);
+            foreach (Worker worker in _farm.Workers)
+            {
+                worker.GameUpdate(deltaTime);
+            }
+
+            // Ask Idle workers to find a job, don't stay unemployed
+            foreach (Worker worker in _farm.Workers)
+            {
+                if (worker.State == WorkerState.Idle)
+                    worker.SearchForJob(_farm, _farm.Inventory);
+            }
         }
     }
 
@@ -218,6 +245,10 @@ public class FarmGamePresenter
 
     private void OnNewAchievement(string achievementMessage)
     {
+        if (_farm.Achievement.IsGoldTargetDone)
+        {
+            _farm.isGameFinish = true;
+        }
         Logger.Instance.Log(achievementMessage);
     }
 

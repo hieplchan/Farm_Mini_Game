@@ -11,23 +11,22 @@ public class Achievement : IPersistableObject
 
     public string halfTargetMessage = "Halfway to heaven bro, keep going <3";
     public string targetDoneMessage =
-        "You are the richest man in the world! Well Done!\n" +
-        "You can keep playing.";
+        "You are the richest man in the world! Well Done!";
 
     public void OnGoldChanged(int gold)
     {
         if (!_isHalfGoldTargetDone && 
             gold >= ConfigManager.targetGold / 2)
         {
-            NewAchievement?.Invoke(halfTargetMessage);
             _isHalfGoldTargetDone = true;
+            NewAchievement?.Invoke(halfTargetMessage);
         }
 
         if (!_isGoldTargetDone &&
             gold >= ConfigManager.targetGold)
         {
-            NewAchievement?.Invoke(targetDoneMessage);
             _isGoldTargetDone = true;
+            NewAchievement?.Invoke(targetDoneMessage);
         }
     }
 
