@@ -114,10 +114,20 @@ public class FarmGame : IPersistableObject
 
     private void OnPlotChanged()
     {
-        FarmPlotChanged?.Invoke();
+        NotifyPlotChanged();
     }
 
     private void OnWorkerChanged()
+    {
+        NotifyWorkerChanged();
+    }
+
+    private void NotifyPlotChanged()
+    {
+        FarmPlotChanged?.Invoke();
+    }
+
+    private void NotifyWorkerChanged()
     {
         WorkerChanged?.Invoke();
     }
@@ -151,6 +161,17 @@ public class FarmGame : IPersistableObject
         // if I have more time
         writer.Write(_workers.Count);
 
+        // farm plot
+        // just ignore worker for now
+        // can implement worker's current work (harvest/plant)
+        // if I have more time
+        writer.Write(_plots.Count);
+        for (int i = 0; i < _plots.Count; i++)
+        {
+            _plots[i].Save(writer);
+        }
+
+
         MLog.Log("FarmGame",
             "Save game at " + currentTimeStamp);
     }
@@ -168,17 +189,36 @@ public class FarmGame : IPersistableObject
         // farm info
         _gold = reader.ReadInt();
         _equipLv = reader.ReadInt();
-        NotifyGoldChanged();
-        NotifyEquipLvChanged();
 
         // worker - just simple save worker quantity for now
         // can implement worker's current work (harvest/plant)
         // if I have more time
         int workersCount = reader.ReadInt();
+        // just clear all current workers and add new
+        _workers.Clear();
         for (int i = 0; i < workersCount; i++)
         {
             AddWorker();
         }
+
+        // farm plot
+        // just ignore worker for now
+        // can implement worker's current work (harvest/plant)
+        // if I have more time
+        int plotsCount = reader.ReadInt();
+        // just clear all current plots and add new
+        _plots.Clear();
+        for(int i = 0; i < plotsCount; i++)
+        {
+            FarmPlot plot = AddPlot();
+            plot.Load(reader);
+        }
+
+        // Notify after loading all data
+        NotifyGoldChanged();
+        NotifyEquipLvChanged();
+        NotifyWorkerChanged();
+        NotifyPlotChanged();
 
         long timeDiffSec = currentTimeStamp - savedTimeStamp;
         MLog.Log("FarmGame", string.Format( 

@@ -22,7 +22,7 @@ public enum CommodityState
     Dead
 }
 
-public class Commodity
+public class Commodity : IPersistableObject
 {
     public CommodityState State { get; private set; }
     public CommodityType Type { get; private set; }
@@ -122,5 +122,15 @@ public class Commodity
         {
             return 0;
         }
+    }
+
+    public void Save(GameDataWriter writer)
+    {
+        //throw new System.NotImplementedException();
+    }
+
+    public void Load(GameDataReader reader)
+    {
+        //throw new System.NotImplementedException();
     }
 }
