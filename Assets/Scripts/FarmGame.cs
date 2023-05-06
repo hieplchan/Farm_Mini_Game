@@ -13,7 +13,7 @@ public class FarmGame : IPersistableObject
         set
         {
             _gold = value;
-            GoldChanged?.Invoke(_gold);
+            NotifyGoldChanged();
         }
     }
     int _gold;
@@ -25,7 +25,7 @@ public class FarmGame : IPersistableObject
         set
         {
             _equipLv = value;
-            EquipLvChanged?.Invoke(_equipLv);
+            NotifyEquipLvChanged();
         }
     }
     int _equipLv;
@@ -122,6 +122,16 @@ public class FarmGame : IPersistableObject
         WorkerChanged?.Invoke();
     }
 
+    private void NotifyGoldChanged()
+    {
+        GoldChanged?.Invoke(_gold);
+    }
+
+    private void NotifyEquipLvChanged()
+    {
+        EquipLvChanged?.Invoke(_equipLv);
+    }
+
     public void Save(GameDataWriter writer)
     {
         long currentTimeStamp = TimeUtils.CurrentTimeStamp();
@@ -131,6 +141,10 @@ public class FarmGame : IPersistableObject
 
         _inventory.Save(writer);
         _achievement.Save(writer);
+
+        // farm info
+        writer.Write(_gold);
+        writer.Write(_equipLv);
 
         MLog.Log("FarmGame",
             "Save game at " + currentTimeStamp);
@@ -145,6 +159,12 @@ public class FarmGame : IPersistableObject
 
         _inventory.Load(reader);
         _achievement.Load(reader);
+
+        // farm info
+        _gold = reader.ReadInt();
+        _equipLv = reader.ReadInt();
+        NotifyGoldChanged();
+        NotifyEquipLvChanged();
 
         long timeDiffSec = currentTimeStamp - savedTimeStamp;
         MLog.Log("FarmGame", string.Format( 
