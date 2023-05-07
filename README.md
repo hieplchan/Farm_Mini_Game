@@ -1,1 +1,1 @@
-This is private project, can not share infomation.
+This is private project, can not share information.
