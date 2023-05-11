@@ -1,1 +1,3 @@
-This is private project, can not share information.
+Simple game to learn Unity
+
+![alt text](ui.png "UI")
