@@ -15,7 +15,7 @@ MonoBehaviour:
   targetGold: 1000000
   productivityIncreasePerEquipLv: 10
   newGameResource:
-    gold: 0
+    gold: 10000
     farmPlot: 3
     worker: 1
     equipLv: 1
