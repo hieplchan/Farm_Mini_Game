@@ -1,3 +1,3 @@
 Simple game to learn Unity
 
-![ScreenShot](ui.png)
+![ScreenShot](screenshot.png)
