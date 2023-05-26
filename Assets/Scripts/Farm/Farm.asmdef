@@ -1,0 +1,17 @@
+{
+    "name": "Farm",
+    "rootNamespace": "",
+    "references": [
+        "GUID:48a5a2c5d8f75cc4199fb14495f846ae",
+        "GUID:5e1421677bc25c8429fd3b0e1e8bcd7b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
