@@ -1,5 +1,21 @@
 using System;
 
+public enum CommodityType
+{
+    Strawberry,
+    Tomato,
+    Blueberry,
+    Cow
+}
+
+public enum CommodityProductType
+{
+    Strawberry,
+    Tomato,
+    Blueberry,
+    Milk
+}
+
 public class NewGameConfig
 {
     public int initGold;

@@ -1,0 +1,16 @@
+{
+    "name": "Config",
+    "rootNamespace": "",
+    "references": [
+        "GUID:5e1421677bc25c8429fd3b0e1e8bcd7b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

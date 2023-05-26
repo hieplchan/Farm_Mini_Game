@@ -1,19 +1,3 @@
-public enum CommodityType
-{
-    Strawberry,
-    Tomato,
-    Blueberry,
-    Cow
-}
-
-public enum CommodityProductType
-{
-    Strawberry,
-    Tomato,
-    Blueberry,
-    Milk
-}
-
 public enum CommodityState
 {
     Seed,
