@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Late Game
+  m_EditorClassIdentifier: 
+  m_GroupName: Late Game
+  m_Data:
+    m_SerializedData: []
+  m_GUID: b3248e8ce81d2d843a93bb3a49087124
+  m_SerializeEntries:
+  - m_GUID: 1dda0549e81855c4e83d6e115e4be871
+    m_Address: Late_Game_Config
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0b8f2749338a54d4290a390e0bf08e85
+    m_Address: Late_Game_Panel_Background
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 7f3575ae598857c41b192f10f219857a, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 0b13cd2c011ce7e4f8daafabfc4f8c5c, type: 2}
+    - {fileID: 11400000, guid: 0bd3ecdbe6ab5b6408fa1fcb31ed6011, type: 2}
