@@ -8151,13 +8151,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d043713bf0aa69c4d83ab33b30dfc6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameSetting: {fileID: 11400000, guid: e90cab7eb1c8c7e49afeb4de02bb3399, type: 2}
   _farmPlotText: {fileID: 1445953078}
   _farmInfoText: {fileID: 1955740963}
   _plotText: {fileID: 1292030883}
   _inventorySeedText: {fileID: 398469525}
   _inventoryProductText: {fileID: 1823716221}
   _workerText: {fileID: 291649414}
+  _logPanelImage: {fileID: 839384805}
   _logText: {fileID: 933396249}
 --- !u!1 &2002159820
 GameObject:
