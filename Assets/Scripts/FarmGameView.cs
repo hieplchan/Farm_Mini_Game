@@ -4,13 +4,12 @@ using System.Collections.ObjectModel;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class FarmGameView : MonoBehaviour
 {
     private FarmGamePresenter _presenter;
-
-    [Header("Game Setting")]
-    [SerializeField] private GameSetting _gameSetting;
 
     [Header("Farm Panel")]
     [SerializeField] private TMP_Text _farmPlotText;
@@ -23,14 +22,79 @@ public class FarmGameView : MonoBehaviour
     [SerializeField] private TMP_Text _workerText;
 
     [Header("Log Panel")]
+    [SerializeField] private Image _logPanelImage;
     [SerializeField] private TMP_Text _logText;
+
+    private FarmGameConfig _farmGameConfig;
 
     private void Start()
     {
-        FarmGameConfig config = GetConfigFromAsset();
+        LoadEarlyGame();
+    }
 
-        _presenter = new FarmGamePresenter(this, config,
-            Application.persistentDataPath);
+    public void LoadEarlyGame() 
+    {
+        Addressables.LoadAssetAsync<GameSetting>("Early_Game_Config").Completed += OnLoadEarlyGameConfigDone;
+        Addressables.LoadAssetAsync<Sprite>("Early_Game_Panel_Background").Completed += OnLoadEarlyGamePanelImage;
+    }
+
+    private void OnLoadEarlyGameConfigDone(AsyncOperationHandle<GameSetting> obj)
+    {
+        if (obj.Result != null)
+        {
+            _farmGameConfig = GetConfigFromAsset(obj.Result);
+            _presenter = new FarmGamePresenter(this, _farmGameConfig, Application.persistentDataPath);
+            MLog.Log("OnLoadEarlyGameConfigDone", "Done");
+        } 
+        else
+        {
+            MLog.LogError("OnLoadEarlyGameConfigDone", "obj.Result is null");
+        }
+    }
+    private void OnLoadEarlyGamePanelImage(AsyncOperationHandle<Sprite> obj)
+    {
+        if (obj.Result != null)
+        {
+            _logPanelImage.sprite = obj.Result;
+            MLog.Log("OnLoadEarlyGamePanelImage", "Done");
+        }
+        else
+        {
+            MLog.LogError("OnLoadEarlyGamePanelImage", "obj.Result is null");
+        }
+    }
+
+    public void LoadLateGame()
+    {
+        Addressables.LoadAssetAsync<GameSetting>("Late_Game_Config").Completed += OnLoadLateGameConfigDone;
+        Addressables.LoadAssetAsync<Sprite>("Late_Game_Panel_Background").Completed += OnLoadLateGamePanelImage;
+    }
+
+    private void OnLoadLateGameConfigDone(AsyncOperationHandle<GameSetting> obj)
+    {
+        if (obj.Result != null)
+        {
+            _farmGameConfig = GetConfigFromAsset(obj.Result);
+            _presenter.SetGameConfig(_farmGameConfig);
+            MLog.Log("OnLoadLateGameConfigDone", "Done");
+        }
+        else
+        {
+            MLog.LogError("OnLoadLateGameConfigDone", "obj.Result is null");
+        }
+    }
+
+    private void OnLoadLateGamePanelImage(AsyncOperationHandle<Sprite> obj)
+    {
+        if (obj.Result != null)
+        {
+            _logPanelImage.sprite = obj.Result;
+            MLog.Log("OnLoadLateGamePanelImage", "Done");
+        }
+        else
+        {
+            MLog.LogError("OnLoadLateGamePanelImage", "obj.Result is null");
+        }
     }
 
     public void BuyCommoditySeed(int type)
@@ -79,7 +143,7 @@ public class FarmGameView : MonoBehaviour
 
     private void Update()
     {
-        _presenter.GameUpdate(Time.deltaTime);
+        _presenter?.GameUpdate(Time.deltaTime);
     }
 
     public virtual void ShowUpdatedGoldAndEquipLevel(int gold, int equipLv)
@@ -178,7 +242,7 @@ public class FarmGameView : MonoBehaviour
         _logText.text = text + "\n" + _logText.text;
     }
 
-    private FarmGameConfig GetConfigFromAsset()
+    private FarmGameConfig GetConfigFromAsset(GameSetting _gameSetting)
     {
         FarmGameConfig config = ConfigManager.GetDefaultConfig();
 

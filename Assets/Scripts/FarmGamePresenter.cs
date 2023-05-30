@@ -40,6 +40,16 @@ public class FarmGamePresenter
         ShowUpdatedWorkers();
 
         ApplyNewGameConfig();
+
+        if (_farm.Achievement.IsHalfTargetDone)
+        {
+            _view.LoadLateGame();
+        }
+    }
+
+    public void SetGameConfig(FarmGameConfig config)
+    {
+        ConfigManager.Reload(config);
     }
 
     private void ApplyNewGameConfig()
@@ -187,6 +197,7 @@ public class FarmGamePresenter
 
     public void GameUpdate(float deltaTime)
     {
+        //MLog.Log("FarmGamePresenter", "GameUpdate");
         if (!_isGamePause)
         {
             FarmGameUpdate(deltaTime);
@@ -258,6 +269,11 @@ public class FarmGamePresenter
             _farm.isGameFinish = true;
         }
         Logger.Instance.Log(achievementMessage);
+
+        if (_farm.Achievement.IsHalfTargetDone)
+        {
+            _view.LoadLateGame();
+        }
     }
 
     private void ShowUpdatedGoldAndEquipLevel()

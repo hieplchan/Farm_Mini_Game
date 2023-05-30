@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cad88df36157229408cd06972fda858f, type: 3}
-  m_Name: Game Setting - Production
+  m_Name: Game Setting - Production - Late Game
   m_EditorClassIdentifier: 
   targetGold: 1000000
   productivityIncreasePerEquipLv: 10
@@ -26,27 +26,27 @@ MonoBehaviour:
   strawberryConfig:
     cycleTime: 5
     cycleNum: 20
-    dyingTime: 60
+    dyingTime: 30
   tomatoConfig:
     cycleTime: 10
     cycleNum: 40
-    dyingTime: 60
+    dyingTime: 30
   blueberryConfig:
     cycleTime: 15
     cycleNum: 40
-    dyingTime: 60
+    dyingTime: 30
   cowConfig:
     cycleTime: 30
     cycleNum: 100
-    dyingTime: 60
+    dyingTime: 30
   storeConfig:
-    farmPlotPrice: 500
-    hireWorkerPrice: 500
-    equipUpgradePrice: 500
-    strawBerryBuyPrice: 40
-    tomatoBuyPrice: 30
-    blueBerryBuyPrice: 50
-    cowBuyPrice: 100
+    farmPlotPrice: 1000
+    hireWorkerPrice: 1000
+    equipUpgradePrice: 1000
+    strawBerryBuyPrice: 80
+    tomatoBuyPrice: 60
+    blueBerryBuyPrice: 100
+    cowBuyPrice: 200
     strawBerrySellPrice: 6
     tomatoSellPrice: 5
     blueBerrySellPrice: 8

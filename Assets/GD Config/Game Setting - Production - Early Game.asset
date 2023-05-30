@@ -10,35 +10,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cad88df36157229408cd06972fda858f, type: 3}
-  m_Name: Game Setting - Dev only
+  m_Name: Game Setting - Production - Early Game
   m_EditorClassIdentifier: 
-  targetGold: 1000
+  targetGold: 1000000
   productivityIncreasePerEquipLv: 10
   newGameResource:
-    gold: 0
-    farmPlot: 10
-    worker: 5
+    gold: 10000
+    farmPlot: 3
+    worker: 1
     equipLv: 1
-    strawBerry: 3
-    tomato: 3
-    blueBerry: 3
-    cow: 3
+    strawBerry: 0
+    tomato: 10
+    blueBerry: 10
+    cow: 2
   strawberryConfig:
     cycleTime: 5
-    cycleNum: 2
-    dyingTime: 2
+    cycleNum: 20
+    dyingTime: 60
   tomatoConfig:
-    cycleTime: 4
-    cycleNum: 3
-    dyingTime: 3
+    cycleTime: 10
+    cycleNum: 40
+    dyingTime: 60
   blueberryConfig:
-    cycleTime: 3
-    cycleNum: 4
-    dyingTime: 4
+    cycleTime: 15
+    cycleNum: 40
+    dyingTime: 60
   cowConfig:
-    cycleTime: 2
-    cycleNum: 5
-    dyingTime: 5
+    cycleTime: 30
+    cycleNum: 100
+    dyingTime: 60
   storeConfig:
     farmPlotPrice: 500
     hireWorkerPrice: 500
