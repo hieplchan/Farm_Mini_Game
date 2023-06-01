@@ -50,7 +50,7 @@ public class HomeScreen : Screen
 
     private void OnCollectAllButtonClicked()
     {
-        throw new NotImplementedException();
+        _farmGamePresenter.CollectAllProduct();
     }
 
     private void OnLoadButtonClicked()

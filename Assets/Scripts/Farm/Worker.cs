@@ -27,7 +27,7 @@ public class Worker
 
     public Worker()
     {
-        Logger.Instance.Log("_worker: Thanks for having me <3");
+        Logger.Instance.Log("Thanks for having me <3");
         State = WorkerState.Idle;
         _timeNeededPerTask = 
             ConfigManager.GetWorkerConfig().timeNeededPerTask.MinToSec();
@@ -97,7 +97,7 @@ public class Worker
             (CommodityProductType)plot.Commodity.Type;
         inventory.AddProduct(productType, productCount);
         Logger.Instance.Log(string.Format(
-            "_worker: I collect {0} {1}", productCount, productType.ToString()));
+            "I collect {0} {1}", productCount, productType.ToString()));
     }
 
     public void Plant(FarmPlot plot, Inventory inventory)
@@ -105,7 +105,7 @@ public class Worker
         Commodity seed = inventory.GetAvailableSeed();
         plot.Plant(seed);
         Logger.Instance.Log(string.Format(
-            "_worker: I plant {0}", seed.Type.ToString()));
+            "I plant {0}", seed.Type.ToString()));
     }
 
     private void StartWorking(FarmPlot plot)

@@ -120,6 +120,19 @@ public class FarmGamePresenter
         }
     }
 
+    public void CollectAllProduct()
+    {
+        foreach (FarmPlot plot in _farm.Plots)
+        {
+            if (plot.HasCommodity)
+                if (plot.Commodity.AvailableProduct > 0)
+                    _farm.Inventory.AddProduct((CommodityProductType)plot.CommodityType,
+                        plot.Commodity.Harvest());
+        }
+
+        Logger.Instance.Log("I collect all product");
+    }
+
     public void SellCommodityProduct(int type)
     {
         CommodityProductType productType = (CommodityProductType)type;
@@ -135,6 +148,7 @@ public class FarmGamePresenter
             _farm.Gold += _farm.Store.SellCommodityProduct(productType,
                 _farm.Inventory.GetAllProduct(productType));
         }
+        Logger.Instance.Log("I sell all product");
     }
 
     public void BuyFarmPlot()
