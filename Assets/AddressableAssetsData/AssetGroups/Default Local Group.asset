@@ -18,7 +18,7 @@ MonoBehaviour:
   m_GUID: 918b61669931824469a5300706b7d9e1
   m_SerializeEntries:
   - m_GUID: 62edacafe5e74bc41b9f5b78f3889971
-    m_Address: prefab_modal_plant_menu
+    m_Address: prefab_modal_seed_menu
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 8bc9e1a1413789f4f90c0a4d90263260

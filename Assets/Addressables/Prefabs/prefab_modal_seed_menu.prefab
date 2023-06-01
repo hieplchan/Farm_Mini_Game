@@ -902,9 +902,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1997304102976055638}
-  - component: {fileID: -4546610969127387756}
+  - component: {fileID: -6754068544094520493}
   m_Layer: 5
-  m_Name: prefab_modal_plant_menu
+  m_Name: prefab_modal_seed_menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -931,7 +931,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -2}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &-4546610969127387756
+--- !u!114 &-6754068544094520493
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -948,6 +948,10 @@ MonoBehaviour:
   _animationContainer:
     _enterAnimations: []
     _exitAnimations: []
+  strawberryButton: {fileID: 1997304101738628779}
+  tomatoButton: {fileID: 1997304102768506673}
+  blueberryButton: {fileID: 1997304102127464792}
+  cowButton: {fileID: 1997304102686854500}
 --- !u!1 &1997304103388886260
 GameObject:
   m_ObjectHideFlags: 0
