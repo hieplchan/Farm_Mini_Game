@@ -19,7 +19,7 @@ public class InventoryModal : Modal
 
     private FarmGamePresenter _farmGamePresenter;
 
-    public override UniTask Initialize()
+    public override async UniTask Initialize()
     {
         _seedButton.onClick.AddListener(OnSeedButtonClicked);
         _productButton.onClick.AddListener(OnProductButtonClicked);
@@ -28,15 +28,19 @@ public class InventoryModal : Modal
         {
             var id = x.sheetId;
             _seedGridSheetId = id;
+            var seedItemGridSheet = (SeedItemGridSheet)x.instance;
+            seedItemGridSheet.Setup(_farmGamePresenter);
         });
 
         var productHandle = _itemGridContainer.Register("prefab_sheet_product_item_grid", x =>
         {
             var id = x.sheetId;
             _productGridSheetId = id;
+            var productItemGridSheet = (ProductItemGridSheet)x.instance;
+            productItemGridSheet.Setup(_farmGamePresenter);
         });
 
-        return UniTask.CompletedTask;
+        await UniTask.CompletedTask;
     }
 
     public override UniTask Cleanup()

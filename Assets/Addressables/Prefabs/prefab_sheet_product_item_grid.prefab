@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 823446439481861268}
-  - component: {fileID: 2698241078093358791}
+  - component: {fileID: 4820885931357068483}
   m_Layer: 5
   m_Name: prefab_sheet_product_item_grid
   m_TagString: Untagged
@@ -46,7 +46,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2698241078093358791
+--- !u!114 &4820885931357068483
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,7 +55,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 823446439481861269}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58b5768955e58894cb9078ea576ec7cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 489899f4104c75d4a80a8fd429186e91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _identifier: 
@@ -63,6 +63,11 @@ MonoBehaviour:
   _animationContainer:
     _enterAnimations: []
     _exitAnimations: []
+  _strawberryQuantity: {fileID: 823446441245002627}
+  _tomatoQuantity: {fileID: 4438224822416677772}
+  _blueberryQuantity: {fileID: 4438224823258503042}
+  _milkQuantity: {fileID: 4438224823181144503}
+  _sellAll: {fileID: 7950175663281914209}
 --- !u!1 &823446439546418596
 GameObject:
   m_ObjectHideFlags: 0

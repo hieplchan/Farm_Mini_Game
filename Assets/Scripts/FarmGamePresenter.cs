@@ -127,6 +127,16 @@ public class FarmGamePresenter
             _farm.Inventory.GetAllProduct(productType));
     }
 
+    public void SellAllProduct()
+    {
+        for (int i = 0; i < ConfigManager.commodityTypeCount; i++)
+        {
+            CommodityProductType productType = (CommodityProductType)i;
+            _farm.Gold += _farm.Store.SellCommodityProduct(productType,
+                _farm.Inventory.GetAllProduct(productType));
+        }
+    }
+
     public void BuyFarmPlot()
     {
         if (_farm.Store.BuyFarmPlot(1, _farm.Gold, out int neededGold)) 
