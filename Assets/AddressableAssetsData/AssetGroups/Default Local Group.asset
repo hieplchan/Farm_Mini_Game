@@ -38,7 +38,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 795cd47e1c2c74d47a5d5800a1c64334
-    m_Address: prefab_page_shop
+    m_Address: prefab_modal_shop
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: c0d69517a726c784caf495011f7f6343

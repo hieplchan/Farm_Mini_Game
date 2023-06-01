@@ -1981,7 +1981,6 @@ MonoBehaviour:
   _inventoryButton: {fileID: 7426958109744730410}
   _collectAllButton: {fileID: 5458982065169496584}
   _plantButton: {fileID: 3333140211177122204}
-  _buyButton: {fileID: 0}
 --- !u!114 &5596042633288564820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2992,8 +2991,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 122.84749, y: -59.31183}
-  m_SizeDelta: {x: 245.697, y: 118.6235}
+  m_AnchoredPosition: {x: 122.84749, y: -92.1236}
+  m_SizeDelta: {x: 245.697, y: 184.247}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5628573557483534727
 CanvasRenderer:

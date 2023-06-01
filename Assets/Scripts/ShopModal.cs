@@ -11,7 +11,7 @@ using UnityScreenNavigator.Runtime.Core.Shared;
 
 using Screen = UnityScreenNavigator.Runtime.Core.Screen.Screen;
 
-public class ShopScreen : Screen
+public class ShopModal : Modal
 {
     [SerializeField] private Button _buyPlot, _hireWorker, _upgradeEquipMent;
     [SerializeField] private Button _strawberryButton, _tomatoButton, _blueberryButton, _cowButton;
