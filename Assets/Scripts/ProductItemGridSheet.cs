@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,6 +27,12 @@ public class ProductItemGridSheet : Sheet
     {
         _farmGamePresenter.SellAllProduct();
         UpdateQuantity();
+    }
+
+    public override UniTask Cleanup()
+    {
+        _sellAll.onClick.RemoveAllListeners();
+        return UniTask.CompletedTask;
     }
 
     private void UpdateQuantity()
