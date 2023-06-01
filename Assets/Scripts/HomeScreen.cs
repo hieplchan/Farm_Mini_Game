@@ -55,12 +55,12 @@ public class HomeScreen : Screen
 
     private void OnLoadButtonClicked()
     {
-        throw new NotImplementedException();
+        _farmGamePresenter.LoadGame();
     }
 
     private void OnSaveButtonClicked()
     {
-        throw new NotImplementedException();
+        _farmGamePresenter.SaveGame();
     }
 
     private async void OnInventoryButtonClicked()
