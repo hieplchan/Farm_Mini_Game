@@ -26,10 +26,9 @@ public class HomeScreen : Screen
         _collectAllButton.onClick.AddListener(OnCollectAllButtonClicked);
         _plantButton.onClick.AddListener(OnPlantButtonClicked);
         _buyButton.onClick.AddListener(OnBuyButtonClicked);
-
-        // Simulate loading time
-        await UniTask.Delay(TimeSpan.FromSeconds(1));
+        await UniTask.CompletedTask;
     }
+
     public override UniTask Cleanup()
     {
         _saveButton.onClick.RemoveListener(OnSaveButtonClicked);

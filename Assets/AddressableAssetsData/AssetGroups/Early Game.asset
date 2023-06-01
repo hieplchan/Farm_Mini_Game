@@ -17,7 +17,7 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 6601142eba934fa4795a9e6378987a30
   m_SerializeEntries:
-  - m_GUID: d8603f68701658747b1eca04662b5356
+  - m_GUID: 6aec15cb0a7c7e24da015f2d0374d587
     m_Address: Early_Game_Panel_Background
     m_ReadOnly: 0
     m_SerializedLabels: []
