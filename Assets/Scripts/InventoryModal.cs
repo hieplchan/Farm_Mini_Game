@@ -4,17 +4,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityScreenNavigator.Runtime.Core.Modal;
 using UnityScreenNavigator.Runtime.Core.Screen;
 using UnityScreenNavigator.Runtime.Core.Shared;
 using UnityScreenNavigator.Runtime.Core.Sheet;
 using Screen = UnityScreenNavigator.Runtime.Core.Screen.Screen;
 
-public class InventoryScreen : Screen
+public class InventoryModal : Modal
 {
     [SerializeField] private SheetContainer _itemGridContainer;
     [SerializeField] private Button _seedButton, _productButton;
 
     private int _seedGridSheetId, _productGridSheetId;
+
+    private FarmGamePresenter _farmGamePresenter;
 
     public override UniTask Initialize()
     {
@@ -51,5 +54,10 @@ public class InventoryScreen : Screen
     private async void OnSeedButtonClicked()
     {
         await _itemGridContainer.Show(_seedGridSheetId, true);
+    }
+
+    internal void Setup(FarmGamePresenter farmGamePresenter)
+    {
+        _farmGamePresenter = farmGamePresenter;
     }
 }

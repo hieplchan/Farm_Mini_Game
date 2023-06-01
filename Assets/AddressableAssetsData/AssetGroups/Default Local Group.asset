@@ -33,20 +33,20 @@ MonoBehaviour:
     m_Address: prefab_page_intro
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 655f74f2ad26af24a85590894a12ad60
-    m_Address: prefab_page_inventory
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 795cd47e1c2c74d47a5d5800a1c64334
     m_Address: prefab_modal_shop
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: c0d69517a726c784caf495011f7f6343
+  - m_GUID: 000b340cbd89f004b9c5b427efdfb6a0
+    m_Address: prefab_sheet_seed_item_grid
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: eff20aa42ec3b18408aa7ea741c42689
     m_Address: prefab_sheet_product_item_grid
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 000b340cbd89f004b9c5b427efdfb6a0
-    m_Address: prefab_sheet_seed_item_grid
+  - m_GUID: f10a38a31dadc0b42a8965cc9bb0295a
+    m_Address: prefab_modal_inventory
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

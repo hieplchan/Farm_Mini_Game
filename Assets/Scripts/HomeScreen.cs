@@ -63,10 +63,15 @@ public class HomeScreen : Screen
         throw new NotImplementedException();
     }
 
-    private void OnInventoryButtonClicked()
+    private async void OnInventoryButtonClicked()
     {
-        var option = new WindowOption("prefab_page_inventory", true);
-        ScreenContainer.Of(transform).Push(option);
+        var modalContainer = ModalContainer.Find("Modal_Container");
+        var pushOption = new WindowOption("prefab_modal_inventory", true);
+        modalContainer.Push(pushOption);
+
+        var modal = await pushOption.WindowCreated.WaitAsync();
+        var inventoryModal = (InventoryModal)modal;
+        inventoryModal.Setup(_farmGamePresenter);
     }
 
     private async void OnShopButtonClicked()
