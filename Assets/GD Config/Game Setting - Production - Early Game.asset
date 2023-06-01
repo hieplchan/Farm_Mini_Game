@@ -41,8 +41,8 @@ MonoBehaviour:
     dyingTime: 1
   storeConfig:
     farmPlotPrice: 500
-    hireWorkerPrice: 500
-    equipUpgradePrice: 500
+    hireWorkerPrice: 1000
+    equipUpgradePrice: 2000
     strawBerryBuyPrice: 40
     tomatoBuyPrice: 30
     blueBerryBuyPrice: 50

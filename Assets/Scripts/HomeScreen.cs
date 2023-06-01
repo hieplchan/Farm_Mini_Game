@@ -69,10 +69,14 @@ public class HomeScreen : Screen
         ScreenContainer.Of(transform).Push(option);
     }
 
-    private void OnShopButtonClicked()
+    private async void OnShopButtonClicked()
     {
-        var option = new WindowOption("prefab_page_shop", true);
-        ScreenContainer.Of(transform).Push(option);
+        var pushOption = new WindowOption("prefab_page_shop", true);
+        ScreenContainer.Of(transform).Push(pushOption);
+
+        var screen = await pushOption.WindowCreated.WaitAsync();
+        var shopScreen = (ShopScreen)screen;
+        shopScreen.Setup(_farmGamePresenter);
     }
 
     private async void OnPlantButtonClicked()

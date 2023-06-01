@@ -7,18 +7,20 @@ public class FarmGamePresenter
     const long REFRESH_LOADING_DURATION_SEC = 30;
 
     public FarmGame Farm { get => _farm; }
+    public FarmGameConfig FarmGameConfig { get => _farmGameConfig; }
 
     private FarmGameView _view;
     private FarmGame _farm;
     private PersistentStorage _persistentStorage;
     private bool _isGamePause = false;
+    private FarmGameConfig _farmGameConfig;
 
     public FarmGamePresenter(FarmGameView view, 
         FarmGameConfig config, string persistentPath = "")
     {
         _view = view;
-
-        ConfigManager.Reload(config);
+        _farmGameConfig = config;
+        ConfigManager.Reload(_farmGameConfig);
 
         _farm = new FarmGame();
         _persistentStorage = new PersistentStorage(persistentPath);
