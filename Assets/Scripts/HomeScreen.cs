@@ -17,7 +17,7 @@ public class HomeScreen : Screen
     [SerializeField] private Button _shopButton, _inventoryButton;
     [SerializeField] private Button _collectAllButton;
     [SerializeField] private Button _plantButton;
-    private FarmGameView _farmGameView;
+    private FarmGamePresenter _farmGamePresenter;
 
     public override async UniTask Initialize()
     {
@@ -34,7 +34,7 @@ public class HomeScreen : Screen
 
     public override void DidPushEnter()
     {
-        _farmGameView = transform.gameObject.GetComponent<FarmGameView>();
+        _farmGamePresenter = transform.gameObject.GetComponent<FarmGameView>().FarmGamePresenter;
     }
 
     public override UniTask Cleanup()
@@ -83,16 +83,6 @@ public class HomeScreen : Screen
 
         var modal = await pushOption.WindowCreated.WaitAsync();
         var seedMenuModal = (SeedMenuModal)modal;
-
-        //// Button assign
-        seedMenuModal.strawberryButton.onClick.AddListener(() => Plant(CommodityType.Strawberry));
-        seedMenuModal.tomatoButton.onClick.AddListener(() => Plant(CommodityType.Tomato));
-        seedMenuModal.blueberryButton.onClick.AddListener(() => Plant(CommodityType.Blueberry));
-        seedMenuModal.cowButton.onClick.AddListener(() => Plant(CommodityType.Cow));
-    }
-
-    private void Plant(CommodityType type)
-    {
-        _farmGameView.PlantCommodity((int)type);
+        seedMenuModal.Setup(_farmGamePresenter);
     }
 }
