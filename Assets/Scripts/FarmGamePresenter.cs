@@ -29,8 +29,8 @@ public class FarmGamePresenter
         // Messenger Event Subcribe
         Messenger.Default.Subscribe<GoldChangedPayLoad>(OnGoldChanged);
         Messenger.Default.Subscribe<EquipmentLevelChangedPayLoad>(OnEquipLvChanged);
+        Messenger.Default.Subscribe<PlotChangedPayLoad>(OnFarmPlotsChanged);
 
-        _farm.FarmPlotChanged += OnFarmPlotsChanged;
         _farm.WorkerChanged += OnFarmWorkerChanged;
         _farm.Inventory.SeedsChanged += OnInventorySeedsChanged;
         _farm.Inventory.ProductsChanged += OnInventoryProductsChanged;
@@ -265,7 +265,7 @@ public class FarmGamePresenter
         ShowUpdatedGoldAndEquipLevel();
     }
 
-    private void OnFarmPlotsChanged()
+    private void OnFarmPlotsChanged(PlotChangedPayLoad obj)
     {
         ShowUpdatedPlots();
     }

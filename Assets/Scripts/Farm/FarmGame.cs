@@ -33,7 +33,6 @@ public class FarmGame : IPersistableObject
     }
     int _equipLv;
 
-    public event Action FarmPlotChanged;
     public List<FarmPlot> Plots { get => _plots; }
     private List<FarmPlot> _plots;
 
@@ -78,8 +77,6 @@ public class FarmGame : IPersistableObject
     {
         FarmPlot plot = new FarmPlot();
         _plots.Add(plot);
-        plot.PlotChanged += OnPlotChanged;
-        OnPlotChanged();
         return plot;
     }
 
@@ -124,11 +121,6 @@ public class FarmGame : IPersistableObject
         return null;
     }
 
-    private void OnPlotChanged()
-    {
-        NotifyPlotChanged();
-    }
-
     private void OnWorkerChanged()
     {
         NotifyWorkerChanged();
@@ -136,7 +128,8 @@ public class FarmGame : IPersistableObject
 
     private void NotifyPlotChanged()
     {
-        FarmPlotChanged?.Invoke();
+        var payload = new PlotChangedPayLoad { ID = "" };
+        Messenger.Default.Publish(payload);
     }
 
     private void NotifyWorkerChanged()

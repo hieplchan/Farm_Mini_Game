@@ -3,7 +3,9 @@ using System;
 
 public class FarmPlot : IPersistableObject
 {
-    public event Action PlotChanged;
+    public string ID { get => _id; }
+    private string _id;
+
     public bool HasCommodity { get => _commodity != null; }
     public Commodity Commodity { get => _commodity; }
     public CommodityType CommodityType { get => _commodity.Type; }
@@ -21,7 +23,9 @@ public class FarmPlot : IPersistableObject
 
     public FarmPlot()
     {
+        _id = Guid.NewGuid().ToString();
         Messenger.Default.Subscribe<EquipmentLevelChangedPayLoad>(OnFarmEquipLvChanged);
+        NotifyPlotChange();
     }
 
     public void GameUpdate(float deltaTime)
@@ -64,7 +68,8 @@ public class FarmPlot : IPersistableObject
 
     private void NotifyPlotChange()
     {
-        PlotChanged?.Invoke();
+        var payload = new PlotChangedPayLoad { ID = _id };
+        Messenger.Default.Publish(payload);
     }
 
     public void OnFarmEquipLvChanged(EquipmentLevelChangedPayLoad obj)
