@@ -1,14 +1,13 @@
+using SuperMaxim.Messaging;
 using System;
 using System.Linq;
 
 public class Inventory : IPersistableObject
 {
-    public event Action SeedsChanged;
     public int[] Seeds { get => _seeds; }
     private int[] _seeds;
     public bool HasSeed { get => _seeds.Sum() > 0; }
 
-    public event Action ProductsChanged;
     public int[] Products { get => _products; }
     private int[] _products;
 
@@ -26,7 +25,7 @@ public class Inventory : IPersistableObject
     public void AddSeed(CommodityType type, int quantity = 1)
     {
         _seeds[(int)type] += quantity;
-        NotifySeedsChange();
+        NotifySeedsChange((int)type);
     }
 
     public Commodity GetSeed(CommodityType type)
@@ -35,7 +34,7 @@ public class Inventory : IPersistableObject
         {
             Commodity seed = new Commodity(type);
             _seeds[(int)type] -= 1;
-            NotifySeedsChange();
+            NotifySeedsChange((int)type);
             return seed;
         }
         else
@@ -67,25 +66,27 @@ public class Inventory : IPersistableObject
     public void AddProduct(CommodityProductType type, int quantity = 1)
     {
         _products[(int)type] += quantity;
-        NotifyProductsChanged();
+        NotifyProductsChanged((int)type);
     }
 
     public int GetAllProduct(CommodityProductType type)
     {
         int productCount = _products[(int)type];
         _products[(int)type] = 0;
-        NotifyProductsChanged();
+        NotifyProductsChanged((int)type);
         return productCount;
     }
 
-    private void NotifySeedsChange()
+    private void NotifySeedsChange(int type)
     {
-        SeedsChanged?.Invoke();
+        var payload = new InventorySeedChangedPayLoad { SeedCommodityType = type };
+        Messenger.Default.Publish(payload);
     }
 
-    private void NotifyProductsChanged()
+    private void NotifyProductsChanged(int type)
     {
-        ProductsChanged?.Invoke();
+        var payload = new InventoryProductChangedPayLoad { ProductCommodityType = type };
+        Messenger.Default.Publish(payload);
     }
 
     public void Save(GameDataWriter writer)
@@ -123,7 +124,7 @@ public class Inventory : IPersistableObject
             _products[i] = reader.ReadInt();
         }
 
-        NotifySeedsChange();
-        NotifyProductsChanged();
+        NotifySeedsChange(-1);
+        NotifyProductsChanged(-1);
     }
 }

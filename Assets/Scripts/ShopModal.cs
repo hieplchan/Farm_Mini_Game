@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using SuperMaxim.Messaging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,6 +28,13 @@ public class ShopModal : Modal
     {
         _farmGamePresenter = farmGamePresenter;
 
+        UIBinding();
+
+        Messenger.Default.Subscribe<GoldChangedPayLoad>(OnGoldChanged);
+    }
+
+    private void UIBinding()
+    {
         _buyPlot.onClick.AddListener(() => _farmGamePresenter.BuyFarmPlot());
         _hireWorker.onClick.AddListener(() => _farmGamePresenter.HireWorker());
         _upgradeEquipMent.onClick.AddListener(() => _farmGamePresenter.UpgradeEquipment());
@@ -46,12 +54,6 @@ public class ShopModal : Modal
         _cowPrice.text = _farmGamePresenter.FarmGameConfig.storeConfig.seedPrices[(int)CommodityType.Cow].ToString();
 
         _totalGold.text = _farmGamePresenter.Farm.Gold.ToString();
-        _farmGamePresenter.Farm.GoldChanged += OnGoldChanged;
-    }
-
-    private void OnGoldChanged(int gold)
-    {
-        _totalGold.text = gold.ToString();
     }
 
     public override async UniTask Cleanup()
@@ -59,7 +61,14 @@ public class ShopModal : Modal
         _buyPlot.onClick.RemoveAllListeners();
         _hireWorker.onClick.RemoveAllListeners();
         _upgradeEquipMent.onClick.RemoveAllListeners();
-        _farmGamePresenter.Farm.GoldChanged -= OnGoldChanged;
+
+        Messenger.Default.Unsubscribe<GoldChangedPayLoad>(OnGoldChanged);
+
         await UniTask.CompletedTask;
+    }
+
+    private void OnGoldChanged(GoldChangedPayLoad obj)
+    {
+        _totalGold.text = obj.TotalGold.ToString();
     }
 }

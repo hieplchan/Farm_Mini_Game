@@ -6,11 +6,10 @@
         "UnityEditor.TestRunner",
         "Farm",
         "Utils",
-        "Storage"
+        "Storage",
+        "SuperMaxim.PubSub"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System;
+using SuperMaxim.Messaging;
 
 public class FarmGame : IPersistableObject
 {
@@ -10,7 +11,6 @@ public class FarmGame : IPersistableObject
 
     public long differentTimeFromLastSave = 0;
 
-    public event Action<int> GoldChanged;
     public int Gold
     {
         get => _gold;
@@ -22,7 +22,6 @@ public class FarmGame : IPersistableObject
     }
     int _gold;
 
-    public event Action<int> EquipLvChanged;
     public int EquipLv
     {
         get => _equipLv;
@@ -34,11 +33,9 @@ public class FarmGame : IPersistableObject
     }
     int _equipLv;
 
-    public event Action FarmPlotChanged;
     public List<FarmPlot> Plots { get => _plots; }
     private List<FarmPlot> _plots;
 
-    public event Action WorkerChanged;
     public List<Worker> Workers { get => _workers; }
     private List<Worker> _workers;
 
@@ -79,9 +76,6 @@ public class FarmGame : IPersistableObject
     {
         FarmPlot plot = new FarmPlot();
         _plots.Add(plot);
-        plot.PlotChanged += OnPlotChanged;
-        EquipLvChanged += plot.OnFarmEquipLvChanged;
-        OnPlotChanged();
         return plot;
     }
 
@@ -89,8 +83,6 @@ public class FarmGame : IPersistableObject
     {
         Worker worker = new Worker();
         _workers.Add(worker);
-        worker.WorkerStateChanged += OnWorkerChanged;
-        OnWorkerChanged();
         return worker;
     }
 
@@ -126,35 +118,31 @@ public class FarmGame : IPersistableObject
         return null;
     }
 
-    private void OnPlotChanged()
-    {
-        NotifyPlotChanged();
-    }
-
-    private void OnWorkerChanged()
-    {
-        NotifyWorkerChanged();
-    }
-
     private void NotifyPlotChanged()
     {
-        FarmPlotChanged?.Invoke();
+        var payload = new PlotChangedPayLoad { ID = "" };
+        Messenger.Default.Publish(payload);
     }
 
     private void NotifyWorkerChanged()
     {
-        WorkerChanged?.Invoke();
+        var payload = new WorkerChangedPayLoad { ID = "" };
+        Messenger.Default.Publish(payload);
     }
 
     private void NotifyGoldChanged()
     {
-        GoldChanged?.Invoke(_gold);
+        var payload = new GoldChangedPayLoad { TotalGold = Gold };
+        Messenger.Default.Publish(payload);
     }
 
     private void NotifyEquipLvChanged()
     {
-        EquipLvChanged?.Invoke(_equipLv);
+        var payload = new EquipmentLevelChangedPayLoad { EquipmentLevel = _equipLv };
+        Messenger.Default.Publish(payload);
     }
+
+
 
     public void Save(GameDataWriter writer)
     {

@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using SuperMaxim.Messaging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ public class ProductItemGridSheet : Sheet
         UpdateQuantity();
 
         _sellAll.onClick.AddListener(SellAllProduct);
+
+        Messenger.Default.Subscribe<InventoryProductChangedPayLoad>(UpdateQuantityType);
     }
 
     private void SellAllProduct()
@@ -33,6 +36,11 @@ public class ProductItemGridSheet : Sheet
     {
         _sellAll.onClick.RemoveAllListeners();
         return UniTask.CompletedTask;
+    }
+
+    private void UpdateQuantityType(InventoryProductChangedPayLoad obj)
+    {
+        UpdateQuantity();
     }
 
     private void UpdateQuantity()

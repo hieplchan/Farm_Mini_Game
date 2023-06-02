@@ -1,3 +1,4 @@
+using SuperMaxim.Messaging;
 using System;
 using System.Collections.Specialized;
 using System.Linq;
@@ -25,14 +26,15 @@ public class FarmGamePresenter
         _farm = new FarmGame();
         _persistentStorage = new PersistentStorage(persistentPath);
 
-        _farm.GoldChanged += OnGoldChanged;
-        _farm.GoldChanged += _farm.Achievement.OnGoldChanged;
-        _farm.EquipLvChanged += OnEquipLvChanged;
-        _farm.FarmPlotChanged += OnFarmPlotsChanged;
-        _farm.WorkerChanged += OnFarmWorkerChanged;
-        _farm.Inventory.SeedsChanged += OnInventorySeedsChanged;
-        _farm.Inventory.ProductsChanged += OnInventoryProductsChanged;
-        _farm.Achievement.NewAchievement += OnNewAchievement;
+        // Messenger Event Subcribe
+        Messenger.Default.Subscribe<GoldChangedPayLoad>(OnGoldChanged);
+        Messenger.Default.Subscribe<EquipmentLevelChangedPayLoad>(OnEquipLvChanged);
+        Messenger.Default.Subscribe<PlotChangedPayLoad>(OnFarmPlotsChanged);
+        Messenger.Default.Subscribe<NewAchievementPayLoad>(OnNewAchievement);
+        Messenger.Default.Subscribe<WorkerChangedPayLoad>(OnFarmWorkerChanged);
+        Messenger.Default.Subscribe<InventorySeedChangedPayLoad>(OnInventorySeedsChanged);
+        Messenger.Default.Subscribe<InventoryProductChangedPayLoad>(OnInventoryProductsChanged);
+
         Logger.Instance.NewLog += OnNewLog;
 
         ShowUpdatedGoldAndEquipLevel();
@@ -253,32 +255,32 @@ public class FarmGamePresenter
         }
     }
 
-    private void OnGoldChanged(int gold)
+    private void OnGoldChanged(GoldChangedPayLoad obj)
     {
         ShowUpdatedGoldAndEquipLevel();
     }
 
-    private void OnEquipLvChanged(int obj)
+    private void OnEquipLvChanged(EquipmentLevelChangedPayLoad obj)
     {
         ShowUpdatedGoldAndEquipLevel();
     }
 
-    private void OnFarmPlotsChanged()
+    private void OnFarmPlotsChanged(PlotChangedPayLoad obj)
     {
         ShowUpdatedPlots();
     }
 
-    private void OnFarmWorkerChanged()
+    private void OnFarmWorkerChanged(WorkerChangedPayLoad obj)
     {
         ShowUpdatedWorkers();
     }
 
-    private void OnInventorySeedsChanged()
+    private void OnInventorySeedsChanged(InventorySeedChangedPayLoad obj)
     {
         ShowUpdatedInventorySeeds();
     }
 
-    private void OnInventoryProductsChanged()
+    private void OnInventoryProductsChanged(InventoryProductChangedPayLoad obj)
     {
         ShowUpdatedInventoryProducts();
     }
@@ -288,8 +290,9 @@ public class FarmGamePresenter
         _view.ShowUpdatedLog(text);
     }
 
-    private void OnNewAchievement(string achievementMessage)
+    private void OnNewAchievement(NewAchievementPayLoad obj)
     {
+        string achievementMessage = obj.NewAchievement;
         if (_farm.Achievement.IsGoldTargetDone)
         {
             _farm.isGameFinish = true;

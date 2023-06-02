@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using SuperMaxim.Messaging;
 
 [TestFixture]
 public class FarmPlotTests
@@ -60,7 +61,7 @@ public class FarmPlotTests
         GivenFarmPlot();
 
         int equipmentLv = _rand.Next(10, 50);
-        _plot.OnFarmEquipLvChanged(equipmentLv);
+        UpgradeEquipmentLevel(equipmentLv);
 
         float correctProductivity = 1.0f +
             equipmentLv * ConfigManager.GetProductivityEquipment() / 100f;
@@ -74,14 +75,13 @@ public class FarmPlotTests
 
         int equipmentLv = _rand.Next(10, 50);
         float actualMatureDuration = 0;
-        _plot.OnFarmEquipLvChanged(equipmentLv);
+        UpgradeEquipmentLevel(equipmentLv);
         CommodityType type = WhenPlantRandomCommodity();
         while (_plot.Commodity.State == CommodityState.Mature)
         {
             _plot.GameUpdate(1);
             actualMatureDuration += 1.0f;
         }
-
 
         float correctProductivity = 1.0f +
             equipmentLv * ConfigManager.GetProductivityEquipment() / 100f;
@@ -121,5 +121,11 @@ public class FarmPlotTests
 
         _plot.Plant(_commodity);
         return type;
+    }
+
+    private void UpgradeEquipmentLevel(int equipmentLv)
+    {
+        var payload = new EquipmentLevelChangedPayLoad { EquipmentLevel = equipmentLv };
+        Messenger.Default.Publish(payload);
     }
 }
