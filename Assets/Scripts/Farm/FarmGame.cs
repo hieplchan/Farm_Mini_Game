@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System;
+using SuperMaxim.Messaging;
 
 public class FarmGame : IPersistableObject
 {
@@ -10,7 +11,6 @@ public class FarmGame : IPersistableObject
 
     public long differentTimeFromLastSave = 0;
 
-    public event Action<int> GoldChanged;
     public int Gold
     {
         get => _gold;
@@ -148,7 +148,8 @@ public class FarmGame : IPersistableObject
 
     private void NotifyGoldChanged()
     {
-        GoldChanged?.Invoke(_gold);
+        var payload = new GoldChangedPayLoad { TotalGold = Gold };
+        Messenger.Default.Publish(payload);
     }
 
     private void NotifyEquipLvChanged()

@@ -1,3 +1,4 @@
+using SuperMaxim.Messaging;
 using System;
 
 public class Achievement : IPersistableObject
@@ -13,8 +14,15 @@ public class Achievement : IPersistableObject
     public string targetDoneMessage =
         "You are the richest man in the world! Well Done!";
 
-    public void OnGoldChanged(int gold)
+    public Achievement()
     {
+        // Subcribe to gold change topic
+        Messenger.Default.Subscribe<GoldChangedPayLoad>(OnGoldChanged);
+    }
+
+    public void OnGoldChanged(GoldChangedPayLoad obj)
+    {
+        int gold = obj.TotalGold;
         if (!_isHalfGoldTargetDone && 
             gold >= ConfigManager.GetTargetGold() / 2)
         {

@@ -1,3 +1,4 @@
+using SuperMaxim.Messaging;
 using System;
 using System.Collections.Specialized;
 using System.Linq;
@@ -25,8 +26,8 @@ public class FarmGamePresenter
         _farm = new FarmGame();
         _persistentStorage = new PersistentStorage(persistentPath);
 
-        _farm.GoldChanged += OnGoldChanged;
-        _farm.GoldChanged += _farm.Achievement.OnGoldChanged;
+        // Messenger Event Subcribe
+        Messenger.Default.Subscribe<GoldChangedPayLoad>(OnGoldChanged);
         _farm.EquipLvChanged += OnEquipLvChanged;
         _farm.FarmPlotChanged += OnFarmPlotsChanged;
         _farm.WorkerChanged += OnFarmWorkerChanged;
@@ -253,7 +254,7 @@ public class FarmGamePresenter
         }
     }
 
-    private void OnGoldChanged(int gold)
+    private void OnGoldChanged(GoldChangedPayLoad obj)
     {
         ShowUpdatedGoldAndEquipLevel();
     }
