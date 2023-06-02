@@ -1,9 +1,8 @@
+using SuperMaxim.Messaging;
 using System;
 
 public class Achievement : IPersistableObject
 {
-    public event Action<string> NewAchievement;
-
     public bool IsHalfTargetDone { get => _isHalfGoldTargetDone; }
     bool _isHalfGoldTargetDone = false;
     public bool IsGoldTargetDone { get => _isGoldTargetDone; }
@@ -13,21 +12,34 @@ public class Achievement : IPersistableObject
     public string targetDoneMessage =
         "You are the richest man in the world! Well Done!";
 
-    public void OnGoldChanged(int gold)
+    public Achievement()
     {
+        // Subcribe to gold change topic
+        Messenger.Default.Subscribe<GoldChangedPayLoad>(OnGoldChanged);
+    }
+
+    public void OnGoldChanged(GoldChangedPayLoad obj)
+    {
+        int gold = obj.TotalGold;
         if (!_isHalfGoldTargetDone && 
             gold >= ConfigManager.GetTargetGold() / 2)
         {
             _isHalfGoldTargetDone = true;
-            NewAchievement?.Invoke(halfTargetMessage);
+            NotifyNewAchievement(halfTargetMessage);
         }
 
         if (!_isGoldTargetDone &&
             gold >= ConfigManager.GetTargetGold())
         {
             _isGoldTargetDone = true;
-            NewAchievement?.Invoke(targetDoneMessage);
+            NotifyNewAchievement(targetDoneMessage);
         }
+    }
+
+    private void NotifyNewAchievement(string achievement)
+    {
+        var payload = new NewAchievementPayLoad { NewAchievement = achievement };
+        Messenger.Default.Publish(payload);
     }
 
     public void Save(GameDataWriter writer)

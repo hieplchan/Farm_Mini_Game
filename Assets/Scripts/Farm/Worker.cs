@@ -1,3 +1,4 @@
+using SuperMaxim.Messaging;
 using System;
 
 public enum WorkerState
@@ -8,7 +9,8 @@ public enum WorkerState
 
 public class Worker
 {
-    public event Action WorkerStateChanged;
+    public string ID { get => _id; }
+    private string _id;
 
     public WorkerState State
     {
@@ -16,9 +18,10 @@ public class Worker
         private set
         {
             _state = value;
-            WorkerStateChanged?.Invoke();
+            NotifyWorkerChanged();
         }
     }
+
     private WorkerState _state;
 
     private FarmPlot _currentWorkingPlot;
@@ -27,10 +30,14 @@ public class Worker
 
     public Worker()
     {
+        _id = Guid.NewGuid().ToString();
+
         Logger.Instance.Log("Thanks for having me <3");
         State = WorkerState.Idle;
         _timeNeededPerTask = 
             ConfigManager.GetWorkerConfig().timeNeededPerTask.MinToSec();
+
+        NotifyWorkerChanged();
     }
 
     public void GameUpdate(float deltaTime)
@@ -122,5 +129,11 @@ public class Worker
 
         _currentWorkingPlot.RemoveWorker();
         _currentWorkingPlot = null;
+    }
+
+    private void NotifyWorkerChanged()
+    {
+        var payload = new WorkerChangedPayLoad { ID = _id };
+        Messenger.Default.Publish(payload);
     }
 }
