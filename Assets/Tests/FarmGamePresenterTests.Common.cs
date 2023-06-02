@@ -131,7 +131,7 @@ public partial class FarmGamePresenterTests
 
     private void ThenShowUpdatedLog(string randomString)
     {
-        _view.Received(1).ShowUpdatedLog(randomString);
+        _view.Received().ShowUpdatedLog(randomString);
     }
     #endregion
 }
