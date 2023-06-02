@@ -7,18 +7,20 @@ public class FarmGamePresenter
     const long REFRESH_LOADING_DURATION_SEC = 30;
 
     public FarmGame Farm { get => _farm; }
+    public FarmGameConfig FarmGameConfig { get => _farmGameConfig; }
 
     private FarmGameView _view;
     private FarmGame _farm;
     private PersistentStorage _persistentStorage;
     private bool _isGamePause = false;
+    private FarmGameConfig _farmGameConfig;
 
     public FarmGamePresenter(FarmGameView view, 
         FarmGameConfig config, string persistentPath = "")
     {
         _view = view;
-
-        ConfigManager.Reload(config);
+        _farmGameConfig = config;
+        ConfigManager.Reload(_farmGameConfig);
 
         _farm = new FarmGame();
         _persistentStorage = new PersistentStorage(persistentPath);
@@ -118,11 +120,35 @@ public class FarmGamePresenter
         }
     }
 
+    public void CollectAllProduct()
+    {
+        foreach (FarmPlot plot in _farm.Plots)
+        {
+            if (plot.HasCommodity)
+                if (plot.Commodity.AvailableProduct > 0)
+                    _farm.Inventory.AddProduct((CommodityProductType)plot.CommodityType,
+                        plot.Commodity.Harvest());
+        }
+
+        Logger.Instance.Log("I collect all product");
+    }
+
     public void SellCommodityProduct(int type)
     {
         CommodityProductType productType = (CommodityProductType)type;
         _farm.Gold += _farm.Store.SellCommodityProduct(productType,
             _farm.Inventory.GetAllProduct(productType));
+    }
+
+    public void SellAllProduct()
+    {
+        for (int i = 0; i < ConfigManager.commodityTypeCount; i++)
+        {
+            CommodityProductType productType = (CommodityProductType)i;
+            _farm.Gold += _farm.Store.SellCommodityProduct(productType,
+                _farm.Inventory.GetAllProduct(productType));
+        }
+        Logger.Instance.Log("I sell all product");
     }
 
     public void BuyFarmPlot()

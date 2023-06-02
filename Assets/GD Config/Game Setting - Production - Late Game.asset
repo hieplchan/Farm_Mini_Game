@@ -17,7 +17,7 @@ MonoBehaviour:
   newGameResource:
     gold: 10000
     farmPlot: 3
-    worker: 1
+    worker: 0
     equipLv: 1
     strawBerry: 0
     tomato: 10
