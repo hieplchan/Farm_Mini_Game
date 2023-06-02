@@ -3,7 +3,7 @@
     "com.coffee.upm-git-extension": "2.0.3",
     "com.cysharp.unitask": "2.3.1",
     "com.dre0dru.addressables.services": "https://github.com/felixngd/AddressablesServices.git#upm",
-    "com.felixngd.unityuimanager": "https://github.com/WolffunGame/UnityUIManager.git#1.2.15",
+    "com.felixngd.unityuimanager": "https://github.com/felixngd/UnityUIManager.git?path=/Assets/UnityScreenNavigator#master",
     "com.unity.addressables": "1.19.19",
     "com.unity.collab-proxy": "1.17.7",
     "com.unity.feature.development": "1.0.1",
