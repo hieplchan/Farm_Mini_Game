@@ -209,13 +209,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.wolffun.wbase.common.storage": {
-      "version": "https://github.com/hieplc-wolffun/WBase.Common.Storage.git#0.0.1",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "32b1632ff261f6d0491be9b7759a8b294fa2ac5b"
-    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

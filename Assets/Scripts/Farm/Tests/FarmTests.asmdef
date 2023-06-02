@@ -6,7 +6,6 @@
         "UnityEditor.TestRunner",
         "Farm",
         "Utils",
-        "Storage",
         "SuperMaxim.PubSub"
     ],
     "includePlatforms": [],
