@@ -1,3 +1,4 @@
+using SuperMaxim.Messaging;
 using System;
 
 public class FarmPlot : IPersistableObject
@@ -17,6 +18,11 @@ public class FarmPlot : IPersistableObject
     Commodity _commodity;
     int _availableProduct;
     float _productivity = 1.0f;
+
+    public FarmPlot()
+    {
+        Messenger.Default.Subscribe<EquipmentLevelChangedPayLoad>(OnFarmEquipLvChanged);
+    }
 
     public void GameUpdate(float deltaTime)
     {
@@ -61,10 +67,10 @@ public class FarmPlot : IPersistableObject
         PlotChanged?.Invoke();
     }
 
-    public void OnFarmEquipLvChanged(int equipLv)
+    public void OnFarmEquipLvChanged(EquipmentLevelChangedPayLoad obj)
     {
-        _productivity = 1.0f + 
-            equipLv * ConfigManager.GetProductivityEquipment() / 100f;
+        _productivity = 1.0f +
+            obj.EquipmentLevel * ConfigManager.GetProductivityEquipment() / 100f;
         MLog.Log("Plot", "OnFarmEquipLvChanged _productivity: " +
             _productivity);
     }

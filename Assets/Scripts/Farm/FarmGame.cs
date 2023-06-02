@@ -22,7 +22,6 @@ public class FarmGame : IPersistableObject
     }
     int _gold;
 
-    public event Action<int> EquipLvChanged;
     public int EquipLv
     {
         get => _equipLv;
@@ -80,7 +79,6 @@ public class FarmGame : IPersistableObject
         FarmPlot plot = new FarmPlot();
         _plots.Add(plot);
         plot.PlotChanged += OnPlotChanged;
-        EquipLvChanged += plot.OnFarmEquipLvChanged;
         OnPlotChanged();
         return plot;
     }
@@ -154,7 +152,8 @@ public class FarmGame : IPersistableObject
 
     private void NotifyEquipLvChanged()
     {
-        EquipLvChanged?.Invoke(_equipLv);
+        var payload = new EquipmentLevelChangedPayLoad { EquipmentLevel = _equipLv };
+        Messenger.Default.Publish(payload);
     }
 
     public void Save(GameDataWriter writer)
