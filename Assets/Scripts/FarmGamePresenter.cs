@@ -31,9 +31,9 @@ public class FarmGamePresenter
         Messenger.Default.Subscribe<EquipmentLevelChangedPayLoad>(OnEquipLvChanged);
         Messenger.Default.Subscribe<PlotChangedPayLoad>(OnFarmPlotsChanged);
         Messenger.Default.Subscribe<NewAchievementPayLoad>(OnNewAchievement);
+        Messenger.Default.Subscribe<WorkerChangedPayLoad>(OnFarmWorkerChanged);
 
 
-        _farm.WorkerChanged += OnFarmWorkerChanged;
         _farm.Inventory.SeedsChanged += OnInventorySeedsChanged;
         _farm.Inventory.ProductsChanged += OnInventoryProductsChanged;
         Logger.Instance.NewLog += OnNewLog;
@@ -271,7 +271,7 @@ public class FarmGamePresenter
         ShowUpdatedPlots();
     }
 
-    private void OnFarmWorkerChanged()
+    private void OnFarmWorkerChanged(WorkerChangedPayLoad obj)
     {
         ShowUpdatedWorkers();
     }
