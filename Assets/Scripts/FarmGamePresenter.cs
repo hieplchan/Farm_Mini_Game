@@ -30,11 +30,12 @@ public class FarmGamePresenter
         Messenger.Default.Subscribe<GoldChangedPayLoad>(OnGoldChanged);
         Messenger.Default.Subscribe<EquipmentLevelChangedPayLoad>(OnEquipLvChanged);
         Messenger.Default.Subscribe<PlotChangedPayLoad>(OnFarmPlotsChanged);
+        Messenger.Default.Subscribe<NewAchievementPayLoad>(OnNewAchievement);
+
 
         _farm.WorkerChanged += OnFarmWorkerChanged;
         _farm.Inventory.SeedsChanged += OnInventorySeedsChanged;
         _farm.Inventory.ProductsChanged += OnInventoryProductsChanged;
-        _farm.Achievement.NewAchievement += OnNewAchievement;
         Logger.Instance.NewLog += OnNewLog;
 
         ShowUpdatedGoldAndEquipLevel();
@@ -290,8 +291,9 @@ public class FarmGamePresenter
         _view.ShowUpdatedLog(text);
     }
 
-    private void OnNewAchievement(string achievementMessage)
+    private void OnNewAchievement(NewAchievementPayLoad obj)
     {
+        string achievementMessage = obj.NewAchievement;
         if (_farm.Achievement.IsGoldTargetDone)
         {
             _farm.isGameFinish = true;

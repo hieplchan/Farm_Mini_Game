@@ -3,8 +3,6 @@ using System;
 
 public class Achievement : IPersistableObject
 {
-    public event Action<string> NewAchievement;
-
     public bool IsHalfTargetDone { get => _isHalfGoldTargetDone; }
     bool _isHalfGoldTargetDone = false;
     public bool IsGoldTargetDone { get => _isGoldTargetDone; }
@@ -27,15 +25,21 @@ public class Achievement : IPersistableObject
             gold >= ConfigManager.GetTargetGold() / 2)
         {
             _isHalfGoldTargetDone = true;
-            NewAchievement?.Invoke(halfTargetMessage);
+            NotifyNewAchievement(halfTargetMessage);
         }
 
         if (!_isGoldTargetDone &&
             gold >= ConfigManager.GetTargetGold())
         {
             _isGoldTargetDone = true;
-            NewAchievement?.Invoke(targetDoneMessage);
+            NotifyNewAchievement(targetDoneMessage);
         }
+    }
+
+    private void NotifyNewAchievement(string achievement)
+    {
+        var payload = new NewAchievementPayLoad { NewAchievement = achievement };
+        Messenger.Default.Publish(payload);
     }
 
     public void Save(GameDataWriter writer)
