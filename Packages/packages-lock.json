@@ -7,6 +7,32 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
+    "com.cysharp.unitask": {
+      "version": "2.3.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
+    "com.dre0dru.addressables.services": {
+      "version": "https://github.com/felixngd/AddressablesServices.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.cysharp.unitask": "2.2.5",
+        "com.unity.addressables": "1.18.19"
+      },
+      "hash": "c6c694345ba79ef15aa34a4b5245e4ffa18cf799"
+    },
+    "com.felixngd.unityuimanager": {
+      "version": "https://github.com/WolffunGame/UnityUIManager.git#1.2.15",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.cysharp.unitask": "2.2.5"
+      },
+      "hash": "39736926053acb406723e1c3ac71b265b83a3b26"
+    },
     "com.unity.addressables": {
       "version": "1.19.19",
       "depth": 0,

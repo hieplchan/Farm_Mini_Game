@@ -9,6 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class FarmGameView : MonoBehaviour
 {
+    public FarmGamePresenter FarmGamePresenter { get => _presenter; }
     private FarmGamePresenter _presenter;
 
     [Header("Farm Panel")]

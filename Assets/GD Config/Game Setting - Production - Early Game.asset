@@ -17,7 +17,7 @@ MonoBehaviour:
   newGameResource:
     gold: 10000
     farmPlot: 3
-    worker: 1
+    worker: 0
     equipLv: 1
     strawBerry: 0
     tomato: 10
@@ -26,23 +26,23 @@ MonoBehaviour:
   strawberryConfig:
     cycleTime: 5
     cycleNum: 20
-    dyingTime: 60
+    dyingTime: 1
   tomatoConfig:
     cycleTime: 10
     cycleNum: 40
-    dyingTime: 60
+    dyingTime: 1
   blueberryConfig:
     cycleTime: 15
     cycleNum: 40
-    dyingTime: 60
+    dyingTime: 1
   cowConfig:
     cycleTime: 30
     cycleNum: 100
-    dyingTime: 60
+    dyingTime: 1
   storeConfig:
     farmPlotPrice: 500
-    hireWorkerPrice: 500
-    equipUpgradePrice: 500
+    hireWorkerPrice: 1000
+    equipUpgradePrice: 2000
     strawBerryBuyPrice: 40
     tomatoBuyPrice: 30
     blueBerryBuyPrice: 50
