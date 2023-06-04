@@ -1,3 +1,4 @@
+using SuperMaxim.Messaging;
 using System;
 using System.Collections.Specialized;
 using System.Linq;
@@ -7,30 +8,33 @@ public class FarmGamePresenter
     const long REFRESH_LOADING_DURATION_SEC = 30;
 
     public FarmGame Farm { get => _farm; }
+    public FarmGameConfig FarmGameConfig { get => _farmGameConfig; }
 
     private FarmGameView _view;
     private FarmGame _farm;
     private PersistentStorage _persistentStorage;
     private bool _isGamePause = false;
+    private FarmGameConfig _farmGameConfig;
 
     public FarmGamePresenter(FarmGameView view, 
         FarmGameConfig config, string persistentPath = "")
     {
         _view = view;
-
-        ConfigManager.Reload(config);
+        _farmGameConfig = config;
+        ConfigManager.Reload(_farmGameConfig);
 
         _farm = new FarmGame();
         _persistentStorage = new PersistentStorage(persistentPath);
 
-        _farm.GoldChanged += OnGoldChanged;
-        _farm.GoldChanged += _farm.Achievement.OnGoldChanged;
-        _farm.EquipLvChanged += OnEquipLvChanged;
-        _farm.FarmPlotChanged += OnFarmPlotsChanged;
-        _farm.WorkerChanged += OnFarmWorkerChanged;
-        _farm.Inventory.SeedsChanged += OnInventorySeedsChanged;
-        _farm.Inventory.ProductsChanged += OnInventoryProductsChanged;
-        _farm.Achievement.NewAchievement += OnNewAchievement;
+        // Messenger Event Subcribe
+        Messenger.Default.Subscribe<GoldChangedPayLoad>(OnGoldChanged);
+        Messenger.Default.Subscribe<EquipmentLevelChangedPayLoad>(OnEquipLvChanged);
+        Messenger.Default.Subscribe<PlotChangedPayLoad>(OnFarmPlotsChanged);
+        Messenger.Default.Subscribe<NewAchievementPayLoad>(OnNewAchievement);
+        Messenger.Default.Subscribe<WorkerChangedPayLoad>(OnFarmWorkerChanged);
+        Messenger.Default.Subscribe<InventorySeedChangedPayLoad>(OnInventorySeedsChanged);
+        Messenger.Default.Subscribe<InventoryProductChangedPayLoad>(OnInventoryProductsChanged);
+
         Logger.Instance.NewLog += OnNewLog;
 
         ShowUpdatedGoldAndEquipLevel();
@@ -40,6 +44,16 @@ public class FarmGamePresenter
         ShowUpdatedWorkers();
 
         ApplyNewGameConfig();
+
+        if (_farm.Achievement.IsHalfTargetDone)
+        {
+            _view.LoadLateGame();
+        }
+    }
+
+    public void SetGameConfig(FarmGameConfig config)
+    {
+        ConfigManager.Reload(config);
     }
 
     private void ApplyNewGameConfig()
@@ -108,11 +122,35 @@ public class FarmGamePresenter
         }
     }
 
+    public void CollectAllProduct()
+    {
+        foreach (FarmPlot plot in _farm.Plots)
+        {
+            if (plot.HasCommodity)
+                if (plot.Commodity.AvailableProduct > 0)
+                    _farm.Inventory.AddProduct((CommodityProductType)plot.CommodityType,
+                        plot.Commodity.Harvest());
+        }
+
+        Logger.Instance.Log("I collect all product");
+    }
+
     public void SellCommodityProduct(int type)
     {
         CommodityProductType productType = (CommodityProductType)type;
         _farm.Gold += _farm.Store.SellCommodityProduct(productType,
             _farm.Inventory.GetAllProduct(productType));
+    }
+
+    public void SellAllProduct()
+    {
+        for (int i = 0; i < ConfigManager.commodityTypeCount; i++)
+        {
+            CommodityProductType productType = (CommodityProductType)i;
+            _farm.Gold += _farm.Store.SellCommodityProduct(productType,
+                _farm.Inventory.GetAllProduct(productType));
+        }
+        Logger.Instance.Log("I sell all product");
     }
 
     public void BuyFarmPlot()
@@ -187,6 +225,7 @@ public class FarmGamePresenter
 
     public void GameUpdate(float deltaTime)
     {
+        //MLog.Log("FarmGamePresenter", "GameUpdate");
         if (!_isGamePause)
         {
             FarmGameUpdate(deltaTime);
@@ -216,32 +255,32 @@ public class FarmGamePresenter
         }
     }
 
-    private void OnGoldChanged(int gold)
+    private void OnGoldChanged(GoldChangedPayLoad obj)
     {
         ShowUpdatedGoldAndEquipLevel();
     }
 
-    private void OnEquipLvChanged(int obj)
+    private void OnEquipLvChanged(EquipmentLevelChangedPayLoad obj)
     {
         ShowUpdatedGoldAndEquipLevel();
     }
 
-    private void OnFarmPlotsChanged()
+    private void OnFarmPlotsChanged(PlotChangedPayLoad obj)
     {
         ShowUpdatedPlots();
     }
 
-    private void OnFarmWorkerChanged()
+    private void OnFarmWorkerChanged(WorkerChangedPayLoad obj)
     {
         ShowUpdatedWorkers();
     }
 
-    private void OnInventorySeedsChanged()
+    private void OnInventorySeedsChanged(InventorySeedChangedPayLoad obj)
     {
         ShowUpdatedInventorySeeds();
     }
 
-    private void OnInventoryProductsChanged()
+    private void OnInventoryProductsChanged(InventoryProductChangedPayLoad obj)
     {
         ShowUpdatedInventoryProducts();
     }
@@ -251,13 +290,19 @@ public class FarmGamePresenter
         _view.ShowUpdatedLog(text);
     }
 
-    private void OnNewAchievement(string achievementMessage)
+    private void OnNewAchievement(NewAchievementPayLoad obj)
     {
+        string achievementMessage = obj.NewAchievement;
         if (_farm.Achievement.IsGoldTargetDone)
         {
             _farm.isGameFinish = true;
         }
         Logger.Instance.Log(achievementMessage);
+
+        if (_farm.Achievement.IsHalfTargetDone)
+        {
+            _view.LoadLateGame();
+        }
     }
 
     private void ShowUpdatedGoldAndEquipLevel()

@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 918b61669931824469a5300706b7d9e1
+  m_SerializeEntries:
+  - m_GUID: 62edacafe5e74bc41b9f5b78f3889971
+    m_Address: prefab_modal_seed_menu
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8bc9e1a1413789f4f90c0a4d90263260
+    m_Address: prefab_page_home
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e6e6f56c427fb514da35d3c9c7f1874d
+    m_Address: prefab_page_home_loading
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f4088842d032d934ea3558a69acb1be1
+    m_Address: prefab_page_intro
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 795cd47e1c2c74d47a5d5800a1c64334
+    m_Address: prefab_modal_shop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 000b340cbd89f004b9c5b427efdfb6a0
+    m_Address: prefab_sheet_seed_item_grid
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: eff20aa42ec3b18408aa7ea741c42689
+    m_Address: prefab_sheet_product_item_grid
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f10a38a31dadc0b42a8965cc9bb0295a
+    m_Address: prefab_modal_inventory
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 7f3575ae598857c41b192f10f219857a, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 13c375fd4f509e84ca4fff3b8e08ef2f, type: 2}
+    - {fileID: 11400000, guid: 69e4279752ac7944395b6c655a508c38, type: 2}
